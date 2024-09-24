@@ -92,6 +92,7 @@ int main(int ac, char **av, char **env)
 		split_tokens();
 		fill_command_list();
 		print_tokens();
+		executor();
 		ft_free_exit(line, false);
 	}
 }
