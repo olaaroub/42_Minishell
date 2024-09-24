@@ -7,7 +7,7 @@ void	ft_pwd(void)
 	path = 0;
 	path = getcwd(path, 0);
 	if (!path)
-		return (free (path), ft_putstr_fd(strerror(errno), 2));
+		return (ft_putstr_fd(strerror(errno), 2));
 	printf("%s\n", path);
 	free(path);
 }
