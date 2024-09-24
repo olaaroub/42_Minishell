@@ -18,6 +18,8 @@ SRC = src_parsing/main.c src_parsing/get_env.c src_parsing/trash.c src_parsing/s
 SRC += src_parsing/tockenizing.c src_parsing/tockens_list.c src_parsing/check_line.c src_parsing/utils-v1.c
 SRC += src_parsing/syntax_error.c src_parsing/expand_v2.c src_parsing/split_after_expand.c
 SRC += src_parsing/fill_command_list.c src_parsing/command_list.c
+SRC += $(wildcard builtins/*.c)
+SRC += $(wildcard execution/*.c)
 
 OBJ = $(SRC:.c=.o)
 

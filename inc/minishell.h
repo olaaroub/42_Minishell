@@ -16,6 +16,7 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
+# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdbool.h>
@@ -116,6 +117,24 @@ void				    split_tokens(void);
 t_redir	*ft_add_redir(t_redir **head, char *file_name, int type);
 t_command	*ft_add_command(t_command **head, char **commands, t_redir *redir);
 void    fill_command_list(void);
+
+/*				EXECUTION		*/
+/*				EXECUTION_FUNCS	*/
+
+typedef enum env_flag
+{
+	PRINT, // simple env 
+	SEARCH, // with echo $
+	SORT, // with export
+	REMOVE, // with unset
+}	e_enum;
+
+void	executor(void);
+void	ft_cd(void);
+void	ft_pwd(void);
+void	ft_env(e_enum env_flag);
+void	unset(void);
+
 
 extern t_program		g_data;
 #endif

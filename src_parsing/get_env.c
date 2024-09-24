@@ -56,6 +56,6 @@ void	get_env(t_env **env_list, char **env)
 	
 	*env_list = NULL;
 	i = -1;
-	while (env[++i])
+	while (env && env[++i])
 		*env_list = ft_add_env(env_list, env[i]);
 }
