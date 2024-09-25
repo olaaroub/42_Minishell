@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:10:08 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 15:19:07 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:11:56 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ static t_env	*ft_create_node(char *env)
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(t_env));
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
+	// g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	if (!new)
 		return (NULL);
 	new->line = ft_strdup(env);
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new->line);
+	// g_data.trash_list = ft_add_trash(&g_data.trash_list, new->line);
 	new->name = ft_costume_strchr(env, '=');
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new->name);
+	// g_data.trash_list = ft_add_trash(&g_data.trash_list, new->name);
 	new->value = ft_strdup(ft_strchr(env, '='));
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new->value);
+	// g_data.trash_list = ft_add_trash(&g_data.trash_list, new->value);
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
