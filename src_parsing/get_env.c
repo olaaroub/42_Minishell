@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:10:08 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/10 18:43:18 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:19:07 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+/*
+We will need a function that will free
+a single node and relink the linked list that works as a garbage collector
+*/
+
+
 
 static t_env	*ft_create_node(char *env)
 {

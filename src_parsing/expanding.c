@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:23:51 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/02 17:06:33 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/25 09:32:41 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int get_len(char *exp)
     }
     return 0;
 }
+
 char* mini_getenv(char *exp)
 {
     t_env   *tmp;
@@ -72,7 +73,6 @@ char *ret_new_word(char *word, char *exp)
     new_word[k] = '\0';
     return new_word;
 }
-
 
 void    expanding(void)
 {

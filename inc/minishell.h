@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/20 22:31:04 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:33:06 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
-# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/types.h>
+# include <signal.h>
+# include <limits.h>
+# include <errno.h>
 # include <stdbool.h>
-# include <stdio.h>
-# include <string.h>
-# include <unistd.h>
 
 # define MALLOC_ERROR -77
 
@@ -114,26 +114,21 @@ void				    split_tokens(void);
 
 
 
-t_redir	*ft_add_redir(t_redir **head, char *file_name, int type);
+t_redir		*ft_add_redir(t_redir **head, char *file_name, int type);
 t_command	*ft_add_command(t_command **head, char **commands, t_redir *redir);
-void    fill_command_list(void);
+void   		fill_command_list(void);
 
 /*				EXECUTION		*/
 /*				EXECUTION_FUNCS	*/
 
-typedef enum env_flag
-{
-	PRINT, // simple env 
-	SEARCH, // with echo $
-	SORT, // with export
-	REMOVE, // with unset
-}	e_enum;
-
 void	executor(void);
+/*				BUILTINS		*/
 void	ft_cd(void);
 void	ft_pwd(void);
-void	ft_env(e_enum env_flag);
-void	unset(void);
+void	ft_env(void);
+void	ft_unset(void);
+void	ft_echo(void);
+void	ft_exit(void);
 
 
 extern t_program		g_data;
