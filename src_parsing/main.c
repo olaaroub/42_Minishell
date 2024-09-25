@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 17:53:27 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:41:02 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void print_tokens()
 
 void init_data(void)
 {
-	g_data.env_list = NULL;
+	// g_data.env_list = NULL;
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
 	g_data.tocken_list = NULL;
@@ -50,6 +50,37 @@ void init_data(void)
 	g_data.j = 0;
 }
 
+
+static void free_env_list(void)
+{
+	t_env	*tmp;
+
+	tmp = g_data.env_list;
+	while(tmp)
+	{
+		free(tmp->line);
+		free(tmp->name);
+		free(tmp->value);
+		tmp = tmp->next;
+		free(g_data.env_list);
+		g_data.env_list = tmp;
+	}
+
+}
+
+// static void	print_env()
+// {
+// 	t_env *tmp;
+
+// 	tmp = g_data.env_list;
+// 	while (tmp)
+// 	{
+// 		printf("name is %s value is %s\n", tmp->name, tmp->value);
+// 		tmp = tmp->next;
+// 	}
+// }
+
+
 int main(int ac, char **av, char **env)
 {
 	char *line;
@@ -58,10 +89,10 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	line = NULL;
 	g_data.ret_value = 0;
-	init_data();
+	get_env(&g_data.env_list, env);
 	while (1)
 	{
-		get_env(&g_data.env_list, env);
+		init_data();
 		line = readline("Minihell==>>$ ");
 		if (line && *line)
 			add_history(line);
@@ -88,7 +119,8 @@ int main(int ac, char **av, char **env)
 		fill_command_list();
 		print_tokens();
 		executor();
-		free (line);
+		// print_env();
+		ft_free_exit(line, false);
 	}
-	ft_free_exit(line, false);
+	free_env_list();
 }

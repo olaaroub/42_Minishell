@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/25 15:54:25 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:46:40 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 void	executor(void)
 {
 	char	*cmd;
-	
+
 	cmd = 0;
 	if(!g_data.command_list)
 		return;
 	cmd = g_data.command_list->cmd[0];
+	if(!cmd || !*cmd) // fixed segfault when cmd expands to NULL ex: $XX
+		return;
 	if (!ft_strncmp(cmd, "cd", 2))
 		ft_cd();
 	else if (!ft_strncmp(cmd, "pwd", 3))
