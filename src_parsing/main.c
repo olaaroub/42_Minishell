@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/21 22:06:20 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:53:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,10 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	line = NULL;
 	g_data.ret_value = 0;
+	init_data();
 	while (1)
 	{
-		init_data();
 		get_env(&g_data.env_list, env);
-		// while(g_data.env_list)
-		// {
-		// 	printf("name is = %s ==== value is %s \n", g_data.env_list->name, g_data.env_list->value);
-		// 	g_data.env_list = g_data.env_list->next;
-		// }
 		line = readline("Minihell==>>$ ");
 		if (line && *line)
 			add_history(line);
@@ -93,6 +88,7 @@ int main(int ac, char **av, char **env)
 		fill_command_list();
 		print_tokens();
 		executor();
-		ft_free_exit(line, false);
+		free (line);
 	}
+	ft_free_exit(line, false);
 }
