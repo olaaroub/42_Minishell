@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:45 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/25 09:26:46 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:29:44 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,3 +22,5 @@ void	ft_cd(void)
 	if (chdir(path) == -1)
 		ft_putstr_fd(strerror(errno), 2);
 }
+
+/*	Will need to update OLDPWD in ENV before changing the directory	*/
