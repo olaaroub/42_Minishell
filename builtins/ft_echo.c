@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/25 11:34:22 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 09:49:04 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	ft_echo(void)
 	i = 1;
 	j = 0;
 	nl = 1;
+	if(!cmd[1])
+		printf("\n");
 	while (cmd[i])
 	{	
 		if (valid_option(cmd[i++]))
