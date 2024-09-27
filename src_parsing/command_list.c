@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   command_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:11:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/09 14:33:07 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:48:59 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_command	*ft_create_node(char **commands, t_redir *redir)
+t_command	*command_node(char **commands, t_redir *redir)
 {
 	t_command	*new;
 
@@ -31,7 +31,7 @@ t_command	*ft_add_command(t_command **head, char **commands, t_redir *redir)
 	t_command *new;
 	t_command *temp;
 
-	new = ft_create_node(commands, redir);
+	new = command_node(commands, redir);
 	if (!new)
 		return (NULL);
 	if (!*head)
@@ -44,8 +44,7 @@ t_command	*ft_add_command(t_command **head, char **commands, t_redir *redir)
 	return (*head);
 }
 
-
-static t_redir	*ft_create_node_redir(char *file_name, int type)
+t_redir	*redir_node(char *file_name, int type)
 {
 	t_redir	*new;
 
@@ -64,7 +63,7 @@ t_redir	*ft_add_redir(t_redir **head, char *file_name, int type)
 	t_redir *new;
 	t_redir *temp;
 
-	new = ft_create_node_redir(file_name, type);
+	new = redir_node(file_name, type);
 	if (!new)
 		return (NULL);
 	if (!*head)

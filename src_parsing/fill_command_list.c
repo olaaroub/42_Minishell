@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   fill_command_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:24:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/18 23:00:12 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int len_until_pipe(t_tockens *temp)
+static int len_until_pipe(t_tokens *temp)
 {
-    t_tockens *tmp;
+    t_tokens *tmp;
     int i = 0;
     int j;
 
@@ -65,7 +65,7 @@ static char *trim_quotes(char *word)
     return ret;
 }
 
-static int fill_commands_redirs(t_tockens **temp, t_redir **redir, char **commands)
+static int fill_commands_redirs(t_tokens **temp, t_redir **redir, char **commands)
 {
     int i;
     int j;
@@ -115,12 +115,12 @@ static int fill_commands_redirs(t_tockens **temp, t_redir **redir, char **comman
 
 void    fill_command_list(void)
 {
-    t_tockens   *temp;
+    t_tokens   *temp;
     t_redir     *redir;
     char        **commands;
     int len;
 
-    temp = g_data.tocken_list;
+    temp = g_data.token_list;
     while (temp)
     {
         len = len_until_pipe(temp);

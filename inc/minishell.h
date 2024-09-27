@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/26 19:00:30 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:01:02 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ typedef struct s_env
 	struct s_env		*prev;
 }						t_env;
 
-typedef struct s_tockens
+typedef struct s_tokens
 {
 	char				*word;
 	char				**word_after_exp;
 	int					type;
 	bool				ambiguous;
 	char				*dollar;
-	struct s_tockens	*next;
-	struct s_tockens	*prev;
-}						t_tockens;
+	struct s_tokens		*next;
+	struct s_tokens		*prev;
+}						t_tokens;
 
 typedef struct	s_redir
 {
@@ -80,7 +80,7 @@ typedef struct	s_program
 {
 	t_trash				*trash_list;
 	t_env				*env_list;
-	t_tockens			*tocken_list;
+	t_tokens			*token_list;
 	t_command			*command_list;
 	bool				double_flag;
 	bool				single_flag;
@@ -95,22 +95,23 @@ typedef struct	s_program
 
 /*						PARSING			*/
 /*						PARSING_FUNCS	*/
+
 /*				get_env.c				*/
 void					get_env(t_env **env_list, char **env);
-// t_env					*ft_create_node(char *env);
+t_env					*env_node(char *env);
 t_env					*ft_add_env(t_env **head, char *env);
 
 /*				trash.c					*/
 t_trash					*ft_add_trash(t_trash **head, void *addr);
 void					free_trash(t_trash **head);
-// Still misses a function
+t_trash					*trash_node(void *addr);
 
 
 int						count_words(char *line);
 int						word_lenght(char *line);
 char					**split_mgem7a(char *line);
-void					tockenizing(char *line);
-t_tockens				*ft_add_tocken(char *word, int type, bool ambg, char *dollar);
+void					tokenizing(char *line);
+t_tokens				*ft_add_token(char *word, int type, bool ambg, char *dollar);
 void					ft_white_spaces(char *line);
 int						valid_quotes(char *line);
 void					ft_free_exit(char *line, bool exit);
@@ -123,28 +124,33 @@ void				    split_tokens(void);
 
 
 
-t_redir		*ft_add_redir(t_redir **head, char *file_name, int type);
-t_command	*ft_add_command(t_command **head, char **commands, t_redir *redir);
-void   		fill_command_list(void);
+
+/*				command_list.c			*/
+t_redir					*redir_node(char *file_name, int type);
+t_command				*command_node(char **commands, t_redir *redir);
+t_redir					*ft_add_redir(t_redir **head, char *file_name, int type);
+t_command				*ft_add_command(t_command **head, char **commands, t_redir *redir);
+
+void   					fill_command_list(void);
 
 /*				EXECUTION		*/
 /*				EXECUTION_FUNCS	*/
 
 /*				executor.c		*/
-void	executor(void);
+void					executor(void);
 
-int		entry_found(char *to_find);
-char	*get_pwd(void);
-void	update_var(char *to_find, char *new_value);
-t_env	*get_env_node(char *to_find);
+int						entry_found(char *to_find);
+char					*get_pwd(void);
+void					update_var(char *to_find, char *new_value);
+t_env					*get_env_node(char *to_find);
 
 /*				BUILTINS		*/
-void	ft_cd(void);
-void	ft_pwd(void);
-void	ft_env(void);
-void	ft_unset(void);
-void	ft_echo(void);
-void	ft_exit(void);
+void					ft_cd(void);
+void					ft_pwd(void);
+void					ft_env(void);
+void					ft_unset(void);
+void					ft_echo(void);
+void					ft_exit(void);
 
 
 extern t_program		g_data;
