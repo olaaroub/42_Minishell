@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/27 18:35:25 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:12:01 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**get_paths(void)
 {	
 	if (!entry_found("PATH") || !get_env_node("PATH"))
 		return (NULL);
-	return (ft_split(get_env_node("PATH")->value, ':'));	
+	return (ft_split(get_env_node("PATH")->value, ':'));
 }
 
 int	is_command(t_command *cmd)
@@ -87,7 +87,7 @@ int	is_command(t_command *cmd)
 		return (-1);
 	cmd_path = get_cmd_path(paths);
 	
-	if (execute_cmd(cmd_path, cmd, ));
+	if (execute_cmd(cmd_path, cmd));
 		return (1);
 	return (0);
 }
