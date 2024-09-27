@@ -6,31 +6,11 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:45 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/26 18:44:05 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:36:37 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-// t_env	*ft_create_node(char *env)
-// {
-// 	t_env	*new;
-
-// 	new = (t_env *)malloc(sizeof(t_env));
-// 	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
-// 	if (!new)
-// 		return (NULL);
-// 	new->line = ft_strdup(env);
-// 	g_data.trash_list = ft_add_trash(&g_data.trash_list, new->line);
-// 	new->name = ft_costume_strchr(env, '=');
-// 	g_data.trash_list = ft_add_trash(&g_data.trash_list, new->name);
-// 	new->value = ft_strdup(ft_strchr(env, '='));
-// 	g_data.trash_list = ft_add_trash(&g_data.trash_list, new->value);
-// 	new->next = NULL;
-// 	new->prev = NULL;
-// 	return (new);
-// }
-
 
 char	*get_pwd(void)
 {
