@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tockens_list.c                                     :+:      :+:    :+:   */
+/*   tokens_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:55:39 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/15 18:53:19 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:28:17 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_tockens	*ft_create_node(char *word, int type, bool ambg, char *dollar)
+t_tokens	*token_node(char *word, int type, bool ambg, char *dollar)
 {
-	t_tockens	*new;
+	t_tokens	*new;
 
-	new = (t_tockens *)malloc(sizeof(t_tockens));
+	new = (t_tokens *)malloc(sizeof(t_tokens));
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	if (!new)
 		return (NULL);
@@ -30,21 +30,21 @@ static t_tockens	*ft_create_node(char *word, int type, bool ambg, char *dollar)
 	return (new);
 }
 
-t_tockens	*ft_add_tocken(char *word, int type, bool ambg, char *dollar)
+t_tokens	*ft_add_token(char *word, int type, bool ambg, char *dollar)
 {
-	t_tockens *new;
-	t_tockens *temp;
+	t_tokens *new;
+	t_tokens *temp;
 
-	new = ft_create_node(word, type, ambg, dollar);
+	new = token_node(word, type, ambg, dollar);
 	if (!new)
 		return (NULL);
-	if (!g_data.tocken_list)
+	if (!g_data.token_list)
 		return (new);
-	temp = g_data.tocken_list;
+	temp = g_data.token_list;
 	while (temp->next != NULL)
 		temp = temp->next;
 	temp->next = new;
 	new->next = NULL;
 	new->prev = temp;
-	return (g_data.tocken_list);
+	return (g_data.token_list);
 }

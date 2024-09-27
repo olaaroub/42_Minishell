@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 09:58:22 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:12:13 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void init_data(void)
 	// g_data.env_list = NULL;
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
-	g_data.tocken_list = NULL;
+	g_data.token_list = NULL;
 	g_data.double_flag = false;
 	g_data.single_flag = false;
 	g_data.i = 0;
@@ -107,7 +107,7 @@ int main(int ac, char **av, char **env)
 			continue;
 		}
 		line = add_space(line);
-		tockenizing(line);
+		tokenizing(line);
 		if (syntax_error() == -1)
 		{
 			g_data.ret_value = 2;

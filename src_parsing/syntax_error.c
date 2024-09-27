@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 17:03:36 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/08/29 23:59:48 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	syntax_error(void)
 {
-	t_tockens	*tmp;
-	t_tockens	*next;
+	t_tokens	*tmp;
+	t_tokens	*next;
 
-	tmp = g_data.tocken_list;
+	tmp = g_data.token_list;
 	if(!tmp)
 		return 0;
 	if (tmp->type == PIPE)

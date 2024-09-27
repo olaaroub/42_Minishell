@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:23:51 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 09:32:41 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ char *ret_new_word(char *word, char *exp)
 
 void    expanding(void)
 {
-    t_tockens *tmp;
+    t_tokens *tmp;
     int i;
     int j;
     char buff[2048];
     
     buff[0] = '\0';
-    tmp = g_data.tocken_list;
+    tmp = g_data.token_list;
     while(tmp)
     {
         i = 0;

@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 09:53:56 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int get_expanded(char *buff, int fd)
 	return 0;
 }
 
-static void check_ambiguous(t_tockens *tmp)
+static void check_ambiguous(t_tokens *tmp)
 {
 	char    **check;
 
@@ -79,7 +79,7 @@ static void check_ambiguous(t_tockens *tmp)
 
 void    expand(void)
 {
-	t_tockens   *tmp;
+	t_tokens   *tmp;
 	char *buff;
 	int i;
 	int start;
@@ -87,7 +87,7 @@ void    expand(void)
 	int wrote;
 	int fd;
 
-	tmp = g_data.tocken_list;
+	tmp = g_data.token_list;
 	while(tmp)
 	{
 		i = 0;

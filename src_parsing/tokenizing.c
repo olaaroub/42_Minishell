@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tockenizing.c                                      :+:      :+:    :+:   */
+/*   tokenizing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -28,11 +28,11 @@ int	check_type(char *word)
 		return (WORD);
 }
 
-void	tockenizing(char *line)
+void	tokenizing(char *line)
 {
-	char **res;
-	int i;
-	int type;
+	char	**res;
+	int		i;
+	int		type;
 
 	res = split_mgem7a(line);
 	if (!res || !*res)
@@ -41,7 +41,7 @@ void	tockenizing(char *line)
 	while (res[i])
 	{
 		type = check_type(res[i]);
-		g_data.tocken_list = ft_add_tocken(res[i], type, false, NULL);
+		g_data.token_list = ft_add_token(res[i], type, false, NULL);
 		i++;
 	}
 }
