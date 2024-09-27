@@ -50,6 +50,37 @@ void init_data(void)
 	g_data.j = 0;
 }
 
+
+static void free_env_list(void)
+{
+	t_env	*tmp;
+
+	tmp = g_data.env_list;
+	while(tmp)
+	{
+		free(tmp->line);
+		free(tmp->name);
+		free(tmp->value);
+		tmp = tmp->next;
+		free(g_data.env_list);
+		g_data.env_list = tmp;
+	}
+
+}
+
+// static void	print_env()
+// {
+// 	t_env *tmp;
+
+// 	tmp = g_data.env_list;
+// 	while (tmp)
+// 	{
+// 		printf("name is %s value is %s\n", tmp->name, tmp->value);
+// 		tmp = tmp->next;
+// 	}
+// }
+
+
 int main(int ac, char **av, char **env)
 {
 	char *line;
@@ -88,7 +119,8 @@ int main(int ac, char **av, char **env)
 		fill_command_list();
 		print_tokens();
 		executor();
-		free (line);
+		// print_env();
+		ft_free_exit(line, false);
 	}
-	ft_free_exit(line, false);
+	free_env_list();
 }
