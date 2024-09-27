@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 17:33:06 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:00:30 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,19 @@ typedef struct	s_program
 // FUNCTIONS //
 
 
-
+/*						PARSING			*/
+/*						PARSING_FUNCS	*/
+/*				get_env.c				*/
 void					get_env(t_env **env_list, char **env);
+// t_env					*ft_create_node(char *env);
+t_env					*ft_add_env(t_env **head, char *env);
+
+/*				trash.c					*/
 t_trash					*ft_add_trash(t_trash **head, void *addr);
 void					free_trash(t_trash **head);
+// Still misses a function
+
+
 int						count_words(char *line);
 int						word_lenght(char *line);
 char					**split_mgem7a(char *line);
@@ -121,7 +130,14 @@ void   		fill_command_list(void);
 /*				EXECUTION		*/
 /*				EXECUTION_FUNCS	*/
 
+/*				executor.c		*/
 void	executor(void);
+
+int		entry_found(char *to_find);
+char	*get_pwd(void);
+void	update_var(char *to_find, char *new_value);
+t_env	*get_env_node(char *to_find);
+
 /*				BUILTINS		*/
 void	ft_cd(void);
 void	ft_pwd(void);
