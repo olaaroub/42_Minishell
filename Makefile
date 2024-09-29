@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
+#    By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/09/29 11:53:09 by olaaroub         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC += src_parsing/tokenizing.c src_parsing/tokens_list.c src_parsing/check_line
 SRC += src_parsing/syntax_error.c src_parsing/expand_v2.c src_parsing/split_after_expand.c
 SRC += src_parsing/fill_command_list.c src_parsing/command_list.c
 SRC += $(wildcard builtins/*.c)
-SRC += $(wildcard execution/*.c)
+SRC += $(wildcard src_execution/*.c)
 
 OBJ = $(SRC:.c=.o)
 
