@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:10:08 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 18:11:56 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:03:25 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ We will need a function that will free
 a single node and relink the linked list that works as a garbage collector
 */
 
-
-
-static t_env	*ft_create_node(char *env)
+t_env	*env_node(char *env)
 {
 	t_env	*new;
 
@@ -38,12 +36,12 @@ static t_env	*ft_create_node(char *env)
 	return (new);
 }
 
-static t_env	*ft_add_env(t_env **head, char *env)
+t_env	*ft_add_env(t_env **head, char *env)
 {
 	t_env	*new;
 	t_env	*temp;
 
-	new = ft_create_node(env);
+	new = env_node(env);
 	if (!new)
 		return (NULL);
 	if (!*head)

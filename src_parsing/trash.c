@@ -6,13 +6,13 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 12:53:19 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 10:42:42 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:02:36 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_trash	*ft_create_node(void *addr)
+t_trash	*trash_node(void *addr)
 {
 	t_trash	*new;
 
@@ -29,7 +29,7 @@ t_trash	*ft_add_trash(t_trash **head, void *addr)
 	t_trash	*new;
 	t_trash	*temp;
 
-	new = ft_create_node(addr);
+	new = trash_node(addr);
 	if (!new)
 		return (NULL);
 	if (!*head)

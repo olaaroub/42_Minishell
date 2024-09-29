@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/25 18:41:02 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:02:15 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void init_data(void)
 	// g_data.env_list = NULL;
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
-	g_data.tocken_list = NULL;
+	g_data.token_list = NULL;
 	g_data.double_flag = false;
 	g_data.single_flag = false;
 	g_data.i = 0;
@@ -96,8 +96,8 @@ int main(int ac, char **av, char **env)
 		line = readline("Minihell==>>$ ");
 		if (line && *line)
 			add_history(line);
-		if (line && !ft_strcmp(line, "exit"))
-			ft_free_exit(line, true);
+		// if (line && !ft_strcmp(line, "exit"))
+		// 	ft_free_exit(line, true);
 		ft_white_spaces(line);
 		if (!valid_quotes(line))
 		{
@@ -107,7 +107,7 @@ int main(int ac, char **av, char **env)
 			continue;
 		}
 		line = add_space(line);
-		tockenizing(line);
+		tokenizing(line);
 		if (syntax_error() == -1)
 		{
 			g_data.ret_value = 2;
