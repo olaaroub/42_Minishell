@@ -78,6 +78,7 @@ void	ft_cd(void)
 	char	*new_pwd;
 
 	new_pwd = 0;
+
 	if (!g_data.command_list->cmd[1])
 		return ;
 	path = g_data.command_list->cmd[1];
@@ -95,3 +96,4 @@ void	ft_cd(void)
 /*	Will need to update OLDPWD in ENV before changing the directory	*/
 /*	If one of OLDPWD or PWD has been unset, it will have to be added to the env,
 PWD Should be filled with the current directory, OLDPWD should have the parent directory*/ 
+

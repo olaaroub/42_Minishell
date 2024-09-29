@@ -3,6 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
@@ -11,7 +12,6 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 int	execute_cmd(char *cmd_path, t_command *cmd)
 {

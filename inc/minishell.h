@@ -153,5 +153,6 @@ void					ft_echo(void);
 void					ft_exit(void);
 
 
+
 extern t_program		g_data;
 #endif
