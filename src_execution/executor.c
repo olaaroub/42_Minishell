@@ -6,46 +6,22 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/27 19:12:01 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/30 03:01:29 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-
-int	execute_cmd(char *cmd_path, t_command *cmd)
+void	save_fds()
 {
-	/*Will need to enhance the logic in here to avoid redundant code*/
-	int	pid;
-	int	pipefd[2];
-	int	in;
-	int	out;
-	int keeper;
+	int	stdin;
+	int	stdout;
+	int	stderr;
 
-	if (cmd->red->type == PIPE)
-	{
-		pipe(pipefd);
-		in = pipefd[0];
-		out = pipefd[1];
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		if (dup2(in, 0) == -1 || dup2(out, 1) == -1)
-			ft_putendl_fd(strerror(errno), 2);
-		close(in);
-		close(out);
-		if (execve(cmd_path, g_data.command_list->cmd, NULL) == -1)
-			ft_putendl_fd("execve failed", 2);
-	}
-	else
-	{
-		close(in);
-		close(cmd->red);
-		if (cmd->red->type == PIPE)
-			keeper = pipefd[0];
-		
-	}
+	stdin = dup(STDIN_FILENO);
+	stdout = dup(STDOUT_FILENO);
+	stderr = dup(STDERR_FILENO);
+	printf("%d	%d	%d\n", stdin, stdout, stderr);
 }
 
 char	*get_cmd_path(char	**paths)
@@ -80,14 +56,14 @@ int	is_command(t_command *cmd)
 {
 	char	**paths;
 	char	*cmd_path;
-	int		fd;
+	// int		fd;
 	
 	paths = get_paths();
 	if (!paths)
 		return (-1);
 	cmd_path = get_cmd_path(paths);
-	
-	if (execute_cmd(cmd_path, cmd));
+	save_fds();
+	if (execute_cmd(cmd_path, cmd))
 		return (1);
 	return (0);
 }
@@ -113,14 +89,17 @@ int	is_builtin(char *cmd)
 void	executor(void)
 {
 	t_command	*cmd;
+	int			keeper;
 	
 	cmd = 0;
+	keeper = -1;
 	cmd = g_data.command_list;
 	if (!cmd || !cmd->cmd || !*cmd->cmd)
 		return ;
+	printf("file name ---> %s\n", cmd->red->file_name);
 	while (cmd)
 	{
-		if (!is_builtin(*cmd->cmd) && !is_command(*cmd->cmd));
+		if (!is_builtin(*cmd->cmd) && !is_command(cmd))
 			printf("%s: command not found", *cmd->cmd);
 		cmd = cmd->next;
 	}

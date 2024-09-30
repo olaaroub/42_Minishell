@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:03:57 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/09/28 09:33:36 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void    expand(void)
 			{
 				if(tmp->word[++i] =='?')
 				{
-					ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
+					ft_putnbr_fd(g_data.ret_value, fd);
 					i++;
 				}
 				start = i;
