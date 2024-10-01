@@ -6,7 +6,7 @@
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/10/01 04:55:25 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,9 @@ SRC += src_parsing/syntax_error.c src_parsing/expand_v2.c src_parsing/split_afte
 SRC += src_parsing/fill_command_list.c src_parsing/command_list.c
 SRC += $(wildcard builtins/*.c)
 SRC += $(wildcard execution/*.c)
+
+#=== PRINTF_FD ===#
+SRC += $(wildcard libft/ft_printf/*.c)
 
 OBJ = $(SRC:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 21:24:14 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/03 10:05:30 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/01 04:53:53 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include "ft_printf/ft_printf.h"
 
 //==== LIBFT ===//
 
@@ -83,17 +84,16 @@ char				*ft_costume_strchr(const char *str, int c);
 int					ft_abs(int n);
 //==== FT_PRINTF ===//
 
-int					ft_printf(const char *placeholder, ...);
-int					ft_placeholder(char placeholder, va_list args);
-int					ft_putnbr_base(long n, int base, char c);
-int					ft_putptr(void *p, char c);
-int					ft_putstr(char *str);
-int					ft_putchar(int c);
-int					ft_putptr_base(unsigned long n, int base, char c);
+// int					ft_printf(const char *placeholder, ...);
+// int					ft_placeholder(char placeholder, va_list args);
+// int					ft_putnbr_base(long n, int base, char c);
+// int					ft_putptr(void *p, char c);
+// int					ft_putstr(char *str);
+// int					ft_putchar(int c);
+// int					ft_putptr_base(unsigned long n, int base, char c);
 
 //==== GET_NEXT_LINE ===//
-char	*get_next_line(int fd);
-
+char				*get_next_line(int fd);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
