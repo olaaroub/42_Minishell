@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/01 05:25:30 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/08 09:14:57 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_program g_data;
 
-void	stds_reset()
+void	io_reset()
 {
 	int	fd;
 	
@@ -132,8 +132,7 @@ int main(int ac, char **av, char **env)
 		fill_command_list();
 		print_tokens();
 		executor();
-		sleep(2);
-		stds_reset();
+		io_reset();
 		// print_env();
 		ft_free_exit(line, false);
 	}

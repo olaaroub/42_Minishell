@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/01 00:00:51 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/07 00:54:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,15 @@ t_command				*ft_add_command(t_command **head, char **commands, t_redir *redir);
 void					fill_command_list(void);
 
 /*				EXECUTION		*/
+typedef struct s_exec
+{
+	int					pipefd[2];
+	int					in;
+	int					out;
+	int					keeper;
+	int 				*pid;
+}						t_exec;
+
 /*				EXECUTION_FUNCS	*/
 /*				executor.c		*/
 void					executor(void);

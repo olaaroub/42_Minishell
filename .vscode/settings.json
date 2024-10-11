@@ -61,6 +61,10 @@
     "libft.h": "c",
     "string.h": "c",
     "limits.h": "c",
-    "features.h": "c"
+    "features.h": "c",
+    "history.h": "c",
+    "readline.h": "c",
+    "signal.h": "c",
+    "stdbool.h": "c"
   }
 }
