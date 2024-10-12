@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:02:15 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/09 21:27:14 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ int main(int ac, char **av, char **env)
 		line = readline("Minihell==>>$ ");
 		if (line && *line)
 			add_history(line);
-		// if (line && !ft_strcmp(line, "exit"))
-		// 	ft_free_exit(line, true);
 		ft_white_spaces(line);
 		if (!valid_quotes(line))
 		{
@@ -117,7 +115,7 @@ int main(int ac, char **av, char **env)
 		expand();
 		split_tokens();
 		fill_command_list();
-		print_tokens();
+		// print_tokens();
 		executor();
 		// print_env();
 		ft_free_exit(line, false);

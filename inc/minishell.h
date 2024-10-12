@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:01:02 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/09 21:36:15 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void					ft_pwd(void);
 void					ft_env(void);
 void					ft_unset(void);
 void					ft_echo(void);
+int 					ft_export(char **cmd);
 void					ft_exit(void);
 
 
