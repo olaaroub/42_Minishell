@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/10 10:27:41 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/12 12:31:37 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	child_proc(t_command *cmd, char *cmd_path, int in, int out)
 	printf("in == %d\tout == %d\n", in, out);
 	if (dup2(in, 0) == -1 || dup2(out, 1) == -1)
 		ft_printf(2, "dup2: %s\n", strerror(errno));
-	ft_close(in);
+	// ft_close(in);
 	if (cmd->next)
-		ft_close(out);
+		// ft_close(out);
 	if (execve(cmd_path, cmd->cmd, NULL) == -1)
-		ft_printf(2, "execve: %s\n", strerror(errno));	
+		ft_printf(2, "execve: %s\n", strerror(errno));
 }
 
 int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
@@ -44,7 +44,7 @@ int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
 	{
 		printf("cmd == %s\n", *cmd->cmd);
 		in = *keeper;
-		out = get_fd(cmd, 'o');
+		// out = get_fd(cmd, 'o');
 	}
 	pid = fork();
 	if (pid == -1)
@@ -53,19 +53,19 @@ int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
 		child_proc(cmd, cmd_path, in, out);
 	else
 	{
-		ft_close(in);
-		ft_close(out);
+		// ft_close(in);
+		// ft_close(out);
 		if (cmd->next && !cmd->red)
 			*keeper = pipefd[0];
 	}
 	return (1);
 }
 
-void	execute_input(t_command *cmd, char	**paths, int *keeper)
-{
-	while (cmd)
-	execute_cmd(cmd_path, cmd, keeper);
-}
+// void	execute_input(t_command *cmd, char	**paths, int *keeper)
+// {
+// 	// while (cmd)
+// 	// execute_cmd(cmd_path, cmd, keeper);
+// }
 
 char	*get_cmd_path(char	**paths)
 {
@@ -89,23 +89,23 @@ char	*get_cmd_path(char	**paths)
 }
 
 char	**get_paths(void)
-{	
+{
 	if (!entry_found("PATH") || !get_env_node("PATH"))
 		return (NULL);
 	return (ft_split(get_env_node("PATH")->value, ':'));
 }
 
-int	is_command(t_command *cmd, char **paths)
-{
-	char	*cmd_path;
+// int	is_command(t_command *cmd, char **paths)
+// {
+// 	char	*cmd_path;
 
-	if (!paths)
-		return (-1);
-	cmd_path = get_cmd_path(paths);
-	if (!cmd_path)
-		return (0);
-	return (1);
-}
+// 	if (!paths)
+// 		return (-1);
+// 	cmd_path = get_cmd_path(paths);
+// 	if (!cmd_path)
+// 		return (0);
+// 	return (1);
+// }
 
 int	is_builtin(char *cmd)
 {
@@ -121,8 +121,8 @@ int	is_builtin(char *cmd)
 		return (1);
 	else if (!ft_strncmp(cmd, "exit", 4))
 		return (1);
-	// else if (!ft_strncmp(cmd, "export", 6))
-	// 	return (1);
+	else if (!ft_strncmp(cmd, "export", 6))
+		return (1);
 	return (0);
 }
 
@@ -133,23 +133,23 @@ void	execute_builtin(t_command *cmd)
 
 	in_fd = STDIN_FILENO;
 	out_fd = STDOUT_FILENO;
-	if (cmd->red)
-		set_redirections(&in_fd, &out_fd, cmd);
-	dup_redirections(in_fd, out_fd);
-	if (!ft_strncmp(cmd->cmd, "cd", 2))
+	// if (cmd->red)
+	// 	set_redirections(&in_fd, &out_fd, cmd);
+	// dup_redirections(in_fd, out_fd);
+	if (!ft_strncmp(cmd->cmd[0], "cd", 2))
 		ft_cd();
-	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
+	else if (!ft_strncmp(cmd->cmd[0], "pwd", 3))
 		ft_pwd();
-	else if (!ft_strncmp(cmd->cmd, "env", 3))
+	else if (!ft_strncmp(cmd->cmd[0], "env", 3))
 		ft_env();
-	else if (!ft_strncmp(cmd->cmd, "unset", 5))
+	else if (!ft_strncmp(cmd->cmd[0], "unset", 5))
 		ft_unset();
-	else if (!ft_strncmp(cmd->cmd, "echo", 4))
+	else if (!ft_strncmp(cmd->cmd[0], "echo", 4))
 		ft_echo();
-	else if (!ft_strncmp(cmd->cmd, "exit", 4))
+	else if (!ft_strncmp(cmd->cmd[0], "exit", 4))
 		ft_exit();
-	// else if (!ft_strncmp(cmd, "export", 6))
-	// 	ft_export();
+	else if (!ft_strncmp(cmd->cmd[0], "export", 6))
+		ft_export(cmd->cmd);
 }
 
 void	executor(void)
@@ -169,17 +169,17 @@ void	executor(void)
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
 	}
-	else
-	{
-		while (cmd)
-		{
-			if (!is_builtin(*cmd->cmd) && !is_command(cmd, paths))
-				ft_printf(2, "%s: command not found\n", *cmd->cmd);
-			else
-				execute_input(paths, &keeper);
-			if (entry_found("_"))
-				update_var("_", *cmd->cmd);
-			cmd = cmd->next;
-		}
-	}
+	// else
+	// {
+	// 	while (cmd)
+	// 	{
+	// 		if (!is_builtin(*cmd->cmd) && !is_command(cmd, paths))
+	// 			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+	// 		else
+	// 			execute_input(paths, &keeper);
+	// 		if (entry_found("_"))
+	// 			update_var("_", *cmd->cmd);
+	// 		cmd = cmd->next;
+	// 	}
+	// }
 }

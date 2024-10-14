@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/07 00:54:27 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/12 14:57:25 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 	char				*name;
 	char				*value;
 	char				*line;
+	int					index;
 	struct s_env		*next;
 	struct s_env		*prev;
 }						t_env;
@@ -151,6 +152,7 @@ void					ft_env(void);
 void					ft_unset(void);
 void					ft_echo(void);
 void					ft_exit(void);
+int 					ft_export(char **cmd);
 
 extern t_program		g_data;
 #endif

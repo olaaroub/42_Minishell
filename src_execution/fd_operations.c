@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_operations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/10 10:27:46 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/12 11:16:49 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	set_redirections(int *in, int *out, t_command *cmd)
 			ft_close(*out);
 			*out = tmp;
 		}
-		cmd->red->next;
+		// cmd->red->next;
 	}
 }
 
