@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:01:02 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/07 00:54:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,21 @@ typedef struct s_tokens
 	struct s_tokens		*prev;
 }						t_tokens;
 
-typedef struct	s_redir
+typedef struct s_redir
 {
 	int					type;
 	char				*file_name;
 	struct s_redir		*next;
-} 						t_redir;
+}						t_redir;
 
-typedef struct	s_command
+typedef struct s_command
 {
-	char 				**cmd;
+	char				**cmd;
 	t_redir				*red;
 	struct s_command	*next;
 }						t_command;
 
-
-
-typedef struct	s_program
+typedef struct s_program
 {
 	t_trash				*trash_list;
 	t_env				*env_list;
@@ -86,13 +84,11 @@ typedef struct	s_program
 	bool				single_flag;
 	int					ret_value;
 	int					last_ret_value;
-	int 				i;
+	int					i;
 	int					j;
 }						t_program;
 
 // FUNCTIONS //
-
-
 /*						PARSING			*/
 /*						PARSING_FUNCS	*/
 
@@ -106,7 +102,6 @@ t_trash					*ft_add_trash(t_trash **head, void *addr);
 void					free_trash(t_trash **head);
 t_trash					*trash_node(void *addr);
 
-
 int						count_words(char *line);
 int						word_lenght(char *line);
 char					**split_mgem7a(char *line);
@@ -119,11 +114,8 @@ int						is_whitespace(int c);
 int						line_len(char *line);
 char					*add_space(char *line);
 int						syntax_error(void);
-void    				expand(void);
-void				    split_tokens(void);
-
-
-
+void					expand(void);
+void					split_tokens(void);
 
 /*				command_list.c			*/
 t_redir					*redir_node(char *file_name, int type);
@@ -131,11 +123,19 @@ t_command				*command_node(char **commands, t_redir *redir);
 t_redir					*ft_add_redir(t_redir **head, char *file_name, int type);
 t_command				*ft_add_command(t_command **head, char **commands, t_redir *redir);
 
-void   					fill_command_list(void);
+void					fill_command_list(void);
 
 /*				EXECUTION		*/
-/*				EXECUTION_FUNCS	*/
+typedef struct s_exec
+{
+	int					pipefd[2];
+	int					in;
+	int					out;
+	int					keeper;
+	int 				*pid;
+}						t_exec;
 
+/*				EXECUTION_FUNCS	*/
 /*				executor.c		*/
 void					executor(void);
 
@@ -151,8 +151,6 @@ void					ft_env(void);
 void					ft_unset(void);
 void					ft_echo(void);
 void					ft_exit(void);
-
-
 
 extern t_program		g_data;
 #endif

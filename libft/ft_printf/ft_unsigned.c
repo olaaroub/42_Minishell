@@ -1,35 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_unsigned.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/14 21:03:18 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/30 23:43:16 by hatalhao         ###   ########.fr       */
+/*   Created: 2023/12/06 14:27:14 by hatalhao          #+#    #+#             */
+/*   Updated: 2024/10/01 04:45:10 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-char	*ft_strdup(const char *s1)
+void	ft_unsigned(int fd, unsigned int nb, int *count)
 {
-	int		i;
-	char	*nv;
-	size_t	len;
-
-	i = 0;
-	if (!s1)
-		return (NULL);
-	len = ft_strlen(s1);
-	nv = malloc(sizeof(char) * len + 1);
-	if (!nv)
-		return (NULL);
-	while (s1[i])
-	{
-		nv[i] = s1[i];
-		i++;
-	}
-	nv[i] = '\0';
-	return (nv);
+	ft_putnbr(fd, nb, count);
 }

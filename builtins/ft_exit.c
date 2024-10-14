@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:12:04 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/27 10:03:32 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/10 09:29:37 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ int	is_integer(long nb)
 void	ft_exit(void)
 {
 	unsigned char	status;
-	long	arg;
+	long			arg;
+	char			**cmd;
 
-	arg = ft_atoi(g_data.command_list->cmd[1]);
+	cmd = g_data.command_list->cmd;
 	status = 0;
+	if (!cmd[1])
+		exit(status);
+	arg = ft_atoi(g_data.command_list->cmd[1]);
 	if (g_data.command_list->cmd[2])
-	{
-		ft_putstr_fd("too many arguements\n", 2);
-		return ;
-	}
+		return ft_putstr_fd("too many arguements\n", 2);
 	if (is_integer(arg))
 		status = arg;
 	else
