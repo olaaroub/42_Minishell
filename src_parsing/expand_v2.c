@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_v2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:03:57 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:10:03 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,21 @@ static void check_ambiguous(t_tokens *tmp)
 	}
 }
 
+int check_special_char(t_tokens *tmp, int *i)
+{
+	if(tmp->word[*i] == '$' && tmp->word[*i + 1] == '$')
+	{
+		(*i)+= 2;
+		return (*i);
+	}
+	if(tmp->word[*i] == '$' && ft_isdigit(tmp->word[*i + 1]))
+	{
+		(*i)+= 2;
+		return (*i);
+	}
+	return (*i);
+}
+
 void    expand(void)
 {
 	t_tokens   *tmp;
@@ -98,11 +113,12 @@ void    expand(void)
 			check_master_quotes(&g_data.double_flag, &g_data.single_flag, tmp->word[i]);
 			if(tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC) || !tmp->prev))
 			{
-				if(tmp->word[++i] =='?')
+				if(tmp->word[i+1] =='?')
 				{
 					ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
-					i++;
+					i += 2;
 				}
+				// i = check_special_char(tmp, &i);
 				start = i;
 				while(tmp->word[i] && ft_isalnum(tmp->word[i]))
 					i++;

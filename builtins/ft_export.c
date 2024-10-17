@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 19:02:51 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/12 15:11:22 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:54:56 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ t_env	*get_min(t_env *env)
 	return (min);
 }
 
-void	sort_env(t_env *env)
+void	sort_env(t_env **env)
 {
 	int		x;
 	int		y;
@@ -291,8 +291,8 @@ void	sort_env(t_env *env)
 	t_env	*tmp;
 
 	x = 1;
-	y = list_size(env, 1) + 1;
-	tmp = env;
+	y = list_size(*env, 1) + 1;
+	tmp = *env;
 	while (tmp)
 	{
 		tmp->index = 0;
@@ -300,7 +300,7 @@ void	sort_env(t_env *env)
 	}
 	while (x < y)
 	{
-		min = get_min(env);
+		min = get_min(*env);
 		if (min)
 			min->index = x++;
 	}
@@ -312,9 +312,10 @@ int ft_export(char **cmd)
     int y;
 	int index;
 	t_env	*to_print;
+	t_env	*tmp;
 
 	status = 0;
-	index = 1;
+	index = 0;
     y = 0;
     while(cmd[++y])
     {
@@ -332,15 +333,18 @@ int ft_export(char **cmd)
 		}
     }
 	y = list_size(g_data.env_list, 1);
-	while(!cmd[1] && index <= y)
+	tmp = g_data.env_list;
+	while(!cmd[1] && ++index <= y)
 	{
-		sort_env(g_data.env_list);
-		to_print = get_to_print(g_data.env_list, index++);
+		sort_env(&g_data.env_list);
+		ft_printf(STDOUT_FILENO, "Debug\n");
+		to_print = get_to_print(tmp, index);
 		if (to_print && to_print->value)
 			ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", to_print->name, to_print->value);
 		else if (to_print)
 			ft_printf(STDOUT_FILENO, "declare -x %s\n", to_print->name);
-		g_data.env_list = g_data.env_list->next;
+		tmp = tmp->next;
+		// index++;
 	}
 	return (status);
 }
