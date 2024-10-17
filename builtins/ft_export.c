@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 19:02:51 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/17 17:54:56 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:44:29 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,7 @@ int ft_export(char **cmd)
 	while(!cmd[1] && ++index <= y)
 	{
 		sort_env(&g_data.env_list);
-		ft_printf(STDOUT_FILENO, "Debug\n");
+		// ft_printf(STDOUT_FILENO, "Debug\n");
 		to_print = get_to_print(tmp, index);
 		if (to_print && to_print->value)
 			ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", to_print->name, to_print->value);

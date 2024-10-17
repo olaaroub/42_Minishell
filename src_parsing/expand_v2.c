@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/17 21:02:32 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:40:44 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,11 @@ void    expand(void)
 		while(tmp->word && tmp->word[i])
 		{
 			check_master_quotes(&g_data.double_flag, &g_data.single_flag, tmp->word[i]);
-			if(tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC) || !tmp->prev) && tmp->word[i+1] != '\0')
+			if(tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC) || !tmp->prev) && (tmp->word[i+1] != '\0' && !is_whitespace(tmp->word[i+1])))
 			{
-				if(is_special_char(tmp->word[i+1]) && ((g_data.double_flag == false && g_data.single_flag == false)
+				if(tmp->word[i+1] == '"' && (g_data.double_flag == true ))
+					wrote += write(fd, &tmp->word[i++], 1);
+				else if(is_special_char(tmp->word[i+1]) && ((g_data.double_flag == false && g_data.single_flag == false)
 					|| (g_data.double_flag == true )))
 					i += 2;
 				else if(tmp->word[i+1] =='?' && ((g_data.double_flag == false && g_data.single_flag == false)
