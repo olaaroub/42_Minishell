@@ -18,6 +18,20 @@ void	ft_close(int fd)
 		close(fd);
 }
 
+void	update_fd(t_command *cmd, int *in, int *out, int tmp)
+{
+	if (cmd->red->type == INPUT)
+	{
+		ft_close(*in);
+		*in = tmp;
+	}
+	else
+	{
+		ft_close(*out);
+		*out = tmp;
+	}
+}
+
 void	set_redirections(int *in, int *out, t_command *cmd)
 {
 	int	tmp;
@@ -34,16 +48,7 @@ void	set_redirections(int *in, int *out, t_command *cmd)
 		// HEREDOC is an exception here;
 		if (tmp == -1)
 			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(*in), ft_close(*out));
-		if (cmd->red->type == INPUT)
-		{
-			ft_close(*in);
-			*in = tmp;
-		}
-		else
-		{
-			ft_close(*out);
-			*out = tmp;
-		}
+		update_fd(cmd, in, out, tmp);
 		cmd->red->next;
 	}
 }

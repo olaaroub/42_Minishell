@@ -63,8 +63,14 @@ int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
 
 void	execute_input(t_command *cmd, char	**paths, int *keeper)
 {
+	char	*cmd_path;
+
+	cmd_path = 0;
 	while (cmd)
-	execute_cmd(cmd_path, cmd, keeper);
+	{
+		
+		execute_cmd(cmd_path, cmd, keeper);
+	}
 }
 
 char	*get_cmd_path(char	**paths)
@@ -157,7 +163,10 @@ void	executor(void)
 	t_command	*cmd;
 	int			keeper;
 	char		**paths;
+	t_exec		*exec;
 
+	exec = 0;
+	exec = malloc (sizeof(t_exec));
 	paths = get_paths();
 	keeper = 0;
 	cmd = g_data.command_list;
@@ -176,7 +185,7 @@ void	executor(void)
 			if (!is_builtin(*cmd->cmd) && !is_command(cmd, paths))
 				ft_printf(2, "%s: command not found\n", *cmd->cmd);
 			else
-				execute_input(paths, &keeper);
+				execute_input(cmd, paths, &keeper);
 			if (entry_found("_"))
 				update_var("_", *cmd->cmd);
 			cmd = cmd->next;
