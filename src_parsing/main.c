@@ -3,16 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:02:15 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/12 12:24:49 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 t_program g_data;
+
+void	io_reset()
+{
+	int	fd;
+
+	fd = 0;
+	fd = open("/dev/tty", O_RDWR);
+	if (fd == -1)
+		ft_putendl_fd(strerror(errno), 2);
+	if (dup2(fd, 0) == -1 || dup2(fd, 1 == -1))
+		ft_putendl_fd(strerror(errno), 2);
+	close (fd);
+}
 
 void print_tokens()
 {
@@ -96,8 +109,6 @@ int main(int ac, char **av, char **env)
 		line = readline("Minihell==>>$ ");
 		if (line && *line)
 			add_history(line);
-		// if (line && !ft_strcmp(line, "exit"))
-		// 	ft_free_exit(line, true);
 		ft_white_spaces(line);
 		if (!valid_quotes(line))
 		{
@@ -119,6 +130,7 @@ int main(int ac, char **av, char **env)
 		fill_command_list();
 		print_tokens();
 		executor();
+		io_reset();
 		// print_env();
 		ft_free_exit(line, false);
 	}

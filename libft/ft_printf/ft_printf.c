@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/14 21:03:18 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/30 23:43:16 by hatalhao         ###   ########.fr       */
+/*   Created: 2023/12/06 14:25:06 by hatalhao          #+#    #+#             */
+/*   Updated: 2024/10/01 04:45:36 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-char	*ft_strdup(const char *s1)
+int	ft_printf(int fd, char const *str, ...)
 {
-	int		i;
-	char	*nv;
-	size_t	len;
+	int		count;
+	va_list	args;
 
-	i = 0;
-	if (!s1)
-		return (NULL);
-	len = ft_strlen(s1);
-	nv = malloc(sizeof(char) * len + 1);
-	if (!nv)
-		return (NULL);
-	while (s1[i])
+	count = 0;
+	va_start(args, str);
+	while (*str)
 	{
-		nv[i] = s1[i];
-		i++;
+		if (*str == '%' && *(str + 1))
+		{
+			specifier(fd, *(str + 1), args, &count);
+			str++;
+		}
+		else if (*str != '%')
+			ft_putchar(fd, *str, &count);
+		str++;
 	}
-	nv[i] = '\0';
-	return (nv);
+	va_end(args);
+	return (count);
 }
