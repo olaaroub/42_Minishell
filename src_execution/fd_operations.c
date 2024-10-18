@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/10 10:27:46 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:36:04 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,47 +18,44 @@ void	ft_close(int fd)
 		close(fd);
 }
 
-void	update_fd(t_command *cmd, int *in, int *out, int tmp)
+void	update_fd(t_command *cmd, t_exec *exec)
 {
 	if (cmd->red->type == INPUT)
 	{
-		ft_close(*in);
-		*in = tmp;
+		ft_close(exec->in);
+		exec->in = exec->tmp_fd;
 	}
 	else
 	{
-		ft_close(*out);
-		*out = tmp;
+		ft_close(exec->out);
+		exec->out = exec->tmp_fd;
 	}
 }
 
-void	set_redirections(int *in, int *out, t_command *cmd)
+void	set_redirections(t_exec *exec, t_command *cmd)
 {
-	int	tmp;
-
-	tmp = -1;
+	exec->tmp_fd = -1;
 	while (cmd->red)
 	{
 		if (cmd->red->type == INPUT)
-			tmp = open(cmd->red->file_name, O_RDONLY);
+			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)
-			tmp = open(cmd->red->file_name, O_CREAT | O_RDWR | O_TRUNC);
+			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_TRUNC);
 		else if (cmd->red->type == APPEND)
-			tmp = open(cmd->red->file_name, O_CREAT | O_RDWR | O_APPEND);
-		// HEREDOC is an exception here;
-		if (tmp == -1)
-			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(*in), ft_close(*out));
-		update_fd(cmd, in, out, tmp);
+			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_APPEND);
+		if (exec->tmp_fd == -1)
+			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(exec->in), ft_close(exec->out));
+		update_fd(cmd, exec);
 		cmd->red->next;
 	}
 }
 
-void	dup_redirections(int in, int out)
+void	dup_redirections(t_exec *exec)
 {
-	if (dup2(in, 0) == -1)
+	if (dup2(exec->in, 0) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
-	if (dup2(out, 1) == -1)
+	if (dup2(exec->out, 1) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
-	ft_close(in);
-	ft_close(out);
+	ft_close(exec->in);
+	ft_close(exec->out);
 }

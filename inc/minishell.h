@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/07 00:54:27 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:32:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,10 @@ void					fill_command_list(void);
 typedef struct s_exec
 {
 	int					pipefd[2];
+	char				**paths;
 	int					in;
 	int					out;
+	int					tmp_fd;
 	int					keeper;
 	int 				*pid;
 }						t_exec;
@@ -143,6 +145,16 @@ int						entry_found(char *to_find);
 char					*get_pwd(void);
 void					update_var(char *to_find, char *new_value);
 t_env					*get_env_node(char *to_find);
+
+/*				fd_operations.c	*/
+void					ft_close(int fd);
+void					dup_redirections(t_exec *exec);
+void					set_redirections(t_exec *exec, t_command *cmd);
+void					update_fd(t_command *cmd, t_exec *exec);
+
+/*				getters.c		*/
+char					**get_paths(void);
+char					*get_cmd_path(char	**paths);
 
 /*				BUILTINS		*/
 void					ft_cd(void);

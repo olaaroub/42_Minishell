@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/30 03:01:29 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:35:09 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,12 @@ void	child_proc(t_command *cmd, char *cmd_path, int in, int out)
 
 int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
 {
-	/*Will need to fix the problems resulting from this*/
 	int	pid;
 	int	pipefd[2];
 	int	in;
 	int	out;
 
-	in = *keeper;
-	out = 1;
-	if (cmd->next)
-	{
-		printf("cmd == %s\n", *cmd->cmd);
-		pipe(pipefd);
-		out = pipefd[1];
-	}
-	else
-	{
-		printf("cmd == %s\n", *cmd->cmd);
-		in = *keeper;
-		out = get_fd(cmd, 'o');
-	}
+	
 	pid = fork();
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
@@ -61,45 +47,20 @@ int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
 	return (1);
 }
 
-void	execute_input(t_command *cmd, char	**paths, int *keeper)
+void	execute_input(t_command *cmd, t_exec *exec)
 {
 	char	*cmd_path;
 
 	cmd_path = 0;
 	while (cmd)
 	{
-		
-		execute_cmd(cmd_path, cmd, keeper);
+		if (cmd->red)
+			set_redirections(exec, cmd);
+		execute_cmd(cmd_path, cmd, exec->keeper);
+		cmd = cmd->next;
 	}
 }
 
-char	*get_cmd_path(char	**paths)
-{
-	char	*cmd_path;
-	int		i;
-	char	*cmd;
-
-	i = -1;
-	cmd = 0;
-	cmd_path = 0;
-	cmd = ft_strjoin("/", *(g_data.command_list->cmd));
-	while (paths[++i])
-	{
-		cmd_path = ft_strjoin(paths[i], cmd);
-		if(!access(cmd_path, X_OK))
-			return (free (cmd), cmd_path);
-		free(cmd_path);
-	}
-	free(cmd);
-	return (NULL);
-}
-
-char	**get_paths(void)
-{	
-	if (!entry_found("PATH") || !get_env_node("PATH"))
-		return (NULL);
-	return (ft_split(get_env_node("PATH")->value, ':'));
-}
 
 int	is_command(t_command *cmd, char **paths)
 {
@@ -132,16 +93,16 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-void	execute_builtin(t_command *cmd)
+void	execute_builtin(t_exec *exec, t_command *cmd)
 {
 	int	in_fd;
 	int	out_fd;
 
-	in_fd = STDIN_FILENO;
-	out_fd = STDOUT_FILENO;
+	exec->in = STDIN_FILENO;
+	exec->out = STDOUT_FILENO;
 	if (cmd->red)
-		set_redirections(&in_fd, &out_fd, cmd);
-	dup_redirections(in_fd, out_fd);
+		set_redirections(exec, cmd);
+	dup_redirections(exec);
 	if (!ft_strncmp(cmd->cmd, "cd", 2))
 		ft_cd();
 	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
@@ -161,20 +122,18 @@ void	execute_builtin(t_command *cmd)
 void	executor(void)
 {
 	t_command	*cmd;
-	int			keeper;
-	char		**paths;
 	t_exec		*exec;
 
 	exec = 0;
 	exec = malloc (sizeof(t_exec));
-	paths = get_paths();
-	keeper = 0;
+	exec->paths = get_paths();
+	exec->keeper = 0;
 	cmd = g_data.command_list;
-	if (!cmd || !cmd->cmd || !*cmd->cmd || !paths)
+	if (!cmd || !cmd->cmd || !*cmd->cmd || !exec->paths)
 		return ;
 	if (!cmd->next && is_builtin(*cmd->cmd))
 	{
-		execute_builtin(cmd);
+		execute_builtin(exec, cmd);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
 	}
@@ -182,10 +141,10 @@ void	executor(void)
 	{
 		while (cmd)
 		{
-			if (!is_builtin(*cmd->cmd) && !is_command(cmd, paths))
+			if (!is_builtin(*cmd->cmd) && !is_command(cmd, exec->paths))
 				ft_printf(2, "%s: command not found\n", *cmd->cmd);
 			else
-				execute_input(cmd, paths, &keeper);
+				execute_input(cmd, exec);
 			if (entry_found("_"))
 				update_var("_", *cmd->cmd);
 			cmd = cmd->next;
