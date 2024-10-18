@@ -17,7 +17,6 @@ t_program g_data;
 void	io_reset()
 {
 	int	fd;
-
 	fd = 0;
 	fd = open("/dev/tty", O_RDWR);
 	if (fd == -1)

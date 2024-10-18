@@ -152,7 +152,9 @@ void					ft_env(void);
 void					ft_unset(void);
 void					ft_echo(void);
 void					ft_exit(void);
+
 int 					ft_export(char **cmd);
+
 
 extern t_program		g_data;
 #endif
