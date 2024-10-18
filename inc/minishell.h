@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/18 13:32:27 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:43:08 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 	char				*name;
 	char				*value;
 	char				*line;
+	int					index;
 	struct s_env		*next;
 	struct s_env		*prev;
 }						t_env;
@@ -163,6 +164,9 @@ void					ft_env(void);
 void					ft_unset(void);
 void					ft_echo(void);
 void					ft_exit(void);
+
+int 					ft_export(char **cmd);
+
 
 extern t_program		g_data;
 #endif

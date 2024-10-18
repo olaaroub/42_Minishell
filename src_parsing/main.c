@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/08 09:14:57 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/12 12:24:49 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_program g_data;
 void	io_reset()
 {
 	int	fd;
-	
 	fd = 0;
 	fd = open("/dev/tty", O_RDWR);
 	if (fd == -1)
@@ -109,8 +108,6 @@ int main(int ac, char **av, char **env)
 		line = readline("Minihell==>>$ ");
 		if (line && *line)
 			add_history(line);
-		// if (line && !ft_strcmp(line, "exit"))
-		// 	ft_free_exit(line, true);
 		ft_white_spaces(line);
 		if (!valid_quotes(line))
 		{

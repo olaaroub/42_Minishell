@@ -3,6 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   fd_operations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
@@ -47,6 +48,7 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(exec->in), ft_close(exec->out));
 		update_fd(cmd, exec);
 		cmd->red->next;
+
 	}
 }
 

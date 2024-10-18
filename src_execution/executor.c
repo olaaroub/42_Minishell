@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/18 13:35:09 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:43:29 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	is_command(t_command *cmd, char **paths)
 	return (1);
 }
 
+
 int	is_builtin(char *cmd)
 {
 	if (!ft_strncmp(cmd, "cd", 2))
@@ -88,8 +89,8 @@ int	is_builtin(char *cmd)
 		return (1);
 	else if (!ft_strncmp(cmd, "exit", 4))
 		return (1);
-	// else if (!ft_strncmp(cmd, "export", 6))
-	// 	return (1);
+	else if (!ft_strncmp(cmd, "export", 6))
+		return (1);
 	return (0);
 }
 
@@ -115,8 +116,9 @@ void	execute_builtin(t_exec *exec, t_command *cmd)
 		ft_echo();
 	else if (!ft_strncmp(cmd->cmd, "exit", 4))
 		ft_exit();
-	// else if (!ft_strncmp(cmd, "export", 6))
-	// 	ft_export();
+	else if (!ft_strncmp(cmd, "export", 6))
+	ft_export();
+
 }
 
 void	executor(void)
@@ -150,4 +152,5 @@ void	executor(void)
 			cmd = cmd->next;
 		}
 	}
+
 }
