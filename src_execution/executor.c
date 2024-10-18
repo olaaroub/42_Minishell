@@ -6,43 +6,40 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/18 16:43:29 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:53:44 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	child_proc(t_command *cmd, char *cmd_path, int in, int out)
+void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 {
-	printf("in == %d\tout == %d\n", in, out);
-	if (dup2(in, 0) == -1 || dup2(out, 1) == -1)
+	printf("in == %d\tout == %d\n", exec->in, exec->out);
+	if (dup2(exec->in, 0) == -1 || dup2(exec->out, 1) == -1)
 		ft_printf(2, "dup2: %s\n", strerror(errno));
-	ft_close(in);
+	ft_close(exec->in);
 	if (cmd->next)
-		ft_close(out);
+		ft_close(exec->out);
 	if (execve(cmd_path, cmd->cmd, NULL) == -1)
+	{
 		ft_printf(2, "execve: %s\n", strerror(errno));	
+		exit(1);
+	}
 }
 
-int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
-{
-	int	pid;
-	int	pipefd[2];
-	int	in;
-	int	out;
-
-	
-	pid = fork();
-	if (pid == -1)
+int	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
+{	
+	exec->pid = fork();
+	if (exec->pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
-	if (pid == 0)
-		child_proc(cmd, cmd_path, in, out);
+	if (exec->pid == 0)
+		child_proc(cmd, cmd_path, exec);
 	else
 	{
-		ft_close(in);
-		ft_close(out);
+		ft_close(exec->in);
+		ft_close(exec->out);
 		if (cmd->next && !cmd->red)
-			*keeper = pipefd[0];
+			exec->keeper = exec->pipefd[0];
 	}
 	return (1);
 }
@@ -56,6 +53,7 @@ void	execute_input(t_command *cmd, t_exec *exec)
 	{
 		if (cmd->red)
 			set_redirections(exec, cmd);
+		
 		execute_cmd(cmd_path, cmd, exec->keeper);
 		cmd = cmd->next;
 	}
@@ -116,8 +114,8 @@ void	execute_builtin(t_exec *exec, t_command *cmd)
 		ft_echo();
 	else if (!ft_strncmp(cmd->cmd, "exit", 4))
 		ft_exit();
-	else if (!ft_strncmp(cmd, "export", 6))
-	ft_export();
+	// else if (!ft_strncmp(cmd, "export", 6))
+	// 	ft_export();
 
 }
 
