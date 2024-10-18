@@ -6,7 +6,7 @@
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/10/03 05:31:09 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/10/18 17:04:05 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC += $(wildcard libft/ft_printf/*.c)
 
 OBJ = $(SRC:.c=.o)
 
-NAME = minishell
+NAME = minishell_1
 LIB = libft/libft.a
 
 all:  $(NAME)

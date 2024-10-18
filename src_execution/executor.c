@@ -6,11 +6,17 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/18 16:53:44 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/18 17:17:36 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	append_pid(t_exec *exec, pid_t pid)
+{
+	exec->pid[i] = pid;
+	
+}
 
 void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 {
@@ -28,8 +34,11 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 }
 
 int	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
-{	
-	exec->pid = fork();
+{
+	int	pid;
+
+	pid = 0;
+	pid = fork();
 	if (exec->pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	if (exec->pid == 0)
@@ -40,6 +49,7 @@ int	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
 		ft_close(exec->out);
 		if (cmd->next && !cmd->red)
 			exec->keeper = exec->pipefd[0];
+		append_pid(exec, pid);
 	}
 	return (1);
 }
@@ -47,7 +57,9 @@ int	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
 void	execute_input(t_command *cmd, t_exec *exec)
 {
 	char	*cmd_path;
+	int		i;
 
+	i = 0;
 	cmd_path = 0;
 	while (cmd)
 	{
