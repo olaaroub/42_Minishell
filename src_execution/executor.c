@@ -59,6 +59,7 @@ int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
 			*keeper = pipefd[0];
 	}
 	return (1);
+
 }
 
 // void	execute_input(t_command *cmd, char	**paths, int *keeper)
@@ -95,6 +96,7 @@ char	**get_paths(void)
 	return (ft_split(get_env_node("PATH")->value, ':'));
 }
 
+
 // int	is_command(t_command *cmd, char **paths)
 // {
 // 	char	*cmd_path;
@@ -106,6 +108,7 @@ char	**get_paths(void)
 // 		return (0);
 // 	return (1);
 // }
+
 
 int	is_builtin(char *cmd)
 {
@@ -156,18 +159,22 @@ void	executor(void)
 {
 	t_command	*cmd;
 	int			keeper;
+
 	char		**paths;
 
 	paths = get_paths();
 	keeper = 0;
+
 	cmd = g_data.command_list;
 	if (!cmd || !cmd->cmd || !*cmd->cmd || !paths)
 		return ;
+
 	if (!cmd->next && is_builtin(*cmd->cmd))
 	{
 		execute_builtin(cmd);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
+
 	}
 	// else
 	// {

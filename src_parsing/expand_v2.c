@@ -119,12 +119,14 @@ void    expand(void)
 			check_master_quotes(&g_data.double_flag, &g_data.single_flag, tmp->word[i]);
 			if(tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC) || !tmp->prev) && (tmp->word[i+1] != '\0' && !is_whitespace(tmp->word[i+1])))
 			{
+
 				if(tmp->word[i+1] == '"' && (g_data.double_flag == true ))
 					wrote += write(fd, &tmp->word[i++], 1);
 				else if(is_special_char(tmp->word[i+1]) && ((g_data.double_flag == false && g_data.single_flag == false)
 					|| (g_data.double_flag == true )))
 					i += 2;
 				else if(tmp->word[i+1] =='?' && ((g_data.double_flag == false && g_data.single_flag == false)
+
 					|| (g_data.double_flag == true )))
 				{
 					ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
