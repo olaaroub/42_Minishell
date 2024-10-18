@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/12 12:31:37 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/18 01:44:49 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	child_proc(t_command *cmd, char *cmd_path, int in, int out)
 	if (cmd->next)
 		ft_close(out);
 	if (execve(cmd_path, cmd->cmd, NULL) == -1)
-		ft_printf(2, "execve: %s\n", strerror(errno));	
+		ft_printf(2, "execve: %s\n", strerror(errno));
 }
 
 int	execute_cmd(char *cmd_path, t_command *cmd, int *keeper)
@@ -68,7 +68,7 @@ void	execute_input(t_command *cmd, char	**paths, int *keeper)
 	cmd_path = 0;
 	while (cmd)
 	{
-		
+
 		execute_cmd(cmd_path, cmd, keeper);
 	}
 }
@@ -200,7 +200,7 @@ void	execute_builtin(t_command *cmd)
 	else if (!ft_strncmp(cmd->cmd, "exit", 4))
 		ft_exit();
 	else if (!ft_strncmp(cmd, "export", 6))
-	ft_export();
+		ft_export(cmd->cmd);
 
 }
 
