@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_v2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/28 09:33:36 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:40:44 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,27 @@ static void check_ambiguous(t_tokens *tmp)
 	}
 }
 
+int check_special_char(t_tokens *tmp, int *i)
+{
+	while(tmp->word[*i])
+	{
+		if(tmp->word[*i] == '$' && tmp->word[*i + 1] == '$')
+		{
+			(*i) += 2;
+			return (*i);
+		}
+		*i += 1;
+	}
+	return (*i);
+}
+
+int is_special_char(char c)
+{
+	if(c == '$' || c == '@' || c == '*' || c == '#' || c == '-' || c == '!' || ft_isdigit(c))
+		return 1;
+	return 0;
+}
+
 void    expand(void)
 {
 	t_tokens   *tmp;
@@ -96,34 +117,45 @@ void    expand(void)
 		while(tmp->word && tmp->word[i])
 		{
 			check_master_quotes(&g_data.double_flag, &g_data.single_flag, tmp->word[i]);
-			if(tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC) || !tmp->prev))
+			if(tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC) || !tmp->prev) && (tmp->word[i+1] != '\0' && !is_whitespace(tmp->word[i+1])))
 			{
-				if(tmp->word[++i] =='?')
-				{
-					ft_putnbr_fd(g_data.ret_value, fd);
-					i++;
-				}
-				start = i;
-				while(tmp->word[i] && ft_isalnum(tmp->word[i]))
-					i++;
-				end = i ;
-				buff = ft_substr(tmp->word, start, end - start);
-				tmp->dollar = ft_strjoin("$", buff);
-				g_data.trash_list = ft_add_trash(&g_data.trash_list, tmp->dollar);
-				if(check_env_name(buff) == 1 && ((g_data.double_flag == false && g_data.single_flag == false)
+
+				if(tmp->word[i+1] == '"' && (g_data.double_flag == true ))
+					wrote += write(fd, &tmp->word[i++], 1);
+				else if(is_special_char(tmp->word[i+1]) && ((g_data.double_flag == false && g_data.single_flag == false)
 					|| (g_data.double_flag == true )))
-					wrote += get_expanded(buff, fd);
-				else if(check_env_name(buff) == 1 && ((g_data.double_flag == false && g_data.single_flag == true)))
+					i += 2;
+				else if(tmp->word[i+1] =='?' && ((g_data.double_flag == false && g_data.single_flag == false)
+
+					|| (g_data.double_flag == true )))
 				{
-					wrote += write(fd, "$", 1);
-					wrote += write(fd, buff, ft_strlen(buff));
+					ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
+					i += 2;
 				}
-				else if(check_env_name(buff) == -1 && (g_data.single_flag == true && g_data.double_flag == false))
+				else// i = check_special_char(tmp, &i);
 				{
-					wrote += write(fd, "$", 1);
-					wrote += write(fd, buff, ft_strlen(buff));
+					start = ++i;
+					while(tmp->word[i] && ft_isalnum(tmp->word[i]))
+						i++;
+					end = i ;
+					buff = ft_substr(tmp->word, start, end - start);
+					tmp->dollar = ft_strjoin("$", buff);
+					g_data.trash_list = ft_add_trash(&g_data.trash_list, tmp->dollar);
+					if(check_env_name(buff) == 1 && ((g_data.double_flag == false && g_data.single_flag == false)
+						|| (g_data.double_flag == true )))
+						wrote += get_expanded(buff, fd);
+					else if(check_env_name(buff) == 1 && ((g_data.double_flag == false && g_data.single_flag == true)))
+					{
+						wrote += write(fd, "$", 1);
+						wrote += write(fd, buff, ft_strlen(buff));
+					}
+					else if(check_env_name(buff) == -1 && (g_data.single_flag == true && g_data.double_flag == false))
+					{
+						wrote += write(fd, "$", 1);
+						wrote += write(fd, buff, ft_strlen(buff));
+					}
+					free(buff);
 				}
-				free(buff);
 			}
 			else
 				wrote += write(fd, &tmp->word[i++], 1);

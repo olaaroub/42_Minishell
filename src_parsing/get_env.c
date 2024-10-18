@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:10:08 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:03:25 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/12 15:06:07 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_env	*env_node(char *env)
 	// g_data.trash_list = ft_add_trash(&g_data.trash_list, new->name);
 	new->value = ft_strdup(ft_strchr(env, '='));
 	// g_data.trash_list = ft_add_trash(&g_data.trash_list, new->value);
+	new->index = 0;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
@@ -58,7 +59,7 @@ t_env	*ft_add_env(t_env **head, char *env)
 void	get_env(t_env **env_list, char **env)
 {
 	int i;
-	
+
 	*env_list = NULL;
 	i = -1;
 	while (env && env[++i])
