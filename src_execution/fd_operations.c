@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/18 16:42:40 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/19 17:07:14 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 		if (exec->tmp_fd == -1)
 			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(exec->in), ft_close(exec->out));
 		update_fd(cmd, exec);
-		cmd->red->next;
+		cmd->red = cmd->red->next;
 	}
 }
 

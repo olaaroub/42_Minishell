@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/18 16:43:08 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/19 20:26:24 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <limits.h>
+# include <wait.h>
 # include <errno.h>
 # include <stdbool.h>
 
@@ -140,7 +141,6 @@ typedef struct s_exec
 
 /*				EXECUTION_FUNCS	*/
 /*				executor.c		*/
-void					executor(void);
 
 int						entry_found(char *to_find);
 char					*get_pwd(void);
@@ -155,7 +155,20 @@ void					update_fd(t_command *cmd, t_exec *exec);
 
 /*				getters.c		*/
 char					**get_paths(void);
-char					*get_cmd_path(char	**paths);
+char					*get_cmd_path(t_command *cmd, char	**paths);
+
+/*				executors.c		*/
+void					execute_builtin(t_exec *exec, t_command *cmd);
+int						execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec);
+
+/*				orchestrator.c	*/
+void					executor(void);
+void					prepare_input(t_command *cmd, t_exec *exec);
+void					command_chain(t_command *cmd, t_exec *exec);
+
+/*				identifiers.c	*/
+int	is_command(t_command *cmd, char **paths);
+int	is_builtin(char *cmd);
 
 /*				BUILTINS		*/
 void					ft_cd(void);
