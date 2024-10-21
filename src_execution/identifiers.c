@@ -26,19 +26,19 @@ int	is_command(t_command *cmd, char **paths)
 
 int	is_builtin(char *cmd)
 {
-	if (!ft_strncmp(cmd, "cd", 2))
+	if (!ft_strcmp(cmd, "cd"))
 		return (1);
-	else if (!ft_strncmp(cmd, "pwd", 3))
+	else if (!ft_strcmp(cmd, "pwd"))
 		return (1);
-	else if (!ft_strncmp(cmd, "env", 3))
+	else if (!ft_strcmp(cmd, "env"))
 		return (1);
-	else if (!ft_strncmp(cmd, "unset", 5))
+	else if (!ft_strcmp(cmd, "unset"))
 		return (1);
-	else if (!ft_strncmp(cmd, "echo", 4))
+	else if (!ft_strcmp(cmd, "echo"))
 		return (1);
-	else if (!ft_strncmp(cmd, "exit", 4))
+	else if (!ft_strcmp(cmd, "exit"))
 		return (1);
-	else if (!ft_strncmp(cmd, "export", 6))
+	else if (!ft_strcmp(cmd, "export"))
 		return (1);
 	return (0);
 }

@@ -54,18 +54,18 @@ void	execute_builtin(t_exec *exec, t_command *cmd)
 	if (cmd->red)
 		set_redirections(exec, cmd);
 	dup_redirections(exec);
-	if (!ft_strncmp(*cmd->cmd, "cd", 2))
+	if (!ft_strcmp(*cmd->cmd, "cd"))
 		ft_cd();
-	else if (!ft_strncmp(*cmd->cmd, "pwd", 3))
+	else if (!ft_strcmp(*cmd->cmd, "pwd"))
 		ft_pwd();
-	else if (!ft_strncmp(*cmd->cmd, "env", 3))
+	else if (!ft_strcmp(*cmd->cmd, "env"))
 		ft_env();
-	else if (!ft_strncmp(*cmd->cmd, "unset", 5))
+	else if (!ft_strcmp(*cmd->cmd, "unset"))
 		ft_unset();
-	else if (!ft_strncmp(*cmd->cmd, "echo", 4))
+	else if (!ft_strcmp(*cmd->cmd, "echo"))
 		ft_echo();
-	else if (!ft_strncmp(*cmd->cmd, "exit", 4))
+	else if (!ft_strcmp(*cmd->cmd, "exit"))
 		ft_exit();
-	// else if (!ft_strncmp(*cmd->cmd, "export", 6))
-	// 	ft_export();
+	else if (!ft_strcmp(*cmd->cmd, "export"))
+		ft_export(cmd->cmd);
 }

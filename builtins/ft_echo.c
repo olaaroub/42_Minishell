@@ -35,26 +35,21 @@ void	ft_echo(void)
 	char	**cmd;
 	int		i;
 	int		j;
-	bool	nl;
+	bool	newline;
 
 	cmd = g_data.command_list->cmd;
 	i = 1;
 	j = 0;
-	nl = 1;
-	if(!cmd[1])
+	newline = 1;
+	if (!cmd[1])
 		printf("\n");
-	while (cmd[i])
-	{	
-		if (valid_option(cmd[i++]))
-			nl = 0;
-		else
-			break ;
-	}
+	while (cmd[i] && valid_option(cmd[i++]))
+		newline = 0;
 	j += i - (cmd[1] != 0);
 	while (cmd[j])
 	{
 		printf("%s", cmd[j++]);
-		if (nl)
+		if (newline)
 			printf("\n");
 	}
 }

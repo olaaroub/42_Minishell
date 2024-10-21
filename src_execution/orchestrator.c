@@ -53,17 +53,17 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 	cmd_path = get_cmd_path(cmd, exec->paths);
 	while (cmd)
 	{
-		exec->in = 0;
+		exec->in = exec->keeper;
 		exec->out = 1;
-		if (cmd->red)
-			set_redirections(exec, cmd);
+		set_redirections(exec, cmd);
+		set_pipes(cmd, exec);
 		exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
 		cmd = cmd->next;
 	}
 	i = -1;
 	counter = cmd_count();
-	while (++i < cmd_count())
-		waitpid(exec->pid[i], NULL, 0);
+	while (++i < counter)
+		waitpid(exec->pid[i], &g_data.ret_value, 0);
 }
 
 void	executor(void)

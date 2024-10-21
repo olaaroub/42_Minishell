@@ -34,6 +34,8 @@ void	update_fd(t_command *cmd, t_exec *exec)
 
 void	set_redirections(t_exec *exec, t_command *cmd)
 {
+	if (!cmd->red)
+		return ;
 	exec->tmp_fd = -1;
 	while (cmd->red)
 	{
@@ -58,4 +60,14 @@ void	dup_redirections(t_exec *exec)
 		ft_printf(2, "%s\n", strerror(errno));
 	ft_close(exec->in);
 	ft_close(exec->out);
+}
+
+void	set_pipes(t_command *cmd, t_exec *exec)
+{
+	if (!cmd->next)
+		return ;
+	pipe(exec->pipefd);
+	ft_close(exec->pipefd[0]);
+	exec->in = exec->keeper;
+	exec->out = exec->pipefd[1];
 }

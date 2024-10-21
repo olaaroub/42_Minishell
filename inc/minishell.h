@@ -150,6 +150,7 @@ t_env					*get_env_node(char *to_find);
 /*				fd_operations.c	*/
 void					ft_close(int fd);
 void					dup_redirections(t_exec *exec);
+void					set_pipes(t_command *cmd, t_exec *exec);
 void					set_redirections(t_exec *exec, t_command *cmd);
 void					update_fd(t_command *cmd, t_exec *exec);
 
@@ -169,6 +170,10 @@ void					command_chain(t_command *cmd, t_exec *exec);
 /*				identifiers.c	*/
 int	is_command(t_command *cmd, char **paths);
 int	is_builtin(char *cmd);
+
+/*				DEBUGGER		*/
+void	assist();
+
 
 /*				BUILTINS		*/
 void					ft_cd(void);

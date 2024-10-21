@@ -263,16 +263,16 @@ int	compare(char *min_str, char *str)
 
 t_env	*get_min(t_env *env)
 {
-	long	x;
+	// long	x;
 	t_env	*tmp;
 	t_env	*min;
 
-	x = 0;
+	// x = 0;
 	tmp = env;
 	while (tmp && tmp->index)
 		tmp = tmp->next;
 	min = tmp;
-	x = 0;
+	// x = 0;
 	tmp = env;
 	while (tmp && min)
 	{

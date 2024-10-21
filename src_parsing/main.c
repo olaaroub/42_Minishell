@@ -28,22 +28,24 @@ void	io_reset()
 
 void print_tokens()
 {
-	t_command *token;
-	int i;
+	t_command	*token;
+	t_redir		*redirection;
+	int			i;
 
 	token = g_data.command_list;
 	while (token)
 	{
 		i = 0;
+		redirection = token->red;
 		while (token->cmd && token->cmd[i])
 		{
 			printf(" command %i is '%s'\n", i, token->cmd[i]);
 			i++;
 		}
-		while (token->red)
+		while (redirection)
 		{
 			printf(" type is %d file name is %s\n", token->red->type, token->red->file_name);
-			token->red = token->red->next;
+			redirection = redirection->next;
 		}
 		token = token->next;
 		printf("========================================================\n");
@@ -92,7 +94,6 @@ static void free_env_list(void)
 // 	}
 // }
 
-
 int main(int ac, char **av, char **env)
 {
 	char *line;
@@ -127,10 +128,9 @@ int main(int ac, char **av, char **env)
 		expand();
 		split_tokens();
 		fill_command_list();
-		print_tokens();
+		// print_tokens();
 		executor();
 		io_reset();
-		printf("********HERE*********\n");
 		// print_env();
 		ft_free_exit(line, false);
 	}
