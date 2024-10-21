@@ -42,9 +42,9 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 		if (cmd->red->type == INPUT)
 			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)
-			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_TRUNC);
+			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		else if (cmd->red->type == APPEND)
-			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_APPEND);
+			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_APPEND, 0644);
 		if (exec->tmp_fd == -1)
 			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(exec->in), ft_close(exec->out));
 		update_fd(cmd, exec);
