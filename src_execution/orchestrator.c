@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/19 20:32:58 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/24 06:08:42 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 	while (cmd)
 	{
 		exec->in = exec->keeper;
-		exec->out = 1;
+		exec->out = STDOUT_FILENO;
 		set_redirections(exec, cmd);
 		set_pipes(cmd, exec);
 		exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);

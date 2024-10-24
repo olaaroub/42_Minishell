@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/19 20:26:24 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:55:13 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
-# include <readline/history.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <signal.h>
 # include <limits.h>

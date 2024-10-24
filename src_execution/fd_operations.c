@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_operations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/19 17:07:14 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/24 01:49:47 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 	if (!cmd->next)
 		return ;
 	pipe(exec->pipefd);
-	ft_close(exec->pipefd[0]);
 	exec->in = exec->keeper;
 	exec->out = exec->pipefd[1];
 }

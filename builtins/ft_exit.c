@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:12:04 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/10 09:29:37 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/23 06:54:29 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_exit(void)
 		exit(status);
 	arg = ft_atoi(g_data.command_list->cmd[1]);
 	if (g_data.command_list->cmd[2])
-		return ft_putstr_fd("too many arguements\n", 2);
+		return (ft_putstr_fd("too many arguements\n", 2));
 	if (is_integer(arg))
 		status = arg;
 	else

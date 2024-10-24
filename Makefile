@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
+#    By: kali <kali@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/10/18 17:04:05 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/10/22 21:54:41 by kali             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ all:  $(NAME)
 
 $(NAME): $(OBJ) $(LIB)
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
+	make clean
 
 $(LIB):
 	$(MAKE) -C libft
