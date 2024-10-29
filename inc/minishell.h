@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/28 20:38:43 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/29 06:36:56 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ typedef struct s_exec
 	int					out;
 	int					tmp_fd;
 	int					keeper;
-	int 				*pid;
+	pid_t 				*pid;
 }						t_exec;
 
 /*				EXECUTION_FUNCS	*/

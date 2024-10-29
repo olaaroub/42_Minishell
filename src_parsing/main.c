@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/28 20:40:46 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/29 07:27:56 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ t_program g_data;
 
 void	io_reset()
 {
-	int	fd;
-	fd = 0;
+	int fd;
+
+	fd = -1;
 	fd = open("/dev/tty", O_RDWR);
 	if (fd == -1)
-		ft_putendl_fd(strerror(errno), 2);
-	if (dup2(fd, 0) == -1 || dup2(fd, 1 == -1))
-		ft_putendl_fd(strerror(errno), 2);
-	close (fd);
+		return(ft_putendl_fd("Error: Failed to open /dev/tty", 2));
+	if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1)
+		return (ft_putendl_fd("Error: Failed to reset I/O", 2));
+	ft_close(fd);
 }
 
 void print_tokens()

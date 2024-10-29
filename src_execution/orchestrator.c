@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/28 21:27:08 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/29 06:46:47 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ int	cmd_count()
 	return (i);
 }
 
+pid_t	piped_builtin(t_command *cmd, t_exec *exec)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		ft_printf(2, "fork: %s\n", strerror(errno));
+	else if (!pid)
+		execute_builtin(exec, cmd);
+	else
+	{
+		ft_close(exec->in);
+		ft_close(exec->tmp_fd);
+		ft_close(exec->out);
+	}
+	return (pid);
+}
+
 void	prepare_input(t_command *cmd, t_exec *exec)
 {
 	char	*cmd_path;
@@ -42,9 +60,14 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 		exec->out = STDOUT_FILENO;
 		set_pipes(cmd, exec);
 		set_redirections(exec, cmd);
-		cmd_path = get_cmd_path(cmd, exec->paths);
-		exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
-		free (cmd_path);
+		if (is_builtin(*cmd->cmd))
+			piped_builtin(cmd, exec);
+		else
+		{
+			cmd_path = get_cmd_path(cmd, exec->paths);
+			exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
+			free (cmd_path);
+		}
 		if (!cmd->next)
 			ft_close(exec->pipefd[0]);
 		cmd = cmd->next;
@@ -73,7 +96,7 @@ void	executor(void)
 	exec = 0;
 	exec = malloc (sizeof(t_exec));
 	exec->paths = get_paths();
-	exec->pid = malloc (sizeof(int) * cmd_count());
+	exec->pid = malloc (sizeof(pid_t) * cmd_count());
 	exec->keeper = 0;
 	cmd = g_data.command_list;
 	if (!cmd || !cmd->cmd || !*cmd->cmd || !exec->paths)

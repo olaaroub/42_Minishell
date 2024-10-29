@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/28 21:20:54 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/29 06:36:33 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 	}
 }
 
-int	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
+pid_t	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
 {
-	int	pid;
+	pid_t	pid;
 
 	pid = 0;
 	pid = fork();
