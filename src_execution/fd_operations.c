@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/24 01:49:47 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/28 20:18:46 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	ft_close(int fd)
 {
 	if (fd > 2)
+	{
 		close(fd);
+		fd = -1;
+	}	
 }
 
 void	update_fd(t_command *cmd, t_exec *exec)
@@ -45,6 +48,8 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		else if (cmd->red->type == APPEND)
 			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_APPEND, 0644);
+		else if (cmd->red->type == HEREDOC)
+			exec->tmp_fd = handle_heredoc(cmd);
 		if (exec->tmp_fd == -1)
 			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(exec->in), ft_close(exec->out));
 		update_fd(cmd, exec);
@@ -66,7 +71,12 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 {
 	if (!cmd->next)
 		return ;
-	pipe(exec->pipefd);
-	exec->in = exec->keeper;
+	if (pipe(exec->pipefd) == -1)
+		return (ft_putendl_fd(strerror(errno), 2));
+	if (exec->keeper > 2)
+	{
+		exec->in = exec->keeper;
+		exec->keeper = -1;
+	}
 	exec->out = exec->pipefd[1];
 }

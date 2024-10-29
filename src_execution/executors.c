@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/24 04:05:03 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/28 21:20:54 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 {
-	printf("in == %d\t	out == %d\n", exec->in, exec->out);
 	if (dup2(exec->in, 0) == -1 || dup2(exec->out, 1) == -1)
 		ft_printf(2, "dup2: %s\n", strerror(errno));
 	ft_close(exec->in);
@@ -38,6 +37,7 @@ int	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
 		child_proc(cmd, cmd_path, exec);
 	else
 	{
+		ft_close(exec->tmp_fd);
 		ft_close(exec->out);
 		ft_close(exec->pipefd[1]);
 		if (cmd->next)

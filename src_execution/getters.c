@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:18:30 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/19 17:06:38 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:14:30 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ char	*get_cmd_path(t_command *cmd, char	**paths)
 		cmd_path = ft_strjoin(paths[i], tmp);
 		if(!access(cmd_path, X_OK))
 			return (free (tmp), cmd_path);
-		free(cmd_path);
+		free (cmd_path);
 	}
-	free(tmp);
+	free (tmp);
 	return (NULL);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/19 20:23:09 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:40:46 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ int main(int ac, char **av, char **env)
 		// print_tokens();
 		executor();
 		io_reset();
-		// print_env();
 		ft_free_exit(line, false);
 	}
 	free_env_list();

@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/22 21:55:13 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/28 20:38:43 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,12 @@ void					prepare_input(t_command *cmd, t_exec *exec);
 void					command_chain(t_command *cmd, t_exec *exec);
 
 /*				identifiers.c	*/
-int	is_command(t_command *cmd, char **paths);
-int	is_builtin(char *cmd);
+int						is_command(t_command *cmd, char **paths);
+int						is_builtin(char *cmd);
+
+/*				heredoc_func.c	*/
+int						handle_heredoc(t_command *cmd);
+void					heredoc_signals();
 
 /*				DEBUGGER		*/
 void	assist();

@@ -6,25 +6,11 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/24 06:08:42 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/28 21:27:08 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	command_chain(t_command *cmd, t_exec *exec)
-{
-	while (cmd)
-	{
-		if (!is_builtin(*cmd->cmd) && !is_command(cmd, exec->paths))
-			ft_printf(2, "%s: command not found\n", *cmd->cmd);
-		else
-			prepare_input(cmd, exec);
-		if (entry_found("_"))
-			update_var("_", *cmd->cmd);
-		cmd = cmd->next;
-	}
-}
 
 int	cmd_count()
 {
@@ -50,20 +36,33 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 	counter = 0;
 	i = 0;
 	cmd_path = 0;
-	cmd_path = get_cmd_path(cmd, exec->paths);
 	while (cmd)
 	{
 		exec->in = exec->keeper;
 		exec->out = STDOUT_FILENO;
-		set_redirections(exec, cmd);
 		set_pipes(cmd, exec);
+		set_redirections(exec, cmd);
+		cmd_path = get_cmd_path(cmd, exec->paths);
 		exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
+		free (cmd_path);
+		if (!cmd->next)
+			ft_close(exec->pipefd[0]);
 		cmd = cmd->next;
 	}
 	i = -1;
 	counter = cmd_count();
 	while (++i < counter)
 		waitpid(exec->pid[i], &g_data.ret_value, 0);
+}
+
+void	command_chain(t_command *cmd, t_exec *exec)
+{
+	if (!is_builtin(*cmd->cmd) && !is_command(cmd, exec->paths))
+		ft_printf(2, "%s: command not found\n", *cmd->cmd);
+	else
+		prepare_input(cmd, exec);
+	if (entry_found("_"))
+		update_var("_", *cmd->cmd);
 }
 
 void	executor(void)
