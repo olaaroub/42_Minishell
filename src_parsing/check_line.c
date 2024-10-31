@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 01:18:01 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/22 18:12:33 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/31 18:14:24 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	ft_white_spaces(char *line)
 int	valid_quotes(char *line)
 {
 	int	i;
-	// int	j;
 	int	len;
 	int	d_quotes;
 	int	s_quotes;
@@ -68,7 +67,6 @@ int	valid_quotes(char *line)
 	if (!line)
 		return (2);
 	len = ft_strlen(line);
-	// j = 0;
 	i = 0;
 	while (is_whitespace(line[i]))
 		i++;

@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/17 22:40:44 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/10/31 18:08:56 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,14 @@ static void check_ambiguous(t_tokens *tmp)
 	char    **check;
 
 	if(!tmp->word || tmp->word[0] == '\0')
-	{
 		tmp->ambiguous = true;
-		// tmp->word = ft_strdup("");
-		// g_data.trash_list = ft_add_trash(&g_data.trash_list, tmp->word);
-	}
+
 	else
 	{
 		check= split_mgem7a(tmp->word);
 		if(check[1] != NULL)
-		{
 			tmp->ambiguous = true;
-			// tmp->word = ft_strdup("");
-			// g_data.trash_list = ft_add_trash(&g_data.trash_list, tmp->word);
-		}
+
 	}
 }
 
@@ -132,9 +126,11 @@ void    expand(void)
 					ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
 					i += 2;
 				}
-				else// i = check_special_char(tmp, &i);
+				else
 				{
 					start = ++i;
+					if(tmp->word[i] == '_')
+						i++;
 					while(tmp->word[i] && ft_isalnum(tmp->word[i]))
 						i++;
 					end = i ;

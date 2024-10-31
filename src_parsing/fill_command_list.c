@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_command_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:24:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 13:31:54 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/10/31 18:21:46 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ void    fill_command_list(void)
         g_data.trash_list = ft_add_trash(&g_data.trash_list, commands);
         redir = NULL;
         fill_commands_redirs(&temp, &redir, commands);
-            // continue;
         g_data.command_list = ft_add_command(&g_data.command_list, commands, redir);
         if(temp)
             temp = temp->next;

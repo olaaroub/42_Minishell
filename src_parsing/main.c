@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/29 07:27:56 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/31 20:38:39 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,26 @@ static void free_env_list(void)
 // 	}
 // }
 
+void sig_handler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_data.ret_value = 130;
+	}
+	else if (signo == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: 3\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		exit(3);
+	}
+}
+
 int main(int ac, char **av, char **env)
 {
 	char *line;
@@ -104,6 +124,8 @@ int main(int ac, char **av, char **env)
 	line = NULL;
 	g_data.ret_value = 0;
 	get_env(&g_data.env_list, env);
+		signal(SIGQUIT, sig_handler);
+		signal(SIGINT, sig_handler);
 	while (1)
 	{
 		init_data();
@@ -129,7 +151,7 @@ int main(int ac, char **av, char **env)
 		expand();
 		split_tokens();
 		fill_command_list();
-		// print_tokens();
+		print_tokens();
 		executor();
 		io_reset();
 		ft_free_exit(line, false);

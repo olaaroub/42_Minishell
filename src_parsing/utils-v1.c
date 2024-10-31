@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils-v1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:58:37 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/29 06:48:56 by kali             ###   ########.fr       */
+/*   Updated: 2024/10/31 18:11:50 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	is_whitespace(int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }
-// ls -la> k
+
 int	line_len(char *line)
 {
 	int	i;
