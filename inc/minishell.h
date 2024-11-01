@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/31 17:53:38 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:44:47 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <limits.h>
-// # include <wait.h>
+# include <wait.h>
 # include <errno.h>
 # include <stdbool.h>
 
@@ -148,7 +148,7 @@ void					update_var(char *to_find, char *new_value);
 t_env					*get_env_node(char *to_find);
 
 /*				fd_operations.c	*/
-void					ft_close(int fd);
+void					ft_close(int *fd);
 void					dup_redirections(t_exec *exec);
 void					set_pipes(t_command *cmd, t_exec *exec);
 void					set_redirections(t_exec *exec, t_command *cmd);
@@ -177,7 +177,6 @@ void					heredoc_signals();
 
 /*				DEBUGGER		*/
 void	assist();
-
 
 /*				BUILTINS		*/
 void					ft_cd(void);

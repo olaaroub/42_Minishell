@@ -16,8 +16,8 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 {
 	if (dup2(exec->in, 0) == -1 || dup2(exec->out, 1) == -1)
 		ft_printf(2, "dup2: %s\n", strerror(errno));
-	ft_close(exec->in);
-	ft_close(exec->out);
+	ft_close(&exec->in);
+	ft_close(&exec->out);
 	if (execve(cmd_path, cmd->cmd, NULL) == -1)
 	{
 		ft_printf(2, "execve: %s\n", strerror(errno));	
@@ -37,11 +37,9 @@ pid_t	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
 		child_proc(cmd, cmd_path, exec);
 	else
 	{
-		ft_close(exec->tmp_fd);
-		ft_close(exec->out);
-		ft_close(exec->pipefd[1]);
-		if (cmd->next)
-			exec->keeper = exec->pipefd[0];
+		ft_close(&exec->tmp_fd);
+		ft_close(&exec->out);
+		ft_close(&exec->pipefd[1]);
 	}
 	return (pid);
 }

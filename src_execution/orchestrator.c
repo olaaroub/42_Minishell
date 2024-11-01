@@ -38,9 +38,9 @@ pid_t	piped_builtin(t_command *cmd, t_exec *exec)
 		execute_builtin(exec, cmd);
 	else
 	{
-		ft_close(exec->in);
-		ft_close(exec->tmp_fd);
-		ft_close(exec->out);
+		ft_close(&exec->in);
+		ft_close(&exec->tmp_fd);
+		ft_close(&exec->out);
 	}
 	return (pid);
 }
@@ -68,8 +68,9 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 			exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
 			free (cmd_path);
 		}
-		if (!cmd->next)
-			ft_close(exec->pipefd[0]);
+		if ((exec->pipefd[0] > 2) && (dup2(exec->pipefd[0], exec->keeper) == -1))
+			ft_printf(2, "dup2: %s\n", strerror(errno));
+		ft_close(&exec->pipefd[0]); 
 		cmd = cmd->next;
 	}
 	i = -1;

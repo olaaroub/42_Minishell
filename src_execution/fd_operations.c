@@ -12,25 +12,25 @@
 
 #include "../inc/minishell.h"
 
-void	ft_close(int fd)
+void	ft_close(int *fd)
 {
-	if (fd > 2)
+	if (fd && *fd > 2)
 	{
-		close(fd);
-		fd = -1;
-	}	
+		close(*fd);
+		*fd = -1;
+	}
 }
 
 void	update_fd(t_command *cmd, t_exec *exec)
 {
 	if (cmd->red->type == INPUT)
 	{
-		ft_close(exec->in);
+		ft_close(&exec->in);
 		exec->in = exec->tmp_fd;
 	}
 	else
 	{
-		ft_close(exec->out);
+		ft_close(&exec->out);
 		exec->out = exec->tmp_fd;
 	}
 }
@@ -51,7 +51,7 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 		else if (cmd->red->type == HEREDOC)
 			exec->tmp_fd = handle_heredoc(cmd);
 		if (exec->tmp_fd == -1)
-			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(exec->in), ft_close(exec->out));
+			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(&exec->in), ft_close(&exec->out));
 		update_fd(cmd, exec);
 		cmd->red = cmd->red->next;
 	}
@@ -63,8 +63,8 @@ void	dup_redirections(t_exec *exec)
 		ft_printf(2, "%s\n", strerror(errno));
 	if (dup2(exec->out, 1) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
-	ft_close(exec->in);
-	ft_close(exec->out);
+	ft_close(&exec->in);
+	ft_close(&exec->out);
 }
 
 void	set_pipes(t_command *cmd, t_exec *exec)
@@ -74,9 +74,6 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 	if (pipe(exec->pipefd) == -1)
 		return (ft_putendl_fd(strerror(errno), 2));
 	if (exec->keeper > 2)
-	{
 		exec->in = exec->keeper;
-		exec->keeper = -1;
-	}
 	exec->out = exec->pipefd[1];
 }
