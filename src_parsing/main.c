@@ -22,9 +22,9 @@ void	io_reset()
 	fd = open("/dev/tty", O_RDWR);
 	if (fd == -1)
 		return(ft_putendl_fd("Error: Failed to open /dev/tty", 2));
-	if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1)
+	if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1 || dup2(fd, STDERR_FILENO) == -1)
 		return (ft_putendl_fd("Error: Failed to reset I/O", 2));
-	ft_close(fd);
+	ft_close(&fd);
 }
 
 void print_tokens()

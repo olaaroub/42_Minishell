@@ -38,7 +38,7 @@ int	handle_heredoc(t_command *cmd)
 		}
 		ft_putstr_fd(line, fd);
 	}
-	ft_close (fd);
+	ft_close(&fd);
 	fd = open (name, O_RDONLY);
 	return (fd);
 }
