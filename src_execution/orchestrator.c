@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/29 06:46:47 by kali             ###   ########.fr       */
+/*   Updated: 2024/11/06 17:59:16 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,17 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 	char	*cmd_path;
 	int		i;
 	int		counter;
+	int		save_fds[2];
 
 	counter = 0;
 	i = 0;
 	cmd_path = 0;
+	save_fds[0] = dup(0);
+	save_fds[1] = dup(1);
 	while (cmd)
 	{
-		exec->in = exec->keeper;
-		exec->out = STDOUT_FILENO;
+		exec->in = exec->keeper; // 0
+		exec->out = STDOUT_FILENO; // 1
 		set_pipes(cmd, exec);
 		set_redirections(exec, cmd);
 		if (is_builtin(*cmd->cmd))
@@ -68,15 +71,19 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 			exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
 			free (cmd_path);
 		}
+		dup2(save_fds[0], 0);// RESET to close cat fd
+		dup2(save_fds[1], 1);
 		if ((exec->pipefd[0] > 2) && (dup2(exec->pipefd[0], exec->keeper) == -1))
 			ft_printf(2, "dup2: %s\n", strerror(errno));
-		ft_close(&exec->pipefd[0]); 
+		ft_close(&exec->pipefd[0]);
 		cmd = cmd->next;
 	}
 	i = -1;
 	counter = cmd_count();
 	while (++i < counter)
 		waitpid(exec->pid[i], &g_data.ret_value, 0);
+	close(save_fds[0]);
+	close(save_fds[1]);
 }
 
 void	command_chain(t_command *cmd, t_exec *exec)

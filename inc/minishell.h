@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/01 16:44:47 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:01:06 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ char					*get_cmd_path(t_command *cmd, char	**paths);
 
 /*				executors.c		*/
 void					execute_builtin(t_exec *exec, t_command *cmd);
-int						execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec);
+pid_t						execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec);
 
 /*				orchestrator.c	*/
 void					executor(void);

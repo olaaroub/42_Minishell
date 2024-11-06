@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_operations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/28 20:18:46 by kali             ###   ########.fr       */
+/*   Updated: 2024/11/06 18:00:35 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 {
 	if (!cmd->next)
 		return ;
-	if (pipe(exec->pipefd) == -1)
+	if (pipe(exec->pipefd) == -1) // 3, 4
 		return (ft_putendl_fd(strerror(errno), 2));
 	if (exec->keeper > 2)
 		exec->in = exec->keeper;
-	exec->out = exec->pipefd[1];
+	exec->out = exec->pipefd[1]; // 4
+	// printf("pipefd[1] = %d\n", exec->pipefd[1]);
 }
