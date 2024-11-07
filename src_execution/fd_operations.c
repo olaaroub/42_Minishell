@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_operations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/06 18:00:35 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:04:15 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_close(int *fd)
 
 void	update_fd(t_command *cmd, t_exec *exec)
 {
-	if (cmd->red->type == INPUT)
+	if (cmd->red->type == INPUT || cmd->red->type == HEREDOC)
 	{
 		ft_close(&exec->in);
 		exec->in = exec->tmp_fd;
@@ -71,10 +71,9 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 {
 	if (!cmd->next)
 		return ;
-	if (pipe(exec->pipefd) == -1) // 3, 4
+	if (pipe(exec->pipefd) == -1)
 		return (ft_putendl_fd(strerror(errno), 2));
 	if (exec->keeper > 2)
 		exec->in = exec->keeper;
-	exec->out = exec->pipefd[1]; // 4
-	// printf("pipefd[1] = %d\n", exec->pipefd[1]);
+	exec->out = exec->pipefd[1];
 }

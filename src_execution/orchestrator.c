@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/06 17:59:16 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:09:19 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,10 @@ pid_t	piped_builtin(t_command *cmd, t_exec *exec)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	else if (!pid)
 		execute_builtin(exec, cmd);
-	else
-	{
-		ft_close(&exec->in);
-		ft_close(&exec->tmp_fd);
-		ft_close(&exec->out);
-	}
+	
+	ft_close(&exec->in);
+	ft_close(&exec->tmp_fd);
+	ft_close(&exec->out);
 	return (pid);
 }
 
@@ -64,7 +62,7 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 		set_pipes(cmd, exec);
 		set_redirections(exec, cmd);
 		if (is_builtin(*cmd->cmd))
-			piped_builtin(cmd, exec);
+			exec->pid[i++] = piped_builtin(cmd, exec);
 		else
 		{
 			cmd_path = get_cmd_path(cmd, exec->paths);
@@ -74,8 +72,10 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 		dup2(save_fds[0], 0);// RESET to close cat fd
 		dup2(save_fds[1], 1);
 		if ((exec->pipefd[0] > 2) && (dup2(exec->pipefd[0], exec->keeper) == -1))
-			ft_printf(2, "dup2: %s\n", strerror(errno));
+			ft_printf(2, "dup2 in %s: %s\n", __func__, strerror(errno));
 		ft_close(&exec->pipefd[0]);
+		if (entry_found("_"))
+			update_var("_", *cmd->cmd);
 		cmd = cmd->next;
 	}
 	i = -1;
@@ -84,16 +84,33 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 		waitpid(exec->pid[i], &g_data.ret_value, 0);
 	close(save_fds[0]);
 	close(save_fds[1]);
+	free (exec->pid);
 }
 
-void	command_chain(t_command *cmd, t_exec *exec)
+t_exec	*init_exec()
 {
-	if (!is_builtin(*cmd->cmd) && !is_command(cmd, exec->paths))
-		ft_printf(2, "%s: command not found\n", *cmd->cmd);
-	else
-		prepare_input(cmd, exec);
-	if (entry_found("_"))
-		update_var("_", *cmd->cmd);
+	t_exec		*exec;
+	t_command	*cmd;
+	int			count;
+
+	cmd = g_data.command_list;
+	while (cmd)
+	{
+		count++;
+		cmd = cmd->next;
+	}
+	exec = malloc (sizeof(t_exec));
+	if (!exec)
+		exit(EXIT_FAILURE);
+	exec->paths = get_paths();
+	if (!exec->paths)
+		return (free (exec), exit(EXIT_FAILURE), NULL);
+	exec->pid = malloc (sizeof(pid_t) * count);
+	exec->in = 0;
+	exec->out = 1;
+	exec->keeper = 0;
+	exec->tmp_fd = -1;
+	return (exec);
 }
 
 void	executor(void)
@@ -101,20 +118,18 @@ void	executor(void)
 	t_command	*cmd;
 	t_exec		*exec;
 
-	exec = 0;
-	exec = malloc (sizeof(t_exec));
-	exec->paths = get_paths();
-	exec->pid = malloc (sizeof(pid_t) * cmd_count());
-	exec->keeper = 0;
+	exec = init_exec();
 	cmd = g_data.command_list;
 	if (!cmd || !cmd->cmd || !*cmd->cmd || !exec->paths)
 		return ;
 	if (!cmd->next && is_builtin(*cmd->cmd))
 	{
+		exec->in = STDIN_FILENO;
+		exec->out = STDOUT_FILENO;
 		execute_builtin(exec, cmd);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
 	}
 	else
-		command_chain(cmd, exec);
+		prepare_input(cmd, exec);
 }
