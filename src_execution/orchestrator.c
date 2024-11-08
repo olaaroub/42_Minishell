@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/07 16:09:19 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 09:40:49 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 {
 	char	*cmd_path;
 	int		i;
-	int		counter;
+	int		j;
 	int		save_fds[2];
 
-	counter = 0;
+	j = 0;
 	i = 0;
 	cmd_path = 0;
 	save_fds[0] = dup(0);
 	save_fds[1] = dup(1);
 	while (cmd)
 	{
-		exec->in = exec->keeper; // 0
-		exec->out = STDOUT_FILENO; // 1
+		exec->in = exec->keeper;
+		exec->out = STDOUT_FILENO;
 		set_pipes(cmd, exec);
 		set_redirections(exec, cmd);
 		if (is_builtin(*cmd->cmd))
@@ -69,22 +69,21 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 			exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
 			free (cmd_path);
 		}
-		dup2(save_fds[0], 0);// RESET to close cat fd
+		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
 		if ((exec->pipefd[0] > 2) && (dup2(exec->pipefd[0], exec->keeper) == -1))
 			ft_printf(2, "dup2 in %s: %s\n", __func__, strerror(errno));
 		ft_close(&exec->pipefd[0]);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
+		if (access("/tmp/heredoc_", F_OK) == 0)
+			unlink("/tmp/heredoc_");
 		cmd = cmd->next;
 	}
-	i = -1;
-	counter = cmd_count();
-	while (++i < counter)
-		waitpid(exec->pid[i], &g_data.ret_value, 0);
+	while (j < i)
+		waitpid(exec->pid[j++], &g_data.ret_value, 0);
 	close(save_fds[0]);
 	close(save_fds[1]);
-	free (exec->pid);
 }
 
 t_exec	*init_exec()
@@ -120,6 +119,7 @@ void	executor(void)
 
 	exec = init_exec();
 	cmd = g_data.command_list;
+	// handle_heredoc(cmd);
 	if (!cmd || !cmd->cmd || !*cmd->cmd || !exec->paths)
 		return ;
 	if (!cmd->next && is_builtin(*cmd->cmd))
@@ -132,4 +132,5 @@ void	executor(void)
 	}
 	else
 		prepare_input(cmd, exec);
+	free_exec(exec);
 }

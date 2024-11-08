@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/07 16:04:15 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 08:46:00 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 	exec->tmp_fd = -1;
 	while (cmd->red)
 	{
+		if (access("/tmp/heredoc_", F_OK) == 0)
+			unlink("/tmp/heredoc_");
 		if (cmd->red->type == INPUT)
 			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)

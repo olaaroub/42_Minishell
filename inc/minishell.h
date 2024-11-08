@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/06 18:01:06 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/08 09:37:50 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_redir
 {
 	int					type;
 	char				*file_name;
+	char				*heredoc;
 	struct s_redir		*next;
 }						t_redir;
 
@@ -174,6 +175,10 @@ int						is_builtin(char *cmd);
 /*				heredoc_func.c	*/
 int						handle_heredoc(t_command *cmd);
 void					heredoc_signals();
+
+/*				cleaning.c		*/
+void			free_arr(char **arr);
+void			free_exec(t_exec *exec);
 
 /*				DEBUGGER		*/
 void	assist();

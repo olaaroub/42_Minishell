@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/31 20:38:39 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/08 09:44:44 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void sig_handler(int signo)
 	}
 	else if (signo == SIGQUIT)
 	{
+		// free_exec(g_data.exec); will need to add this to the global struct
 		ft_putstr_fd("Quit: 3\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/07 16:18:39 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 08:48:17 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,9 @@
 
 void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 {
-	int in;
-	int out;
-
-	in = -1;
-	out = -1;
-	if ((in = dup2(exec->in, 0)) == -1 || (out = dup2(exec->out, 1)) == -1)
+	if (dup2(exec->in, 0) == -1 || dup2(exec->out, 1) == -1)
 		ft_printf(2, "dup2: %s\n", strerror(errno));
+	// printf("exec->in: %d\t\t\t exec->out: %d\n", exec->in, exec->out);
 	ft_close(&exec->in);
 	ft_close(&exec->out);
 	close(exec->pipefd[0]);
