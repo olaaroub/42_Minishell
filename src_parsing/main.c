@@ -6,26 +6,13 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 09:44:44 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:40:35 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 t_program g_data;
-
-void	io_reset()
-{
-	int fd;
-
-	fd = -1;
-	fd = open("/dev/tty", O_RDWR);
-	if (fd == -1)
-		return(ft_putendl_fd("Error: Failed to open /dev/tty", 2));
-	if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1 || dup2(fd, STDERR_FILENO) == -1)
-		return (ft_putendl_fd("Error: Failed to reset I/O", 2));
-	ft_close(&fd);
-}
 
 void print_tokens()
 {
@@ -152,9 +139,8 @@ int main(int ac, char **av, char **env)
 		expand();
 		split_tokens();
 		fill_command_list();
-		print_tokens();
+		// print_tokens();
 		executor();
-		io_reset();
 		ft_free_exit(line, false);
 	}
 	free_env_list();

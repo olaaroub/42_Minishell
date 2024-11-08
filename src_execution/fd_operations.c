@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 08:46:00 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 11:42:07 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,16 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 		if (cmd->red->type == INPUT)
 			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)
-			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			exec->tmp_fd = open(cmd->red->file_name, \
+			O_CREAT | O_RDWR | O_TRUNC, 0644);
 		else if (cmd->red->type == APPEND)
-			exec->tmp_fd = open(cmd->red->file_name, O_CREAT | O_RDWR | O_APPEND, 0644);
+			exec->tmp_fd = open(cmd->red->file_name, \
+			O_CREAT | O_RDWR | O_APPEND, 0644);
 		else if (cmd->red->type == HEREDOC)
 			exec->tmp_fd = handle_heredoc(cmd);
 		if (exec->tmp_fd == -1)
-			return (ft_printf(2, "%s\n", strerror(errno)), ft_close(&exec->in), ft_close(&exec->out));
+			return (ft_printf(2, "%s\n", strerror(errno)), \
+			ft_close(&exec->in), ft_close(&exec->out));
 		update_fd(cmd, exec);
 		cmd->red = cmd->red->next;
 	}

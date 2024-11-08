@@ -6,13 +6,13 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 09:40:49 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:33:33 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	cmd_count()
+int	cmd_count(void)
 {
 	t_command	*cmd;
 	int			i;
@@ -27,32 +27,25 @@ int	cmd_count()
 	return (i);
 }
 
-pid_t	piped_builtin(t_command *cmd, t_exec *exec)
+void	final_curtain(int *save_fds, t_exec *exec)
 {
-	pid_t	pid;
+	int	i;
+	int	count;
 
-	pid = fork();
-	if (pid == -1)
-		ft_printf(2, "fork: %s\n", strerror(errno));
-	else if (!pid)
-		execute_builtin(exec, cmd);
-	
-	ft_close(&exec->in);
-	ft_close(&exec->tmp_fd);
-	ft_close(&exec->out);
-	return (pid);
+	i = 0;
+	count = cmd_count();
+	while (i < count)
+		waitpid(exec->pid[i++], &g_data.ret_value, 0);
+	close(save_fds[0]);
+	close(save_fds[1]);
 }
 
 void	prepare_input(t_command *cmd, t_exec *exec)
 {
-	char	*cmd_path;
-	int		i;
-	int		j;
 	int		save_fds[2];
+	int 	i;
 
-	j = 0;
 	i = 0;
-	cmd_path = 0;
 	save_fds[0] = dup(0);
 	save_fds[1] = dup(1);
 	while (cmd)
@@ -64,40 +57,21 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 		if (is_builtin(*cmd->cmd))
 			exec->pid[i++] = piped_builtin(cmd, exec);
 		else
-		{
-			cmd_path = get_cmd_path(cmd, exec->paths);
-			exec->pid[i++] = execute_cmd(cmd_path, cmd, exec);
-			free (cmd_path);
-		}
+			exec->pid[i++] = execute_cmd(cmd, exec);
 		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
-		if ((exec->pipefd[0] > 2) && (dup2(exec->pipefd[0], exec->keeper) == -1))
-			ft_printf(2, "dup2 in %s: %s\n", __func__, strerror(errno));
-		ft_close(&exec->pipefd[0]);
-		if (entry_found("_"))
-			update_var("_", *cmd->cmd);
-		if (access("/tmp/heredoc_", F_OK) == 0)
-			unlink("/tmp/heredoc_");
+		update(cmd, exec);
 		cmd = cmd->next;
 	}
-	while (j < i)
-		waitpid(exec->pid[j++], &g_data.ret_value, 0);
-	close(save_fds[0]);
-	close(save_fds[1]);
+	final_curtain(save_fds, exec);
 }
 
-t_exec	*init_exec()
+t_exec	*init_exec(void)
 {
 	t_exec		*exec;
-	t_command	*cmd;
 	int			count;
 
-	cmd = g_data.command_list;
-	while (cmd)
-	{
-		count++;
-		cmd = cmd->next;
-	}
+	count = cmd_count();
 	exec = malloc (sizeof(t_exec));
 	if (!exec)
 		exit(EXIT_FAILURE);
@@ -124,8 +98,6 @@ void	executor(void)
 		return ;
 	if (!cmd->next && is_builtin(*cmd->cmd))
 	{
-		exec->in = STDIN_FILENO;
-		exec->out = STDOUT_FILENO;
 		execute_builtin(exec, cmd);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);

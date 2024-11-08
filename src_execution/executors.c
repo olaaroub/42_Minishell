@@ -6,34 +6,34 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 08:48:17 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:38:20 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+// will need to add a cleaning_func();
 void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
 {
 	if (dup2(exec->in, 0) == -1 || dup2(exec->out, 1) == -1)
-		ft_printf(2, "dup2: %s\n", strerror(errno));
-	// printf("exec->in: %d\t\t\t exec->out: %d\n", exec->in, exec->out);
+		ft_printf(2, "dup2 in %s: %s\n", __func__, strerror(errno));
 	ft_close(&exec->in);
 	ft_close(&exec->out);
 	close(exec->pipefd[0]);
-	// close(exec->pipefd[1]);
 	if (execve(cmd_path, cmd->cmd, NULL) == -1)
 	{
 		ft_printf(2, "execve: %s\n", strerror(errno));
-		// cleaning_func();
 		exit(1);
 	}
 }
 
-pid_t	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
+pid_t	execute_cmd(t_command *cmd, t_exec *exec)
 {
 	pid_t	pid;
+	char	*cmd_path;
 
 	pid = 0;
+	cmd_path = get_cmd_path(cmd, exec->paths);
 	pid = fork();
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
@@ -42,6 +42,8 @@ pid_t	execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec)
 	ft_close(&exec->tmp_fd);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
+	free(cmd_path);
+	cmd_path = 0;
 	return (pid);
 }
 
@@ -64,4 +66,19 @@ void	execute_builtin(t_exec *exec, t_command *cmd)
 		ft_exit();
 	else if (!ft_strcmp(*cmd->cmd, "export"))
 		ft_export(cmd->cmd);
+}
+
+pid_t	piped_builtin(t_command *cmd, t_exec *exec)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		ft_printf(2, "fork: %s\n", strerror(errno));
+	else if (!pid)
+		execute_builtin(exec, cmd);
+	ft_close(&exec->in);
+	ft_close(&exec->tmp_fd);
+	ft_close(&exec->out);
+	return (pid);
 }

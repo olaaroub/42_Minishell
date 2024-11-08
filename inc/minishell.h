@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 09:37:50 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:36:20 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ t_redir					*ft_add_redir(t_redir **head, char *file_name, int type);
 t_command				*ft_add_command(t_command **head, char **commands, t_redir *redir);
 
 void					fill_command_list(void);
+void					sig_handler(int signo);
+
 
 /*				EXECUTION		*/
 typedef struct s_exec
@@ -161,12 +163,13 @@ char					*get_cmd_path(t_command *cmd, char	**paths);
 
 /*				executors.c		*/
 void					execute_builtin(t_exec *exec, t_command *cmd);
-pid_t						execute_cmd(char *cmd_path, t_command *cmd, t_exec *exec);
+pid_t					execute_cmd(t_command *cmd, t_exec *exec);
+pid_t					piped_builtin(t_command *cmd, t_exec *exec);
+
 
 /*				orchestrator.c	*/
 void					executor(void);
 void					prepare_input(t_command *cmd, t_exec *exec);
-void					command_chain(t_command *cmd, t_exec *exec);
 
 /*				identifiers.c	*/
 int						is_command(t_command *cmd, char **paths);
@@ -176,9 +179,12 @@ int						is_builtin(char *cmd);
 int						handle_heredoc(t_command *cmd);
 void					heredoc_signals();
 
+/*				io_ops.c		*/
+void					update(t_command *cmd, t_exec *exec);
+
 /*				cleaning.c		*/
-void			free_arr(char **arr);
-void			free_exec(t_exec *exec);
+void					free_arr(char **arr);
+void					free_exec(t_exec *exec);
 
 /*				DEBUGGER		*/
 void	assist();
