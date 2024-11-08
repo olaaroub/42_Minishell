@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 12:33:33 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:58:51 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_exec	*init_exec(void)
 	if (!exec)
 		exit(EXIT_FAILURE);
 	exec->paths = get_paths();
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths); // add every malloced pointer to trash_list
 	if (!exec->paths)
 		return (free (exec), exit(EXIT_FAILURE), NULL);
 	exec->pid = malloc (sizeof(pid_t) * count);

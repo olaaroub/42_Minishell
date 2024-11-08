@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 21:24:14 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/01 04:53:53 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:58:21 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <unistd.h>
 # include "ft_printf/ft_printf.h"
+#include "../inc/minishell.h"
 
 //==== LIBFT ===//
 

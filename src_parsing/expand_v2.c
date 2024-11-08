@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/31 18:08:56 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:30:45 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void    expand(void)
 					|| (g_data.double_flag == true )))
 					i += 2;
 				else if(tmp->word[i+1] =='?' && ((g_data.double_flag == false && g_data.single_flag == false)
-
 					|| (g_data.double_flag == true )))
 				{
 					ft_putstr_fd(ft_itoa(g_data.ret_value), fd);

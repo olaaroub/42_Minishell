@@ -6,13 +6,13 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 22:59:28 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/08/16 21:30:23 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:23:56 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	is_whitespace(int c)
+static int	is_whitespacee(int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }
@@ -30,9 +30,9 @@ char	*ft_strtrim(char const *s1)
 		j = ft_strlen(s1);
 		if (j == 0)
 			return (ft_strdup(""));
-		while (s1[i] && is_whitespace(s1[i]))
+		while (s1[i] && is_whitespacee(s1[i]))
 			i++;
-		while (s1[j - 1] && j > i && is_whitespace(s1[j - 1]))
+		while (s1[j - 1] && j > i && is_whitespacee(s1[j - 1]))
 			j--;
 		ptr = malloc(j - i + 1);
 		if (!ptr)

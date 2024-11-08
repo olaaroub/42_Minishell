@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:26:42 by olaaroub          #+#    #+#             */
-/*   Updated: 2023/11/22 21:29:00 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:24:23 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	**ft_free(char **ptr, int k)
 	return (NULL);
 }
 
-static int	count_words(char *str, char c)
+static int	count_wordss(char *str, char c)
 {
 	int	count;
 
@@ -88,7 +88,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	str = (char *)s;
-	count = count_words(str, c);
+	count = count_wordss(str, c);
 	ptr = (char **)malloc((count + 1) * sizeof(char *));
 	if (!ptr)
 		return (0);

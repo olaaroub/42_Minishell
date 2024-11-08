@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 12:36:20 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:29:49 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,11 @@ char					*add_space(char *line);
 int						syntax_error(void);
 void					expand(void);
 void					split_tokens(void);
+int is_special_char(char c);
+int check_special_char(t_tokens *tmp, int *i);
+int get_expanded(char *buff, int fd);
+void    check_master_quotes(bool *double_flag, bool *single_flag, char c);
+int check_env_name(char *buff);
 
 /*				command_list.c			*/
 t_redir					*redir_node(char *file_name, int type);

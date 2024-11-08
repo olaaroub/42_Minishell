@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 12:40:35 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:35:36 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ void sig_handler(int signo)
 	else if (signo == SIGQUIT)
 	{
 		// free_exec(g_data.exec); will need to add this to the global struct
-		ft_putstr_fd("Quit: 3\n", 1);
+		signal(SIGQUIT, SIG_IGN);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		exit(3);
 	}
+
 }
 
 int main(int ac, char **av, char **env)
@@ -118,6 +118,11 @@ int main(int ac, char **av, char **env)
 	{
 		init_data();
 		line = readline("Minihell==>>$ ");
+		if(!line)
+		{
+			printf("exit\n");
+			exit(0);
+		}
 		if (line && *line)
 			add_history(line);
 		ft_white_spaces(line);
@@ -139,8 +144,8 @@ int main(int ac, char **av, char **env)
 		expand();
 		split_tokens();
 		fill_command_list();
-		// print_tokens();
 		executor();
+		print_tokens();
 		ft_free_exit(line, false);
 	}
 	free_env_list();
