@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 16:58:51 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/09 22:00:04 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	final_curtain(int *save_fds, t_exec *exec)
 	close(save_fds[1]);
 }
 
-void	prepare_input(t_command *cmd, t_exec *exec)
+void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 {
 	int		save_fds[2];
 	int 	i;
@@ -57,7 +57,7 @@ void	prepare_input(t_command *cmd, t_exec *exec)
 		if (is_builtin(*cmd->cmd))
 			exec->pid[i++] = piped_builtin(cmd, exec);
 		else
-			exec->pid[i++] = execute_cmd(cmd, exec);
+			exec->pid[i++] = execute_cmd(cmd, exec, env);
 		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
 		update(cmd, exec);
@@ -87,7 +87,7 @@ t_exec	*init_exec(void)
 	return (exec);
 }
 
-void	executor(void)
+void	executor(char	**env)
 {
 	t_command	*cmd;
 	t_exec		*exec;
@@ -104,6 +104,6 @@ void	executor(void)
 			update_var("_", *cmd->cmd);
 	}
 	else
-		prepare_input(cmd, exec);
+		prepare_input(cmd, exec, env);
 	free_exec(exec);
 }

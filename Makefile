@@ -5,10 +5,11 @@
 #                                                     +:+ +:+         +:+      #
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/11/09 21:47:43 by hatalhao         ###   ########.fr        #
+#    Created: Invalid date        by                   #+#    #+#              #
+#    Updated: 2024/11/09 21:59:18 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -31,9 +32,11 @@ NAME = minishell_1
 LIB = libft/libft.a
 
 all: $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB)
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
+	make clean
 	make clean
 
 $(LIB):

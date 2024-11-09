@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 17:35:36 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/09 21:57:32 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ int main(int ac, char **av, char **env)
 		expand();
 		split_tokens();
 		fill_command_list();
-		executor();
-		print_tokens();
+		// print_tokens();
+		executor(env);
 		ft_free_exit(line, false);
 	}
 	free_env_list();

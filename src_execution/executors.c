@@ -6,28 +6,32 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 12:38:20 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/09 16:42:47 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 // will need to add a cleaning_func();
-void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec)
+void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 {
 	if (dup2(exec->in, 0) == -1 || dup2(exec->out, 1) == -1)
 		ft_printf(2, "dup2 in %s: %s\n", __func__, strerror(errno));
 	ft_close(&exec->in);
 	ft_close(&exec->out);
 	close(exec->pipefd[0]);
-	if (execve(cmd_path, cmd->cmd, NULL) == -1)
+	if (execve(cmd_path, cmd->cmd, env) == -1)
 	{
-		ft_printf(2, "execve: %s\n", strerror(errno));
+		if (0x2 == errno)
+			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+		else
+			ft_printf(2, "execve: %s\n", strerror(errno));
+		free_exec(exec);
 		exit(1);
 	}
 }
 
-pid_t	execute_cmd(t_command *cmd, t_exec *exec)
+pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 {
 	pid_t	pid;
 	char	*cmd_path;
@@ -38,7 +42,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec)
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	if (pid == 0)
-		child_proc(cmd, cmd_path, exec);
+		child_proc(cmd, cmd_path, exec, env);
 	ft_close(&exec->tmp_fd);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
