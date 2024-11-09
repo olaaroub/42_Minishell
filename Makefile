@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+         #
+#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/10/31 20:39:29 by olaaroub         ###   ########.fr        #
+#    Updated: 2024/11/09 21:47:43 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -fsanitize=address -g3
+MAKEFLAGS := -j
 
 SRC = src_parsing/main.c src_parsing/get_env.c src_parsing/trash.c src_parsing/split_mgem7a.c
 SRC += src_parsing/tokenizing.c src_parsing/tokens_list.c src_parsing/check_line.c src_parsing/utils-v1.c
@@ -29,24 +30,26 @@ OBJ = $(SRC:.c=.o)
 NAME = minishell_1
 LIB = libft/libft.a
 
-all:  $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB)
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
-#	make clean
+	make clean
 
 $(LIB):
-	$(MAKE) -C libft
+	make -C libft
 
 clean:
 	@rm -rf $(OBJ)
-	$(MAKE) clean -C libft
+	@make clean -C libft
 
 fclean: clean
 	@rm -rf $(NAME)
-	$(MAKE) fclean -C libft
+	@rm -rf $(LIB)
 
-re: fclean all
+re:
+	make fclean
+	make all
 
-.PHONY: clean fclean re all bonus
+.PHONY: all fclean clean re bonus
 .SECONDARY: $(OBJ)
