@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/09 22:00:04 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/09 22:03:47 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	final_curtain(int *save_fds, t_exec *exec)
 void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 {
 	int		save_fds[2];
-	int 	i;
+	int		i;
 
 	i = 0;
 	save_fds[0] = dup(0);
@@ -70,15 +70,19 @@ t_exec	*init_exec(void)
 {
 	t_exec		*exec;
 	int			count;
+	int			i;
 
+	i = 0;
 	count = cmd_count();
 	exec = malloc (sizeof(t_exec));
 	if (!exec)
 		exit(EXIT_FAILURE);
 	exec->paths = get_paths();
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths); // add every malloced pointer to trash_list
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths);
 	if (!exec->paths)
 		return (free (exec), exit(EXIT_FAILURE), NULL);
+	while (exec->paths[i])
+		g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths[i++]);
 	exec->pid = malloc (sizeof(pid_t) * count);
 	exec->in = 0;
 	exec->out = 1;
