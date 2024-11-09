@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:12:04 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/23 06:54:29 by kali             ###   ########.fr       */
+/*   Updated: 2024/11/09 22:09:29 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ void	ft_exit(void)
 		status = arg;
 	else
 		status = 2;
-	// Will need to free the line and the env list here
+	free_trash(&g_data.trash_list);
 	exit(status);
 }

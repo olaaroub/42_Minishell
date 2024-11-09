@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/09 22:03:47 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/09 22:07:04 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_exec	*init_exec(void)
 	exec = malloc (sizeof(t_exec));
 	if (!exec)
 		exit(EXIT_FAILURE);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec);
 	exec->paths = get_paths();
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths);
 	if (!exec->paths)
@@ -109,5 +110,5 @@ void	executor(char	**env)
 	}
 	else
 		prepare_input(cmd, exec, env);
-	free_exec(exec);
+	// free_exec(exec);
 }
