@@ -24,6 +24,8 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	{
 		if (0x2 == errno)
 			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+		else if (0xd == errno)
+			ft_printf(2, "%s: Is a directory\n", *cmd->cmd);
 		else
 			ft_printf(2, "execve: %s\n", strerror(errno));
 		free_exec(exec);

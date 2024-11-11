@@ -321,8 +321,8 @@ int ft_export(char **cmd)
     {
         if (!check_export(cmd[y]))
 		{
-			printf("export: `%s': not a valid identifier\n", cmd[y]);
-			status = 1;
+			ft_printf(2, "export: `%s': not a valid identifier\n", cmd[y]);
+			g_data.ret_value = 1;
 		}
         else
         {
