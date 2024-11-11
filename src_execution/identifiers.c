@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:07:16 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/19 20:07:31 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:30:39 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	is_command(t_command *cmd, char **paths)
 
 int	is_builtin(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	if (!ft_strcmp(cmd, "cd"))
 		return (1);
 	else if (!ft_strcmp(cmd, "pwd"))

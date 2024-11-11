@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/23 07:20:37 by kali             ###   ########.fr       */
+/*   Updated: 2024/11/11 20:17:26 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,30 @@ int	valid_option(char *s)
 	return (1);
 }
 
-void	ft_echo(void)
+void	print_input(char **cmd, int j)
 {
-	char	**cmd;
-	int		i;
-	int		j;
-	bool	newline;
-
-	cmd = g_data.command_list->cmd;
-	i = 1;
-	j = 0;
-	newline = 1;
-	while (cmd[i] && valid_option(cmd[i++]))
-		newline = 0;
-	j += i - (cmd[i] != 0);
-	
+	while (j == 0 || valid_option(cmd[j]))
+		j++;
 	while (cmd[j])
 	{
 		printf("%s", cmd[j++]);
 		if (cmd[j])
 			printf(" ");
 	}
+}
+
+void	ft_echo(void)
+{
+	char	**cmd;
+	int		i;
+	bool	newline;
+
+	cmd = g_data.command_list->cmd;
+	i = 1;
+	newline = 1;
+	while (cmd[i] && valid_option(cmd[i++]))
+		newline = 0;
+	print_input(cmd, i - 1);
 	if (newline)
 		printf("\n");
 }

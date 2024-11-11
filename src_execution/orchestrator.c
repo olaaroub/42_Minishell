@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/09 22:07:04 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 22:08:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	final_curtain(int *save_fds, t_exec *exec)
 	count = cmd_count();
 	while (i < count)
 		waitpid(exec->pid[i++], &g_data.ret_value, 0);
+	if (WIFEXITED(g_data.ret_value))
+		g_data.ret_value = WEXITSTATUS(g_data.ret_value);
+	else if (WIFSIGNALED(g_data.ret_value))
+		g_data.ret_value = WTERMSIG(g_data.ret_value) + 128;
 	close(save_fds[0]);
 	close(save_fds[1]);
 }
@@ -80,11 +84,10 @@ t_exec	*init_exec(void)
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec);
 	exec->paths = get_paths();
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths);
-	if (!exec->paths)
-		return (free (exec), exit(EXIT_FAILURE), NULL);
-	while (exec->paths[i])
+	while (exec->paths && exec->paths[i])
 		g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths[i++]);
 	exec->pid = malloc (sizeof(pid_t) * count);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->pid);
 	exec->in = 0;
 	exec->out = 1;
 	exec->keeper = 0;
@@ -99,10 +102,7 @@ void	executor(char	**env)
 
 	exec = init_exec();
 	cmd = g_data.command_list;
-	// handle_heredoc(cmd);
-	if (!cmd || !cmd->cmd || !*cmd->cmd || !exec->paths)
-		return ;
-	if (!cmd->next && is_builtin(*cmd->cmd))
+	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
 	{
 		execute_builtin(exec, cmd);
 		if (entry_found("_"))
@@ -110,5 +110,4 @@ void	executor(char	**env)
 	}
 	else
 		prepare_input(cmd, exec, env);
-	// free_exec(exec);
 }

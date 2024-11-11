@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/09 22:01:53 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:48:42 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef struct s_program
 	bool				double_flag;
 	bool				single_flag;
 	int					ret_value;
-	int					last_ret_value;
 	int					i;
 	int					j;
 }						t_program;

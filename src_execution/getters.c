@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:18:30 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 12:39:16 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:12:18 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ char	*get_cmd_path(t_command *cmd, char	**paths)
 	i = -1;
 	tmp = 0;
 	cmd_path = 0;
+	if (!*cmd->cmd)
+		return (NULL);
 	if (*cmd->cmd[++i] == '/' || *cmd->cmd[i] == '.')
 		return (ft_strdup(*cmd->cmd));
 	tmp = ft_strjoin("/", *cmd->cmd);
-	while (paths[++i])
+	while (paths && paths[++i])
 	{
 		cmd_path = ft_strjoin(paths[i], tmp);
 		if (!access(cmd_path, X_OK))

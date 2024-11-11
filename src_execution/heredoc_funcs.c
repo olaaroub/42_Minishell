@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/09 22:01:06 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 17:24:32 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void dollar_expansion(char *word, int *i, int fd)
 			write(fd, "$", 1);
 			write(fd, buff, ft_strlen(buff));
 		}
-		else if (check_env_name(buff) == -1 && (g_data.single_flag == true && g_data.double_flag == false))
+		else if (check_env_name(buff) == -1 && (g_data.double_flag == false && g_data.single_flag == true))
 		{
 			write(fd, "$", 1);
 			write(fd, buff, ft_strlen(buff));
@@ -88,7 +88,7 @@ char *expand_heredoc(char *word)
 	close(fd);
 	unlink("file2.txt");
 	free(word);
-	return expanded_word;
+	return (expanded_word);
 }
 
 void	fill_heredoc(int fd, char *delimiter)
@@ -106,13 +106,38 @@ void	fill_heredoc(int fd, char *delimiter)
 		line = expand_heredoc(line);
 		// printf("line: %s\n", line);
 		if (line && !ft_strcmp(line, delimiter))
-		{
-			free(line);
-			exit(0);
-		}
+			return (free(line), exit(0));
 		ft_putendl_fd(line, fd);
 		free(line);
 	}
+}
+
+char from_unkonw_to_hex(int x)
+{
+	char *hexa;
+
+	if (x < 0)
+		x *= -1;
+	hexa = "0123456789abcdef";
+	return (hexa[x % 16]);	
+}
+
+char	*create_tmp_file(void)
+{
+	int fd;
+	char buffer[10];
+	char result[11];
+	int index;
+
+	index = -1;
+	fd = open("/dev/random", O_RDONLY);
+	read(fd, buffer, 10);
+	buffer[9] = '\0';
+	close(fd);
+	while (++index < 9)
+		result[index] = from_unkonw_to_hex(buffer[index]);
+	result[index] = '\0';
+	return (ft_strdup(result));
 }
 
 int	handle_heredoc(t_command *cmd)
@@ -120,11 +145,16 @@ int	handle_heredoc(t_command *cmd)
 	int 	status;
 	int		fd;
 	int		pid;
+	char	*tmp;
 
-	pid = fork();
-	cmd->red->heredoc = ft_strdup("/tmp/heredoc_");
+	tmp = create_tmp_file();
+	cmd->red->heredoc = ft_strjoin("/tmp/", tmp);
+	free(tmp);
+	// cmd->red->heredoc = ft_strdup("/tmp/heredoc_");
+	ft_printf(2, "%s\n", cmd->red->heredoc);
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, cmd->red->heredoc);
 	fd = open(cmd->red->heredoc, O_CREAT | O_RDWR | O_APPEND, 0644);
+	pid = fork();
 	if (!pid)
 		fill_heredoc(fd, cmd->red->file_name);
 	wait(&status);

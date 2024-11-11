@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/09 21:57:32 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:55:00 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void print_tokens()
 		redirection = token->red;
 		while (token->cmd && token->cmd[i])
 		{
+			printf("*cmd->cmd == %p\n", *token->cmd);
 			printf(" command %i is '%s'\n", i, token->cmd[i]);
 			i++;
 		}
@@ -110,10 +111,10 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	line = NULL;
-	g_data.ret_value = 0;
 	get_env(&g_data.env_list, env);
-		signal(SIGQUIT, sig_handler);
-		signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	signal(SIGINT, sig_handler);
+	g_data.ret_value = 0;
 	while (1)
 	{
 		init_data();

@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/09 16:42:47 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 22:09:38 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ pid_t	piped_builtin(t_command *cmd, t_exec *exec)
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	else if (!pid)
+	{
 		execute_builtin(exec, cmd);
+		exit(g_data.ret_value);
+	}
 	ft_close(&exec->in);
 	ft_close(&exec->tmp_fd);
 	ft_close(&exec->out);

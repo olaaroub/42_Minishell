@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils-v1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:58:37 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/31 18:11:50 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:53:50 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_free_exit(char *line, bool val)
 {
 	free_trash(&g_data.trash_list);
-	g_data.ret_value = 0;
 	if (line)
 	{
 		free(line);
