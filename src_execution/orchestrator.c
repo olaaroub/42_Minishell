@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/11 22:08:54 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:54:03 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,18 @@ void	executor(char	**env)
 {
 	t_command	*cmd;
 	t_exec		*exec;
+	int			save_fds[2];
 
 	exec = init_exec();
 	cmd = g_data.command_list;
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
 	{
+		save_fds[0] = dup(0);
+		save_fds[1] = dup(1);
 		execute_builtin(exec, cmd);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
+		restore_io(save_fds);
 	}
 	else
 		prepare_input(cmd, exec, env);

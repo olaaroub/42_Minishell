@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/11 22:09:38 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:57:46 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,14 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	if (execve(cmd_path, cmd->cmd, env) == -1)
 	{
 		if (0x2 == errno)
+		{
 			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			exit(127);
+		}
 		else if (0xd == errno)
-			ft_printf(2, "%s: Is a directory\n", *cmd->cmd);
+			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
 		else
-			ft_printf(2, "execve: %s\n", strerror(errno));
+			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
 		free_exec(exec);
 		exit(1);
 	}
@@ -57,6 +60,7 @@ void	execute_builtin(t_exec *exec, t_command *cmd)
 {
 	if (cmd->red)
 		set_redirections(exec, cmd);
+	ft_printf(2, "in == %d\t\t\t\t out == %d\n", exec->in, exec->out);
 	dup_redirections(exec);
 	if (!ft_strcmp(*cmd->cmd, "cd"))
 		ft_cd();

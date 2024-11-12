@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/11 20:48:42 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:54:24 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void					heredoc_signals();
 
 /*				io_ops.c		*/
 void					update(t_command *cmd, t_exec *exec);
+void					restore_io(int *saved);
 
 /*				cleaning.c		*/
 void					free_arr(char **arr);

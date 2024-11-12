@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/11 17:09:23 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:56:52 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,12 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 
 void	dup_redirections(t_exec *exec)
 {
+	
 	if (dup2(exec->in, 0) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
 	if (dup2(exec->out, 1) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
+	ft_close(&exec->tmp_fd);
 	ft_close(&exec->in);
 	ft_close(&exec->out);
 }

@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/11 20:17:26 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:37:53 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	valid_option(char *s)
 
 void	print_input(char **cmd, int j)
 {
-	while (j == 0 || valid_option(cmd[j]))
+	while (j == 0 || (cmd[j] && valid_option(cmd[j])))
 		j++;
 	while (cmd[j])
 	{

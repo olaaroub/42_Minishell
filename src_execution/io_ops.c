@@ -6,11 +6,19 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 02:40:49 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 12:33:52 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:13:12 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	restore_io(int *saved)
+{
+	dup2(saved[0], 0);
+	dup2(saved[1], 1);
+	close(saved[0]);
+	close(saved[1]);
+}
 
 void	update(t_command *cmd, t_exec *exec)
 {
