@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 17:30:45 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/13 00:18:53 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void    check_master_quotes(bool *double_flag, bool *single_flag, char c)
 		*single_flag = true;
 	else if(c == '\'' && *single_flag == true && *double_flag == false)
 		*single_flag = false;
-
-
 }
 
 int check_env_name(char *buff)
@@ -69,27 +67,6 @@ static void check_ambiguous(t_tokens *tmp)
 			tmp->ambiguous = true;
 
 	}
-}
-
-int check_special_char(t_tokens *tmp, int *i)
-{
-	while(tmp->word[*i])
-	{
-		if(tmp->word[*i] == '$' && tmp->word[*i + 1] == '$')
-		{
-			(*i) += 2;
-			return (*i);
-		}
-		*i += 1;
-	}
-	return (*i);
-}
-
-int is_special_char(char c)
-{
-	if(c == '$' || c == '@' || c == '*' || c == '#' || c == '-' || c == '!' || ft_isdigit(c))
-		return 1;
-	return 0;
 }
 
 void    expand(void)

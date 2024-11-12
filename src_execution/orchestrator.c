@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/12 18:54:03 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 00:44:39 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void	executor(char	**env)
 	t_exec		*exec;
 	int			save_fds[2];
 
+	if(!g_data.command_list || !g_data.command_list->cmd || !*g_data.command_list->cmd)
+		return ; // without this check, the program displays (null): Bad address when entering smtn like $C
 	exec = init_exec();
 	cmd = g_data.command_list;
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
