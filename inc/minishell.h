@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 19:16:43 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:46:21 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,15 @@ t_env					*get_to_print(t_env *env, int index);
 void 					print_exported_vars(void);
 
 
+
+/*						EXPAND			*/
+
+void					expand(void);
+void    				check_master_quotes(bool *double_flag, bool *single_flag, char c);
+int 					check_env_name(char *buff);
+int 					get_expanded(char *buff, int fd);
+void					start_expand(char *buff, int fd);
+
 /*						PARSING_FUNCS	*/
 
 void 					free_env_list(void);
@@ -133,12 +142,7 @@ void					ft_free_exit(char *line, bool exit);
 int						line_len(char *line);
 char					*add_space(char *line);
 int						syntax_error(void);
-void					expand(void);
 void					split_tokens(void);
-int 					check_special_char(t_tokens *tmp, int *i);
-int 					get_expanded(char *buff, int fd);
-void    				check_master_quotes(bool *double_flag, bool *single_flag, char c);
-int 					check_env_name(char *buff);
 
 /*				command_list.c			*/
 
@@ -199,6 +203,13 @@ int						is_builtin(char *cmd);
 /*				heredoc_func.c	*/
 int						handle_heredoc(t_command *cmd);
 void					heredoc_signals();
+int						offset_reposition(int fd, char *name);
+char					from_unkonw_to_hex(int x);
+char					*create_tmp_file(void);
+int 					handle_special_chars2(char *word, int *i, int fd);
+
+
+
 
 /*				io_ops.c		*/
 void					update(t_command *cmd, t_exec *exec);

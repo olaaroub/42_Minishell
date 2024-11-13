@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:58:37 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 00:10:50 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:07:41 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,44 +35,19 @@ int	line_len(char *line)
 		return (0);
 	while (line[i])
 	{
-		if (line[i] == '<')
-		{
-			if (line[i + 1] == '<')
-			{
-				j += 2;
-				i += 2;
-			}
-			else
-			{
-				j += 2;
-				i++;
-			}
-		}
-		else if (line[i] == '>')
-		{
-			if (line[i + 1] == '>')
-			{
-				j += 2;
-				i += 2;
-			}
-			else
-			{
-				j += 2;
-				i++;
-			}
-		}
-		else if (line[i] == '|')
-		{
-			j += 2;
-			i++;
-		}
+		if (line[i] == '<' || line[i] == '>' || line[i] == '|')
+        {
+            j += 2;
+            if (line[i + 1] == line[i])
+                i += 2;
+            else
+                i++;
+        }
 		else
 			i++;
 	}
 	return (j);
 }
-
-
 
 size_t	list_size(void *lst, int s)
 {

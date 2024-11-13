@@ -3,44 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/13 03:12:48 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:55:30 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	offset_reposition(int fd, char *name)
-{
-	close(fd);
-	fd = open(name, O_RDONLY);
-	if (fd == -1)
-		ft_printf(2, "heredoc: %s\n", strerror(errno));
-	return (fd);
-}
-
-void	dollar_expansion(char *word, int *i, int fd)
+static void	dollar_expansion(char *word, int *i, int fd)
 {
 	int		start;
 	int		end;
 	char	*buff;
-	char	*dollar;
 
-	if (word[*i + 1] == '"' && g_data.double_flag == true)
-		write(fd, &word[(*i)++], 1);
-	else if (is_special_char(word[*i + 1]) && ((g_data.double_flag == false
-				&& g_data.single_flag == false)
-			|| (g_data.double_flag == true)))
-		*i += 2;
-	else if (word[*i + 1] == '?' && ((g_data.double_flag == false
-				&& g_data.single_flag == false)
-			|| (g_data.double_flag == true)))
-	{
-		ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
-		*i += 2;
-	}
+	if (handle_special_chars2(word, i, fd) == 0)
+		return ;
 	else
 	{
 		start = ++(*i);
@@ -50,29 +29,12 @@ void	dollar_expansion(char *word, int *i, int fd)
 			(*i)++;
 		end = *i;
 		buff = ft_substr(word, start, end - start);
-		dollar = ft_strjoin("$", buff);
-		g_data.trash_list = ft_add_trash(&g_data.trash_list, dollar);
-		if (check_env_name(buff) == 1 && ((g_data.double_flag == false
-					&& g_data.single_flag == false)
-				|| (g_data.double_flag == true)))
-			get_expanded(buff, fd);
-		else if (check_env_name(buff) == 1 && ((g_data.double_flag == false
-					&& g_data.single_flag == true)))
-		{
-			write(fd, "$", 1);
-			write(fd, buff, ft_strlen(buff));
-		}
-		else if (check_env_name(buff) == -1 && (g_data.double_flag == false
-				&& g_data.single_flag == true))
-		{
-			write(fd, "$", 1);
-			write(fd, buff, ft_strlen(buff));
-		}
+		start_expand(buff, fd);
 		free(buff);
 	}
 }
 
-char	*expand_heredoc(char *word)
+static char	*expand_heredoc(char *word)
 {
 	int		i;
 	int		fd;
@@ -84,14 +46,10 @@ char	*expand_heredoc(char *word)
 	{
 		check_master_quotes(&g_data.double_flag, &g_data.single_flag, word[i]);
 		if (word[i] == '$' && (word[i + 1] != '\0' && !is_whitespace(word[i
-					+ 1])))
-		{
+						+ 1])))
 			dollar_expansion(word, &i, fd);
-		}
 		else
-		{
 			write(fd, &word[i++], 1);
-		}
 	}
 	close(fd);
 	fd = open("file2.txt", O_RDONLY);
@@ -115,40 +73,11 @@ void	fill_heredoc(int fd, char *delimiter)
 		if (!line)
 			exit(0);
 		line = expand_heredoc(line);
-		// printf("line: %s\n", line);
 		if (line && !ft_strcmp(line, delimiter))
 			return (free(line), exit(0));
 		ft_putendl_fd(line, fd);
 		free(line);
 	}
-}
-
-char	from_unkonw_to_hex(int x)
-{
-	char	*hexa;
-
-	if (x < 0)
-		x *= -1;
-	hexa = "0123456789abcdef";
-	return (hexa[x % 16]);
-}
-
-char	*create_tmp_file(void)
-{
-	int		fd;
-	char	buffer[10];
-	char	result[11];
-	int		index;
-
-	index = -1;
-	fd = open("/dev/random", O_RDONLY);
-	read(fd, buffer, 10);
-	buffer[9] = '\0';
-	close(fd);
-	while (++index < 9)
-		result[index] = from_unkonw_to_hex(buffer[index]);
-	result[index] = '\0';
-	return (ft_strdup(result));
 }
 
 int	handle_heredoc(t_command *cmd)
