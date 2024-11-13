@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 09:26:50 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/23 06:52:44 by kali             ###   ########.fr       */
+/*   Created: 2024/11/08 09:35:17 by hatalhao          #+#    #+#             */
+/*   Updated: 2024/11/08 11:03:39 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_env(void)
+void	free_arr(char **arr)
 {
-	t_env	*iter;
+	int	i;
 
-	iter = g_data.env_list;
-	while (iter)
-	{
-		printf("%s=%s\n", iter->name, iter->value);
-		iter = iter->next;
-	}
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+		free (arr[i++]);
+	arr = 0;
+}
+
+void	free_exec(t_exec *exec)
+{
+	if (!exec)
+		return ;
+	free_arr (exec->paths);
+	free (exec->pid);
+	free (exec);
 }

@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/12 14:57:25 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/13 00:29:57 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
-# include <readline/history.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <signal.h>
 # include <limits.h>
+# include <wait.h>
 # include <errno.h>
 # include <stdbool.h>
 
@@ -65,6 +66,7 @@ typedef struct s_redir
 {
 	int					type;
 	char				*file_name;
+	char				*heredoc;
 	struct s_redir		*next;
 }						t_redir;
 
@@ -84,66 +86,129 @@ typedef struct s_program
 	bool				double_flag;
 	bool				single_flag;
 	int					ret_value;
-	int					last_ret_value;
 	int					i;
 	int					j;
 }						t_program;
 
-// FUNCTIONS //
 /*						PARSING			*/
-/*						PARSING_FUNCS	*/
 
 /*				get_env.c				*/
+
 void					get_env(t_env **env_list, char **env);
 t_env					*env_node(char *env);
 t_env					*ft_add_env(t_env **head, char *env);
 
 /*				trash.c					*/
+
 t_trash					*ft_add_trash(t_trash **head, void *addr);
 void					free_trash(t_trash **head);
 t_trash					*trash_node(void *addr);
 
+/*              export_tools		    */
+
+int						ft_strlen_eq(char *line, char c);
+size_t					list_size(void *lst, int s);
+int						compare(char *min_str, char *str);
+t_env					*get_min(t_env *env);
+char					*get_var_name(char *line, int sign);
+void					sort_env(t_env **env);
+t_env 					*env_newnode(char *line);
+void					env_add_back(t_env **head, t_env *new_node);
+t_env					*env_new_node(char *line, int flag);
+t_env					*get_to_print(t_env *env, int index);
+void 					print_exported_vars(void);
+
+
+/*						PARSING_FUNCS	*/
+
+int 					len_until_pipe(t_tokens *temp);
 int						count_words(char *line);
 int						word_lenght(char *line);
 char					**split_mgem7a(char *line);
 void					tokenizing(char *line);
-t_tokens				*ft_add_token(char *word, int type, bool ambg, char *dollar);
 void					ft_white_spaces(char *line);
 int						valid_quotes(char *line);
 void					ft_free_exit(char *line, bool exit);
-int						is_whitespace(int c);
 int						line_len(char *line);
 char					*add_space(char *line);
 int						syntax_error(void);
 void					expand(void);
 void					split_tokens(void);
+int 					check_special_char(t_tokens *tmp, int *i);
+int 					get_expanded(char *buff, int fd);
+void    				check_master_quotes(bool *double_flag, bool *single_flag, char c);
+int 					check_env_name(char *buff);
 
 /*				command_list.c			*/
+
 t_redir					*redir_node(char *file_name, int type);
 t_command				*command_node(char **commands, t_redir *redir);
 t_redir					*ft_add_redir(t_redir **head, char *file_name, int type);
 t_command				*ft_add_command(t_command **head, char **commands, t_redir *redir);
-
 void					fill_command_list(void);
+void					sig_handler(int signo);
+
 
 /*				EXECUTION		*/
+
 typedef struct s_exec
 {
 	int					pipefd[2];
+	char				**paths;
 	int					in;
 	int					out;
+	int					tmp_fd;
 	int					keeper;
-	int 				*pid;
+	pid_t 				*pid;
 }						t_exec;
 
 /*				EXECUTION_FUNCS	*/
 /*				executor.c		*/
-void					executor(void);
 
 int						entry_found(char *to_find);
 char					*get_pwd(void);
 void					update_var(char *to_find, char *new_value);
 t_env					*get_env_node(char *to_find);
+
+/*				fd_operations.c	*/
+void					ft_close(int *fd);
+void					dup_redirections(t_exec *exec);
+void					set_pipes(t_command *cmd, t_exec *exec);
+void					set_redirections(t_exec *exec, t_command *cmd);
+void					update_fd(t_command *cmd, t_exec *exec);
+
+/*				getters.c		*/
+char					**get_paths(void);
+char					*get_cmd_path(t_command *cmd, char	**paths);
+
+/*				executors.c		*/
+void					execute_builtin(t_exec *exec, t_command *cmd);
+pid_t					execute_cmd(t_command *cmd, t_exec *exec, char **env);
+pid_t					piped_builtin(t_command *cmd, t_exec *exec);
+
+
+/*				orchestrator.c	*/
+void					executor(char **env);
+void					prepare_input(t_command *cmd, t_exec *exec, char **env);
+
+/*				identifiers.c	*/
+int						is_command(t_command *cmd, char **paths);
+int						is_builtin(char *cmd);
+
+/*				heredoc_func.c	*/
+int						handle_heredoc(t_command *cmd);
+void					heredoc_signals();
+
+/*				io_ops.c		*/
+void					update(t_command *cmd, t_exec *exec);
+void					restore_io(int *saved);
+
+/*				cleaning.c		*/
+void					free_arr(char **arr);
+void					free_exec(t_exec *exec);
+
+/*				DEBUGGER		*/
+void	assist();
 
 /*				BUILTINS		*/
 void					ft_cd(void);
@@ -152,8 +217,7 @@ void					ft_env(void);
 void					ft_unset(void);
 void					ft_echo(void);
 void					ft_exit(void);
-
-int 					ft_export(char **cmd);
+int						ft_export(char **cmd);
 
 
 extern t_program		g_data;

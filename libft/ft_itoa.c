@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 21:34:59 by olaaroub          #+#    #+#             */
-/*   Updated: 2023/11/22 21:34:05 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:26:43 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*ft_itoa(int n)
 		return (ft_strdup("-2147483648"));
 	count = count_digits(n);
 	ptr = malloc(sizeof(char) * count + 1);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, ptr);
 	if (!ptr)
 		return (NULL);
 	ptr[count--] = '\0';

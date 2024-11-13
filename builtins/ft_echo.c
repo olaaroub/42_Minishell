@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/27 09:49:04 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:37:53 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,30 @@ int	valid_option(char *s)
 	return (1);
 }
 
+void	print_input(char **cmd, int j)
+{
+	while (j == 0 || (cmd[j] && valid_option(cmd[j])))
+		j++;
+	while (cmd[j])
+	{
+		printf("%s", cmd[j++]);
+		if (cmd[j])
+			printf(" ");
+	}
+}
+
 void	ft_echo(void)
 {
 	char	**cmd;
 	int		i;
-	int		j;
-	bool	nl;
+	bool	newline;
 
 	cmd = g_data.command_list->cmd;
 	i = 1;
-	j = 0;
-	nl = 1;
-	if(!cmd[1])
+	newline = 1;
+	while (cmd[i] && valid_option(cmd[i++]))
+		newline = 0;
+	print_input(cmd, i - 1);
+	if (newline)
 		printf("\n");
-	while (cmd[i])
-	{	
-		if (valid_option(cmd[i++]))
-			nl = 0;
-		else
-			break ;
-	}
-	j += i - (cmd[1] != 0);
-	while (cmd[j])
-	{
-		printf("%s", cmd[j++]);
-		if (nl)
-			printf("\n");
-	}
 }

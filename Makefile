@@ -3,22 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
+#    By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/08/08 10:57:09 by olaaroub          #+#    #+#              #
-#    Updated: 2024/10/03 05:31:09 by hatalhao         ###   ########.fr        #
+#    Created: Invalid date        by                   #+#    #+#              #
+#    Updated: 2024/11/12 22:19:26 by olaaroub         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -fsanitize=address -g3
+MAKEFLAGS := -j
 
-SRC = src_parsing/main.c src_parsing/get_env.c src_parsing/trash.c src_parsing/split_mgem7a.c
-SRC += src_parsing/tokenizing.c src_parsing/tokens_list.c src_parsing/check_line.c src_parsing/utils-v1.c
-SRC += src_parsing/syntax_error.c src_parsing/expand_v2.c src_parsing/split_after_expand.c
-SRC += src_parsing/fill_command_list.c src_parsing/command_list.c
+# SRC = src_parsing/main.c src_parsing/get_env.c src_parsing/trash.c src_parsing/split_mgem7a.c
+# SRC += src_parsing/tokenizing.c src_parsing/tokens_list.c src_parsing/check_line.c src_parsing/utils-v1.c
+# SRC += src_parsing/syntax_error.c src_parsing/expand_v2.c src_parsing/split_after_expand.c
+# SRC += src_parsing/fill_command_list.c src_parsing/command_list.c
 SRC += $(wildcard builtins/*.c)
+SRC += $(wildcard src_parsing/*.c)
 SRC += $(wildcard src_execution/*.c)
 
 #=== PRINTF_FD ===#
@@ -29,23 +32,26 @@ OBJ = $(SRC:.c=.o)
 NAME = minishell
 LIB = libft/libft.a
 
-all:  $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB)
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
+	make clean
 
 $(LIB):
-	$(MAKE) -C libft
+	make -C libft
 
 clean:
 	@rm -rf $(OBJ)
-	$(MAKE) clean -C libft
+	@make clean -C libft
 
 fclean: clean
 	@rm -rf $(NAME)
-	$(MAKE) fclean -C libft
+	@rm -rf $(LIB)
 
-re: fclean all
+re:
+	make fclean
+	make all
 
-.PHONY: clean fclean re all bonus
+.PHONY: all fclean clean re bonus
 .SECONDARY: $(OBJ)

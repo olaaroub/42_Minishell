@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:45 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/06 22:37:49 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 21:21:22 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,22 @@ void	update_var(char *to_find, char *new_value)
 
 void	ft_cd(void)
 {
-	char	*path;
-	char	*new_pwd;
+	char		*path;
+	t_command	*cmd;
 
-	new_pwd = 0;
-	if (!g_data.command_list->cmd[1])
+	cmd = g_data.command_list;
+	if (!cmd->cmd[1])
 		return ;
-	path = g_data.command_list->cmd[1];
+	if (cmd->cmd[2])
+	{
+		ft_putendl_fd("cd: too many arguments", 2);
+		g_data.ret_value = 1;
+		return ;
+	}
+	path = cmd->cmd[1];
 	if (chdir(path) == -1)
-		ft_putendl_fd(strerror(errno), 2);
-	// The Function that export will use to add a node to the env
-	if (entry_found("OLDPWD") && entry_found("PWD"))
-		update_var("OLDPWD", get_pwd());
-	// The Function that export will use to add a node to the env
-	if (entry_found("PWD"))
-		update_var("PWD", getcwd(new_pwd, 0));
+	{
+		g_data.ret_value = 1;
+		return (ft_printf(2, " %s", strerror(errno)), (void)NULL);
+	}
 }
-
-/*	Will need to update OLDPWD in ENV before changing the directory	*/
-/*	If one of OLDPWD or PWD has been unset, it will have to be added to the env,
-PWD Should be filled with the current directory, OLDPWD should have the parent directory*/ 
-

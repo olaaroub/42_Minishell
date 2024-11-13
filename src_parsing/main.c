@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/12 12:24:49 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/13 00:46:03 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,27 @@
 
 t_program g_data;
 
-void	io_reset()
-{
-	int	fd;
-	fd = 0;
-	fd = open("/dev/tty", O_RDWR);
-	if (fd == -1)
-		ft_putendl_fd(strerror(errno), 2);
-	if (dup2(fd, 0) == -1 || dup2(fd, 1 == -1))
-		ft_putendl_fd(strerror(errno), 2);
-	close (fd);
-}
-
 void print_tokens()
 {
-	t_command *token;
-	int i;
+	t_command	*token;
+	t_redir		*redirection;
+	int			i;
 
 	token = g_data.command_list;
 	while (token)
 	{
 		i = 0;
+		redirection = token->red;
 		while (token->cmd && token->cmd[i])
 		{
+			printf("*cmd->cmd == %p\n", *token->cmd);
 			printf(" command %i is '%s'\n", i, token->cmd[i]);
 			i++;
 		}
-		while (token->red)
+		while (redirection)
 		{
 			printf(" type is %d file name is %s\n", token->red->type, token->red->file_name);
-			token->red = token->red->next;
+			redirection = redirection->next;
 		}
 		token = token->next;
 		printf("========================================================\n");
@@ -52,7 +43,6 @@ void print_tokens()
 
 void init_data(void)
 {
-	// g_data.env_list = NULL;
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
 	g_data.token_list = NULL;
@@ -61,7 +51,6 @@ void init_data(void)
 	g_data.i = 0;
 	g_data.j = 0;
 }
-
 
 static void free_env_list(void)
 {
@@ -80,18 +69,47 @@ static void free_env_list(void)
 
 }
 
-// static void	print_env()
-// {
-// 	t_env *tmp;
+void sig_handler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_data.ret_value = 130;
+	}
+	else if (signo == SIGQUIT)
+	{
+		// free_exec(g_data.exec); will need to add this to the global struct
+		signal(SIGQUIT, SIG_IGN);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 
-// 	tmp = g_data.env_list;
-// 	while (tmp)
-// 	{
-// 		printf("name is %s value is %s\n", tmp->name, tmp->value);
-// 		tmp = tmp->next;
-// 	}
-// }
+}
 
+int tokenize(char **line)
+{
+	ft_white_spaces(*line);
+	if (!valid_quotes(*line))
+	{
+		printf("Error: Unclosed quotes detected.\n");
+		g_data.ret_value = 2;
+		ft_free_exit(*line, false);
+		return (-77);
+	}
+	*line = add_space(*line);
+	tokenizing(*line);
+	if (syntax_error() == -1)
+	{
+		g_data.ret_value = 2;
+		ft_free_exit(*line, false);
+		return (-77);
+	}
+	return (0);
+}
 
 int main(int ac, char **av, char **env)
 {
@@ -100,37 +118,23 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	line = NULL;
-	g_data.ret_value = 0;
 	get_env(&g_data.env_list, env);
+	signal(SIGQUIT, sig_handler);
+	signal(SIGINT, sig_handler);
+	g_data.ret_value = 0;
 	while (1)
 	{
 		init_data();
 		line = readline("Minihell==>>$ ");
+		if(!line)
+			return(printf("exit\n"), 0);
 		if (line && *line)
 			add_history(line);
-		ft_white_spaces(line);
-		if (!valid_quotes(line))
-		{
-			printf("Error: Unclosed quotes detected.\n");
-			g_data.ret_value = 2;
-			ft_free_exit(line, false);
+		if(tokenize(&line) == -77)
 			continue;
-		}
-		line = add_space(line);
-		tokenizing(line);
-		if (syntax_error() == -1)
-		{
-			g_data.ret_value = 2;
-			ft_free_exit(line, false);
-			continue;
-		}
-		expand();
-		split_tokens();
 		fill_command_list();
-		print_tokens();
-		executor();
-		io_reset();
-		// print_env();
+		// print_tokens();
+		executor(env);
 		ft_free_exit(line, false);
 	}
 	free_env_list();

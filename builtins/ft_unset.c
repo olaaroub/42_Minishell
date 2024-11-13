@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:02 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/09/25 17:47:52 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/11 21:29:12 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ void	link_remove(char *to_unset)
 				if (iter->next)
 					(iter->prev)->next = (iter)->next;
 			}
-			return ;
+			free(iter->line);
+			free(iter->name);
+			free(iter->value);
+			return (free(iter));
 		}
 		iter = iter->next;
 	}
@@ -53,7 +56,6 @@ void	ft_unset(void)
 {
 	char	**to_unset;
 
-	to_unset = 0;
 	to_unset = g_data.command_list->cmd;
 	while (*(++to_unset))
 	{

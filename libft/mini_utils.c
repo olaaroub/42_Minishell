@@ -1,45 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*   mini_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 22:59:28 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/08 17:23:56 by olaaroub         ###   ########.fr       */
+/*   Created: 2024/11/13 00:10:19 by olaaroub          #+#    #+#             */
+/*   Updated: 2024/11/13 00:19:59 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	is_whitespacee(int c)
+int	is_whitespace(int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }
 
-char	*ft_strtrim(char const *s1)
+int	ft_isset(char c)
 {
-	char	*ptr;
-	char	*buff;
-	size_t	i;
-	size_t	j;
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	if (s1)
-	{
-		j = ft_strlen(s1);
-		if (j == 0)
-			return (ft_strdup(""));
-		while (s1[i] && is_whitespacee(s1[i]))
-			i++;
-		while (s1[j - 1] && j > i && is_whitespacee(s1[j - 1]))
-			j--;
-		ptr = malloc(j - i + 1);
-		if (!ptr)
-			return (NULL);
-		buff = ptr;
-		ft_strlcpy(buff, s1 + i, j - i + 1);
-		return (ptr);
-	}
-	return (NULL);
+int is_special_char(char c)
+{
+	if(c == '$' || c == '@' || c == '*' || c == '#' || c == '-' || c == '!' || ft_isdigit(c))
+		return 1;
+	return 0;
+}
+
+int words_len(char **words)
+{
+    int i;
+
+    i = 0;
+    while(words[i])
+        i++;
+    return i;
 }
