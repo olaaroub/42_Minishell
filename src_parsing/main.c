@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 06:50:58 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:23:22 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void init_data(void)
 	g_data.j = 0;
 }
 
-static void free_env_list(void)
+void free_env_list(void)
 {
 	t_env	*tmp;
 
@@ -127,15 +127,17 @@ int main(int ac, char **av, char **env)
 		init_data();
 		line = readline("Minihell==>>$ ");
 		if(!line)
-			return(printf("exit\n"), 0);
+			return(free_env_list(), printf("exit\n"), 0);
 		if (line && *line)
 			add_history(line);
 		if(tokenize(&line) == -77)
 			continue;
 		fill_command_list();
 		// print_tokens();
+		free(line);
 		executor(env);
-		ft_free_exit(line, false);
+		// ft_free_exit(line, false);
+		free_trash(&g_data.trash_list);
 	}
 	free_env_list();
 }

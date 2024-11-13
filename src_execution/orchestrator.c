@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 06:52:11 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:31:29 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ t_exec	*init_exec(void)
 	exec->out = 1;
 	exec->keeper = 0;
 	exec->tmp_fd = -1;
+	exec->pipefd[0] = -1; /* this fixes the error (Conditional jump or move depends on uninitialised value)*/
+	exec->pipefd[1] = -1; 
 	return (exec);
 }
 

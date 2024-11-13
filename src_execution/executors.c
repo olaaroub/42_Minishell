@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 04:16:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:25:58 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		if (cmd_path == NULL)
 		{
 			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			free_trash(&g_data.trash_list);
+			free_env_list();
 			exit (127);
 		}
 		child_proc(cmd, cmd_path, exec, env);
@@ -99,6 +101,8 @@ pid_t	piped_builtin(t_command *cmd, t_exec *exec)
 	else if (!pid)
 	{
 		execute_builtin(exec, cmd, 1);
+		free_trash(&g_data.trash_list);
+		free_env_list();
 		exit(g_data.ret_value);
 	}
 	ft_close(&exec->in);

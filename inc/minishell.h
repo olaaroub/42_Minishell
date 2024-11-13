@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 06:51:01 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:16:43 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void 					print_exported_vars(void);
 
 /*						PARSING_FUNCS	*/
 
+void 					free_env_list(void);
 int 					len_until_pipe(t_tokens *temp);
 int						count_words(char *line);
 int						word_lenght(char *line);

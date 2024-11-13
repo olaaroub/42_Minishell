@@ -5,6 +5,7 @@
 *.exe
 *.out
 .vscode/
+testing_dir/
 minishell_tester/
 minishell
 outfile
