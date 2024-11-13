@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/11 17:24:32 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 03:12:48 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,28 @@
 int	offset_reposition(int fd, char *name)
 {
 	close(fd);
-	fd = open (name, O_RDONLY);
+	fd = open(name, O_RDONLY);
 	if (fd == -1)
 		ft_printf(2, "heredoc: %s\n", strerror(errno));
 	return (fd);
 }
 
-void dollar_expansion(char *word, int *i, int fd)
+void	dollar_expansion(char *word, int *i, int fd)
 {
-	int	start;
-	int	end;
-	char *buff;
+	int		start;
+	int		end;
+	char	*buff;
+	char	*dollar;
 
 	if (word[*i + 1] == '"' && g_data.double_flag == true)
 		write(fd, &word[(*i)++], 1);
-	else if (is_special_char(word[*i + 1]) && ((g_data.double_flag == false && g_data.single_flag == false) || (g_data.double_flag == true)))
+	else if (is_special_char(word[*i + 1]) && ((g_data.double_flag == false
+				&& g_data.single_flag == false)
+			|| (g_data.double_flag == true)))
 		*i += 2;
-	else if (word[*i + 1] == '?' && ((g_data.double_flag == false && g_data.single_flag == false) || (g_data.double_flag == true)))
+	else if (word[*i + 1] == '?' && ((g_data.double_flag == false
+				&& g_data.single_flag == false)
+			|| (g_data.double_flag == true)))
 	{
 		ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
 		*i += 2;
@@ -45,16 +50,20 @@ void dollar_expansion(char *word, int *i, int fd)
 			(*i)++;
 		end = *i;
 		buff = ft_substr(word, start, end - start);
-		char *dollar = ft_strjoin("$", buff);
+		dollar = ft_strjoin("$", buff);
 		g_data.trash_list = ft_add_trash(&g_data.trash_list, dollar);
-		if (check_env_name(buff) == 1 && ((g_data.double_flag == false && g_data.single_flag == false) || (g_data.double_flag == true)))
+		if (check_env_name(buff) == 1 && ((g_data.double_flag == false
+					&& g_data.single_flag == false)
+				|| (g_data.double_flag == true)))
 			get_expanded(buff, fd);
-		else if (check_env_name(buff) == 1 && ((g_data.double_flag == false && g_data.single_flag == true)))
+		else if (check_env_name(buff) == 1 && ((g_data.double_flag == false
+					&& g_data.single_flag == true)))
 		{
 			write(fd, "$", 1);
 			write(fd, buff, ft_strlen(buff));
 		}
-		else if (check_env_name(buff) == -1 && (g_data.double_flag == false && g_data.single_flag == true))
+		else if (check_env_name(buff) == -1 && (g_data.double_flag == false
+				&& g_data.single_flag == true))
 		{
 			write(fd, "$", 1);
 			write(fd, buff, ft_strlen(buff));
@@ -63,17 +72,19 @@ void dollar_expansion(char *word, int *i, int fd)
 	}
 }
 
-char *expand_heredoc(char *word)
+char	*expand_heredoc(char *word)
 {
-	int i = 0;
-	int fd;
-	char *expanded_word;
+	int		i;
+	int		fd;
+	char	*expanded_word;
 
+	i = 0;
 	fd = open("file2.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (word && word[i])
 	{
 		check_master_quotes(&g_data.double_flag, &g_data.single_flag, word[i]);
-		if (word[i] == '$' && (word[i + 1] != '\0' && !is_whitespace(word[i + 1])))
+		if (word[i] == '$' && (word[i + 1] != '\0' && !is_whitespace(word[i
+					+ 1])))
 		{
 			dollar_expansion(word, &i, fd);
 		}
@@ -112,22 +123,22 @@ void	fill_heredoc(int fd, char *delimiter)
 	}
 }
 
-char from_unkonw_to_hex(int x)
+char	from_unkonw_to_hex(int x)
 {
-	char *hexa;
+	char	*hexa;
 
 	if (x < 0)
 		x *= -1;
 	hexa = "0123456789abcdef";
-	return (hexa[x % 16]);	
+	return (hexa[x % 16]);
 }
 
 char	*create_tmp_file(void)
 {
-	int fd;
-	char buffer[10];
-	char result[11];
-	int index;
+	int		fd;
+	char	buffer[10];
+	char	result[11];
+	int		index;
 
 	index = -1;
 	fd = open("/dev/random", O_RDONLY);
@@ -142,7 +153,7 @@ char	*create_tmp_file(void)
 
 int	handle_heredoc(t_command *cmd)
 {
-	int 	status;
+	int		status;
 	int		fd;
 	int		pid;
 	char	*tmp;
@@ -158,6 +169,5 @@ int	handle_heredoc(t_command *cmd)
 	if (!pid)
 		fill_heredoc(fd, cmd->red->file_name);
 	wait(&status);
-	return(offset_reposition(fd, cmd->red->heredoc));
+	return (offset_reposition(fd, cmd->red->heredoc));
 }
-

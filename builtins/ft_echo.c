@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/12 18:37:53 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/12 22:29:45 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	print_input(char **cmd, int j)
 		j++;
 	while (cmd[j])
 	{
-		printf("%s", cmd[j++]);
+		ft_printf(1, "%s", cmd[j++]);
 		if (cmd[j])
-			printf(" ");
+			ft_printf(1, " ");
 	}
 }
 
@@ -55,5 +55,5 @@ void	ft_echo(void)
 		newline = 0;
 	print_input(cmd, i - 1);
 	if (newline)
-		printf("\n");
+		ft_printf(1, "\n");
 }

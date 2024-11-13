@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/12 18:56:52 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/13 04:06:45 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	update_fd(t_command *cmd, t_exec *exec)
 	}
 }
 
-void	set_redirections(t_exec *exec, t_command *cmd)
+int	set_redirections(t_exec *exec, t_command *cmd)
 {
 	if (!cmd->red)
-		return ;
+		return (-2);
 	exec->tmp_fd = -1;
 	while (cmd->red)
 	{
@@ -55,23 +55,23 @@ void	set_redirections(t_exec *exec, t_command *cmd)
 		else if (cmd->red->type == HEREDOC)
 			exec->tmp_fd = handle_heredoc(cmd);
 		if (exec->tmp_fd == -1)
-			return (ft_printf(2, "%s\n", strerror(errno)), \
-			ft_close(&exec->in), ft_close(&exec->out));
+			return (ft_printf(2, " %s\n", strerror(errno)), \
+			ft_close(&exec->in), ft_close(&exec->out), -1);
 		update_fd(cmd, exec);
 		cmd->red = cmd->red->next;
 	}
+	return (exec->tmp_fd);
 }
 
 void	dup_redirections(t_exec *exec)
 {
-	
 	if (dup2(exec->in, 0) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
 	if (dup2(exec->out, 1) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
-	ft_close(&exec->tmp_fd);
-	ft_close(&exec->in);
-	ft_close(&exec->out);
+	// ft_close(&exec->tmp_fd);
+	// ft_close(&exec->in);
+	// ft_close(&exec->out);
 }
 
 void	set_pipes(t_command *cmd, t_exec *exec)
@@ -81,6 +81,7 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 	if (pipe(exec->pipefd) == -1)
 		return (ft_putendl_fd(strerror(errno), 2));
 	if (exec->keeper > 2)
-		exec->in = exec->keeper;
+		exec->in = dup(exec->keeper);
+	ft_close(&exec->keeper);
 	exec->out = exec->pipefd[1];
 }
