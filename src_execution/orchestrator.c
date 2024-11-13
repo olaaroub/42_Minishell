@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 00:44:39 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/13 06:52:11 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		exec->in = exec->keeper;
 		exec->out = STDOUT_FILENO;
 		set_pipes(cmd, exec);
-		set_redirections(exec, cmd);
+		if (set_redirections(exec, cmd) == -1)
+			return ;
 		if (is_builtin(*cmd->cmd))
 			exec->pid[i++] = piped_builtin(cmd, exec);
 		else
@@ -109,7 +110,7 @@ void	executor(char	**env)
 	{
 		save_fds[0] = dup(0);
 		save_fds[1] = dup(1);
-		execute_builtin(exec, cmd);
+		execute_builtin(exec, cmd, 0);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
 		restore_io(save_fds);
