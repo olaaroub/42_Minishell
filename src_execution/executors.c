@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   executors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
 /*   Updated: 2024/11/13 04:16:21 by hatalhao         ###   ########.fr       */
@@ -86,7 +86,7 @@ void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 	else if (!ft_strcmp(*cmd->cmd, "exit"))
 		ft_exit();
 	else if (!ft_strcmp(*cmd->cmd, "export"))
-		ft_export(cmd->cmd);
+		g_data.ret_value = ft_export(cmd->cmd);
 }
 
 pid_t	piped_builtin(t_command *cmd, t_exec *exec)

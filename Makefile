@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
+#    By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/11/11 15:24:55 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/11/12 22:19:26 by olaaroub         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
