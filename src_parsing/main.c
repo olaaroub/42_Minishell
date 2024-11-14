@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 18:33:44 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:47:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void print_tokens()
 
 void init_data(void)
 {
-	// g_data.env_list = NULL;
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
 	g_data.token_list = NULL;
@@ -52,7 +51,6 @@ void init_data(void)
 	g_data.i = 0;
 	g_data.j = 0;
 }
-
 
 static void free_env_list(void)
 {
@@ -70,18 +68,6 @@ static void free_env_list(void)
 	}
 
 }
-
-// static void	print_env()
-// {
-// 	t_env *tmp;
-
-// 	tmp = g_data.env_list;
-// 	while (tmp)
-// 	{
-// 		printf("name is %s value is %s\n", tmp->name, tmp->value);
-// 		tmp = tmp->next;
-// 	}
-// }
 
 void sig_handler(int signo)
 {
@@ -102,6 +88,27 @@ void sig_handler(int signo)
 		rl_redisplay();
 	}
 
+}
+
+int tokenize(char **line)
+{
+	ft_white_spaces(*line);
+	if (!valid_quotes(*line))
+	{
+		printf("Error: Unclosed quotes detected.\n");
+		g_data.ret_value = 2;
+		ft_free_exit(*line, false);
+		return (-77);
+	}
+	*line = add_space(*line);
+	tokenizing(*line);
+	if (syntax_error() == -1)
+	{
+		g_data.ret_value = 2;
+		ft_free_exit(*line, false);
+		return (-77);
+	}
+	return (0);
 }
 
 int main(int ac, char **av, char **env)
@@ -126,24 +133,8 @@ int main(int ac, char **av, char **env)
 		}
 		if (line && *line)
 			add_history(line);
-		ft_white_spaces(line);
-		if (!valid_quotes(line))
-		{
-			ft_printf(2, "Error: Unclosed quotes detected.\n");
-			g_data.ret_value = 2;
-			ft_free_exit(line, false);
+		if(tokenize(&line) == -77)
 			continue;
-		}
-		line = add_space(line);
-		tokenizing(line);
-		if (syntax_error() == -1)
-		{
-			g_data.ret_value = 2;
-			ft_free_exit(line, false);
-			continue;
-		}
-		expand();
-		split_tokens();
 		fill_command_list();
 		// print_tokens();
 		executor(env);
