@@ -62,6 +62,8 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		else if (cmd_path == NULL)
 		{
 			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			free_trash(&g_data.trash_list);
+			free_env_list();
 			exit (127);
 		}
 		child_proc(cmd, cmd_path, exec, env);

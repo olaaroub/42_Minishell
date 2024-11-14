@@ -19,24 +19,26 @@ int	is_whitespace(int c)
 
 int	ft_isset(char c)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || (c >= '0' && c <= '9'))
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+		|| (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
 }
 
-int is_special_char(char c)
+int	is_special_char(char c)
 {
-	if(c == '$' || c == '@' || c == '*' || c == '#' || c == '-' || c == '!' || ft_isdigit(c))
-		return 1;
-	return 0;
+	if (c == '$' || c == '@' || c == '*' || c == '#' || c == '-' || c == '!'
+		|| ft_isdigit(c))
+		return (1);
+	return (0);
 }
 
-int words_len(char **words)
+int	words_len(char **words)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(words[i])
-        i++;
-    return i;
+	i = 0;
+	while (words[i])
+		i++;
+	return (i);
 }

@@ -6,15 +6,15 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 18:47:54 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:47:56 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_program g_data;
+t_program	g_data;
 
-void print_tokens()
+void	print_tokens(void)
 {
 	t_command	*token;
 	t_redir		*redirection;
@@ -33,7 +33,8 @@ void print_tokens()
 		}
 		while (redirection)
 		{
-			printf(" type is %d file name is %s\n", token->red->type, token->red->file_name);
+			printf(" type is %d file name is %s\n", token->red->type,
+				token->red->file_name);
 			redirection = redirection->next;
 		}
 		token = token->next;
@@ -41,7 +42,7 @@ void print_tokens()
 	}
 }
 
-void init_data(void)
+static void	init_data(void)
 {
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
@@ -52,24 +53,7 @@ void init_data(void)
 	g_data.j = 0;
 }
 
-static void free_env_list(void)
-{
-	t_env	*tmp;
-
-	tmp = g_data.env_list;
-	while(tmp)
-	{
-		free(tmp->line);
-		free(tmp->name);
-		free(tmp->value);
-		tmp = tmp->next;
-		free(g_data.env_list);
-		g_data.env_list = tmp;
-	}
-
-}
-
-void sig_handler(int signo)
+void	sig_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
@@ -81,16 +65,14 @@ void sig_handler(int signo)
 	}
 	else if (signo == SIGQUIT)
 	{
-		// free_exec(g_data.exec); will need to add this to the global struct
 		signal(SIGQUIT, SIG_IGN);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-
 }
 
-int tokenize(char **line)
+static int	tokenize(char **line)
 {
 	ft_white_spaces(*line);
 	if (!valid_quotes(*line))
@@ -111,9 +93,9 @@ int tokenize(char **line)
 	return (0);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-	char *line;
+	char	*line;
 
 	(void)ac;
 	(void)av;
@@ -125,20 +107,18 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{
 		init_data();
-		line = readline("Minihell==>>$ ");
-		if(!line)
-		{
-			ft_printf(1, "exit\n");
-			exit(1);
-		}
+		line = readline(YELLOW "<>Minihell<>=>>$ " RESET);
+		if (!line)
+			return (free_env_list(), printf("exit\n"), 0);
 		if (line && *line)
 			add_history(line);
-		if(tokenize(&line) == -77)
-			continue;
+		if (tokenize(&line) == -77)
+			continue ;
 		fill_command_list();
-		// print_tokens();
+		print_tokens();
+		free(line);
 		executor(env);
-		ft_free_exit(line, false);
+		free_trash(&g_data.trash_list);
 	}
 	free_env_list();
 }

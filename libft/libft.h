@@ -13,6 +13,8 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "../inc/minishell.h"
+# include "ft_printf/ft_printf.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <stdarg.h>
@@ -21,8 +23,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include "ft_printf/ft_printf.h"
-#include "../inc/minishell.h"
 
 //==== LIBFT ===//
 
@@ -85,8 +85,8 @@ char				*ft_costume_strchr(const char *str, int c);
 int					ft_abs(int n);
 int					is_whitespace(int c);
 int					ft_isset(char c);
-int 				is_special_char(char c);
-int 				words_len(char **words);
+int					is_special_char(char c);
+int					words_len(char **words);
 
 //==== GET_NEXT_LINE ===//
 char				*get_next_line(int fd);

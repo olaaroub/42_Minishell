@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:10:08 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/10/31 18:13:04 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:05:02 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_env	*ft_add_env(t_env **head, char *env)
 
 void	get_env(t_env **env_list, char **env)
 {
-	int i;
+	int	i;
 
 	*env_list = NULL;
 	i = -1;

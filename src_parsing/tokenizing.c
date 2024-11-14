@@ -32,8 +32,8 @@ static t_tokens	*token_node(char *word, int type, bool ambg, char *dollar)
 
 static t_tokens	*ft_add_token(char *word, int type, bool ambg, char *dollar)
 {
-	t_tokens *new;
-	t_tokens *temp;
+	t_tokens	*new;
+	t_tokens	*temp;
 
 	new = token_node(word, type, ambg, dollar);
 	if (!new)

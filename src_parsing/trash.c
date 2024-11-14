@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trash.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 12:53:19 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 19:02:36 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:07:29 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	free_trash(t_trash **head)
 	{
 		tmp = *head;
 		*head = (*head)->next;
-		if(tmp->address)
+		if (tmp->address)
 			free(tmp->address);
 		free(tmp);
 	}
