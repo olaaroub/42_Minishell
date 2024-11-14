@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 06:52:11 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:42:21 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	cmd_count(void)
 	return (i);
 }
 
-void	final_curtain(int *save_fds, t_exec *exec)
+void	final_curtain(t_exec *exec)
 {
 	int	i;
 	int	count;
@@ -40,8 +40,6 @@ void	final_curtain(int *save_fds, t_exec *exec)
 		g_data.ret_value = WEXITSTATUS(g_data.ret_value);
 	else if (WIFSIGNALED(g_data.ret_value))
 		g_data.ret_value = WTERMSIG(g_data.ret_value) + 128;
-	close(save_fds[0]);
-	close(save_fds[1]);
 }
 
 void	prepare_input(t_command *cmd, t_exec *exec, char **env)
@@ -49,26 +47,41 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 	int		save_fds[2];
 	int		i;
 
+	int save = 0;
 	i = 0;
 	save_fds[0] = dup(0);
 	save_fds[1] = dup(1);
 	while (cmd)
 	{
-		exec->in = exec->keeper;
+		exec->in = save;
 		exec->out = STDOUT_FILENO;
 		set_pipes(cmd, exec);
 		if (set_redirections(exec, cmd) == -1)
-			return ;
-		if (is_builtin(*cmd->cmd))
-			exec->pid[i++] = piped_builtin(cmd, exec);
+		{
+			ft_close(&exec->pipefd[0]);
+			ft_close(&exec->pipefd[1]);
+			cmd = cmd->next;
+			continue ;
+		}
+		exec->pid[i++] = execute_cmd(cmd, exec, env);
+		if (!cmd->next)
+		{
+			close(save);
+			close(exec->keeper);
+			close(exec->pipefd[0]);
+		}
 		else
-			exec->pid[i++] = execute_cmd(cmd, exec, env);
+		{
+			save = dup(exec->pipefd[0]);
+			close(exec->pipefd[0]);
+		}
 		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
-		update(cmd, exec);
 		cmd = cmd->next;
 	}
-	final_curtain(save_fds, exec);
+	final_curtain(exec);
+	close(save_fds[0]);
+	close(save_fds[1]);
 }
 
 t_exec	*init_exec(void)
@@ -108,7 +121,7 @@ void	executor(char	**env)
 	{
 		save_fds[0] = dup(0);
 		save_fds[1] = dup(1);
-		execute_builtin(exec, cmd, 0);
+		execute_builtin(exec, cmd, 1);
 		if (entry_found("_"))
 			update_var("_", *cmd->cmd);
 		restore_io(save_fds);

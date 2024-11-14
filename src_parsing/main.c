@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 06:50:58 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:33:44 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,15 @@ int main(int ac, char **av, char **env)
 		line = readline("Minihell==>>$ ");
 		if(!line)
 		{
-			printf("exit\n");
-			exit(0);
+			ft_printf(1, "exit\n");
+			exit(1);
 		}
 		if (line && *line)
 			add_history(line);
 		ft_white_spaces(line);
 		if (!valid_quotes(line))
 		{
-			printf("Error: Unclosed quotes detected.\n");
+			ft_printf(2, "Error: Unclosed quotes detected.\n");
 			g_data.ret_value = 2;
 			ft_free_exit(line, false);
 			continue;

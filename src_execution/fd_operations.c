@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 04:06:45 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:31:40 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 	exec->tmp_fd = -1;
 	while (cmd->red)
 	{
-		if (access("/tmp/heredoc_", F_OK) == 0)
-			unlink("/tmp/heredoc_");
 		if (cmd->red->type == INPUT)
 			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)
@@ -54,6 +52,8 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 			O_CREAT | O_RDWR | O_APPEND, 0644);
 		else if (cmd->red->type == HEREDOC)
 			exec->tmp_fd = handle_heredoc(cmd);
+		else if (cmd->red->type == AMBIG)
+			return (-1);
 		if (exec->tmp_fd == -1)
 			return (ft_printf(2, " %s\n", strerror(errno)), \
 			ft_close(&exec->in), ft_close(&exec->out), -1);
@@ -80,8 +80,5 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 		return ;
 	if (pipe(exec->pipefd) == -1)
 		return (ft_putendl_fd(strerror(errno), 2));
-	if (exec->keeper > 2)
-		exec->in = dup(exec->keeper);
-	ft_close(&exec->keeper);
 	exec->out = exec->pipefd[1];
 }
