@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 19:25:58 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:42:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,17 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	if (pid == 0)
 	{
-		if (cmd_path == NULL)
+		if(!ft_strcmp(*cmd->cmd, "echo"))
+		{
+			ft_echo();
+			exit(0);		
+		}
+		else if (is_builtin(*cmd->cmd))
+		{
+			ft_close(&exec->pipefd[0]);
+			piped_builtin(cmd, exec);
+		}
+		else if (cmd_path == NULL)
 		{
 			ft_printf(2, "%s: command not found\n", *cmd->cmd);
 			free_trash(&g_data.trash_list);
@@ -91,23 +101,21 @@ void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 		g_data.ret_value = ft_export(cmd->cmd);
 }
 
-pid_t	piped_builtin(t_command *cmd, t_exec *exec)
+void	piped_builtin(t_command *cmd, t_exec *exec)
 {
-	pid_t	pid;
+	// pid_t	pid;
 
-	pid = fork();
-	if (pid == -1)
-		ft_printf(2, "fork: %s\n", strerror(errno));
-	else if (!pid)
-	{
-		execute_builtin(exec, cmd, 1);
-		free_trash(&g_data.trash_list);
-		free_env_list();
+	// pid = fork();
+	// if (pid == -1)
+	// 	ft_printf(2, "fork: %s\n", strerror(errno));
+	// else if (!pid)
+	// {
+		execute_builtin(exec, cmd, 0);
 		exit(g_data.ret_value);
-	}
-	ft_close(&exec->in);
-	ft_close(&exec->tmp_fd);
-	ft_close(&exec->out);
-	ft_close(&exec->pipefd[1]);
-	return (pid);
+	// }
+	// ft_close(&exec->in);
+	// ft_close(&exec->tmp_fd);
+	// ft_close(&exec->out);
+	// ft_close(&exec->pipefd[1]);
+	// return (pid);
 }
