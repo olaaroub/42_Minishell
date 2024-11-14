@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:44:35 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/16 12:24:05 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:59:20 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,56 +40,34 @@ static char	*escape_quotes(char *line)
 
 int	word_lenght(char *line)
 {
-	int	d_quotes;
-	int	s_quotes;
 	int	i;
 
-	d_quotes = 0;
-	s_quotes = 0;
 	i = 0;
-	while (line[i] && !isspace(line[i]))
+	while (line[i] && !is_whitespace(line[i]))
 	{
 		if (line[i] == 34)
-		{
-			while (line[i])
-			{
-				if (line[i] == 34)
-					d_quotes++;
-				i++;
-				if (d_quotes % 2 == 0)
-					break ;
-			}
-		}
+			skip_d_quotes(line, &i);
 		else if (line[i] == 39)
-		{
-			while (line[i])
-			{
-				if (line[i] == 39)
-					s_quotes++;
-				i++;
-				if (s_quotes % 2 == 0)
-					break ;
-			}
-		}
+			skip_s_quotes(line, &i);
 		else
 			i++;
 	}
 	return (i);
 }
 
-int	count_words(char *line)
+static int	count_words(char *line)
 {
 	int	count;
 
 	count = 0;
 	while (*line)
 	{
-		while (*line && isspace(*line))
+		while (*line && is_whitespace(*line))
 			line++;
-		if (*line && !isspace(*line))
+		if (*line && !is_whitespace(*line))
 		{
 			count++;
-			while (*line && !isspace(*line))
+			while (*line && !is_whitespace(*line))
 			{
 				if (*line == 34 || *line == 39)
 					line = escape_quotes(line);
@@ -109,7 +87,7 @@ static char	**fill_strings(char *line, char **result, int count)
 	k = 0;
 	while (k < count && *line)
 	{
-		while (isspace(*line) && *line)
+		while (is_whitespace(*line) && *line)
 			line++;
 		l = word_lenght(line);
 		result[k] = (char *)malloc((l + 1) * sizeof(char));

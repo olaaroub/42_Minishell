@@ -28,8 +28,8 @@ t_command	*command_node(char **commands, t_redir *redir)
 
 t_command	*ft_add_command(t_command **head, char **commands, t_redir *redir)
 {
-	t_command *new;
-	t_command *temp;
+	t_command	*new;
+	t_command	*temp;
 
 	new = command_node(commands, redir);
 	if (!new)
@@ -60,8 +60,8 @@ t_redir	*redir_node(char *file_name, int type)
 
 t_redir	*ft_add_redir(t_redir **head, char *file_name, int type)
 {
-	t_redir *new;
-	t_redir *temp;
+	t_redir	*new;
+	t_redir	*temp;
 
 	new = redir_node(file_name, type);
 	if (!new)

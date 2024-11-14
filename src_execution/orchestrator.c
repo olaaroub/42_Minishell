@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 18:31:29 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:13:24 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	final_curtain(int *save_fds, t_exec *exec)
 
 void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 {
-	int		save_fds[2];
-	int		i;
+	int	save_fds[2];
+	int	i;
 
 	i = 0;
 	save_fds[0] = dup(0);
@@ -73,13 +73,13 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 
 t_exec	*init_exec(void)
 {
-	t_exec		*exec;
-	int			count;
-	int			i;
+	t_exec	*exec;
+	int		count;
+	int		i;
 
 	i = 0;
 	count = cmd_count();
-	exec = malloc (sizeof(t_exec));
+	exec = malloc(sizeof(t_exec));
 	if (!exec)
 		exit(EXIT_FAILURE);
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec);
@@ -87,25 +87,28 @@ t_exec	*init_exec(void)
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths);
 	while (exec->paths && exec->paths[i])
 		g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths[i++]);
-	exec->pid = malloc (sizeof(pid_t) * count);
+	exec->pid = malloc(sizeof(pid_t) * count);
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->pid);
 	exec->in = 0;
 	exec->out = 1;
 	exec->keeper = 0;
 	exec->tmp_fd = -1;
-	exec->pipefd[0] = -1; /* this fixes the error (Conditional jump or move depends on uninitialised value)*/
-	exec->pipefd[1] = -1; 
+	exec->pipefd[0] = -1; /* this fixes the error : (Conditional jump or move
+	depends on uninitialised value) */
+	exec->pipefd[1] = -1;
 	return (exec);
 }
 
-void	executor(char	**env)
+void	executor(char **env)
 {
 	t_command	*cmd;
 	t_exec		*exec;
 	int			save_fds[2];
 
-	if(!g_data.command_list || !g_data.command_list->cmd || !*g_data.command_list->cmd)
-		return ; // without this check, the program displays (null): Bad address when entering smtn like $C
+	if (!g_data.command_list || !g_data.command_list->cmd
+		|| !*g_data.command_list->cmd)
+		return ;/* without this check,the program displays
+		 (null): Bad address when entering smtn like $C */
 	exec = init_exec();
 	cmd = g_data.command_list;
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
