@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/13 22:55:30 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:49:49 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ static void	dollar_expansion(char *word, int *i, int fd)
 	}
 }
 
-static char	*expand_heredoc(char *word)
+static char	*expand_heredoc(char *word, char *delimiter)
 {
 	int		i;
 	int		fd;
 	char	*expanded_word;
 
 	i = 0;
+	if(!ft_strcmp(word, delimiter))
+		return (word);
 	fd = open("file2.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (word && word[i])
 	{
@@ -72,9 +74,9 @@ void	fill_heredoc(int fd, char *delimiter)
 		line = readline("> ");
 		if (!line)
 			exit(0);
-		line = expand_heredoc(line);
+		line = expand_heredoc(line, delimiter);
 		if (line && !ft_strcmp(line, delimiter))
-			return (free(line), exit(0));
+			return (free_env_list(), free(line), free_trash(&g_data.trash_list),exit(0));
 		ft_putendl_fd(line, fd);
 		free(line);
 	}

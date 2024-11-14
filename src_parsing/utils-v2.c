@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 00:08:03 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 11:59:26 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:38:52 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	skip_d_quotes(char *line, int *i)
 	{
 		if (line[(*i)] == 34)
 			d_quotes++;
-		i++;
+		(*i)++;
 		if (d_quotes % 2 == 0)
 			break ;
 	}
