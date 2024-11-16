@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:12:04 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 06:23:59 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/16 07:01:39 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_exit(void)
 	cmd = g_data.command_list->cmd;
 	status = 0;
 	if (!cmd[1])
-		exit(status);
+		return (free_alloc(), exit(status));
 	if (cmd[2])
 	{
 		g_data.ret_value = 1;
@@ -51,12 +51,12 @@ void	ft_exit(void)
 	if (all_digits(cmd[1]))
 		arg = ft_atoi(cmd[1]);
 	else
-		return (ft_printf(2, \
+		return (free_alloc(), ft_printf(2, \
 		"exit: %s: numeric argument required\n", cmd[1]), exit(2));
 	if (is_integer(arg))
 		status = arg;
 	else
 		status = 2;
-	free_trash(&g_data.trash_list);
+	free_alloc();
 	exit(status);
 }

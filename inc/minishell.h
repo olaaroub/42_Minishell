@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 17:39:43 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/16 06:51:08 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,8 @@ void					restore_io(int *saved);
 /*				cleaning.c		*/
 void					free_arr(char **arr);
 void					free_exec(t_exec *exec);
+void					free_alloc(void);
+
 
 /*				DEBUGGER		*/
 void					assist(void);

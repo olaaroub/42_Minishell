@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 15:47:56 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/15 21:54:10 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	main(int ac, char **av, char **env)
 		if (tokenize(&line) == -77)
 			continue ;
 		fill_command_list();
-		print_tokens();
+		// print_tokens();
 		free(line);
 		executor(env);
 		free_trash(&g_data.trash_list);

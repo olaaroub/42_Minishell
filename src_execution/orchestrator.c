@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   orchestrator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/14 18:42:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/16 07:19:19 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 {
 	int	save_fds[2];
 	int	i;
+	int save;
 
-	int save = 0;
+	save = 0;
 	i = 0;
 	save_fds[0] = dup(0);
 	save_fds[1] = dup(1);
@@ -58,6 +59,7 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		set_pipes(cmd, exec);
 		if (set_redirections(exec, cmd) == -1)
 		{
+			ft_close(&save);
 			ft_close(&exec->pipefd[0]);
 			ft_close(&exec->pipefd[1]);
 			cmd = cmd->next;
@@ -66,14 +68,16 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		exec->pid[i++] = execute_cmd(cmd, exec, env);
 		if (!cmd->next)
 		{
-			close(save);
-			close(exec->keeper);
-			close(exec->pipefd[0]);
+			ft_close(&exec->in);
+			ft_close(&save);
+			ft_close(&exec->pipefd[0]);
+			ft_close(&exec->pipefd[1]);
 		}
 		else
 		{
+			ft_close(&exec->in);
 			save = dup(exec->pipefd[0]);
-			close(exec->pipefd[0]);
+			ft_close(&exec->pipefd[0]);
 		}
 		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
@@ -104,10 +108,8 @@ t_exec	*init_exec(void)
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->pid);
 	exec->in = 0;
 	exec->out = 1;
-	exec->keeper = 0;
 	exec->tmp_fd = -1;
-	exec->pipefd[0] = -1; /* this fixes the error : (Conditional jump or move
-	depends on uninitialised value) */
+	exec->pipefd[0] = -1;
 	exec->pipefd[1] = -1;
 	return (exec);
 }
@@ -118,12 +120,14 @@ void	executor(char **env)
 	t_exec		*exec;
 	int			save_fds[2];
 
-	if (!g_data.command_list || !g_data.command_list->cmd
-		|| !*g_data.command_list->cmd)
-		return ;/* without this check,the program displays
-		 (null): Bad address when entering smtn like $C */
 	exec = init_exec();
 	cmd = g_data.command_list;
+	if (cmd && !*cmd->cmd && cmd->red->type == HEREDOC)
+	{
+		handle_heredoc(cmd);
+		g_data.ret_value = 0;
+		return ;
+	}
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
 	{
 		save_fds[0] = dup(0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/14 15:49:49 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/16 05:13:26 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	fill_heredoc(int fd, char *delimiter)
 			exit(0);
 		line = expand_heredoc(line, delimiter);
 		if (line && !ft_strcmp(line, delimiter))
-			return (free_env_list(), free(line), free_trash(&g_data.trash_list),exit(0));
+			return (free_env_list(), free(line), free_trash(&g_data.trash_list), exit(0));
 		ft_putendl_fd(line, fd);
 		free(line);
 	}
