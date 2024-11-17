@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 05:37:22 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 23:51:19 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	}
 }
 
-pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env, int save)
+pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 {
 	pid_t	pid;
 	char	*cmd_path;
@@ -50,10 +50,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env, int save)
 		if (is_builtin(*cmd->cmd))
 		{
 			ft_close(&exec->in);
-			ft_close(&save);
-			exec->in = STDIN_FILENO;
-			printf("exec->in: %d\n", exec->in);
-			printf("exec->out: %d\n", exec->out);
+			exec->in = 0;
 			execute_builtin(exec, cmd, 0);
 			exit(g_data.ret_value);
 		}
@@ -67,7 +64,6 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env, int save)
 		else
 			child_proc(cmd, cmd_path, exec, env);
 	}
-	// ft_close(&exec->tmp_fd);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
 	free(cmd_path);
@@ -82,8 +78,8 @@ void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 		if (cmd->red)
 			if (set_redirections(exec, cmd) == -1)
 				return ;
-		dup_redirections(exec);
 	}
+	dup_redirections(exec);
 	if (!ft_strcmp(*cmd->cmd, "cd"))
 		ft_cd();
 	else if (!ft_strcmp(*cmd->cmd, "pwd"))
@@ -93,7 +89,7 @@ void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 	else if (!ft_strcmp(*cmd->cmd, "unset"))
 		ft_unset();
 	else if (!ft_strcmp(*cmd->cmd, "echo"))
-		ft_echo();
+		ft_echo(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "exit"))
 		ft_exit();
 	else if (!ft_strcmp(*cmd->cmd, "export"))

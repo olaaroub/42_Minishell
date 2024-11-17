@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/17 05:37:35 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 23:40:24 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ char					*get_cmd_path(t_command *cmd, char **paths);
 
 /*				executors.c		*/
 void					execute_builtin(t_exec *exec, t_command *cmd, int flag);
-pid_t					execute_cmd(t_command *cmd, t_exec *exec, char **env, int save);
+pid_t					execute_cmd(t_command *cmd, t_exec *exec, char **env);
 void					piped_builtin(t_command *cmd, t_exec *exec);
 // pid_t					piped_builtin(t_command *cmd, t_exec *exec);
 
@@ -228,7 +228,7 @@ void					ft_cd(void);
 void					ft_pwd(void);
 void					ft_env(void);
 void					ft_unset(void);
-void					ft_echo(void);
+void					ft_echo(t_command *cmd);
 void					ft_exit(void);
 int						ft_export(char **cmd);
 

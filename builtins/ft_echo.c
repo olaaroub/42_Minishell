@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 01:48:59 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 23:30:40 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,16 @@ void	print_input(char **cmd, int j)
 			ft_printf(1, " ");
 	}
 }
-
-void	ft_echo(void)
+void	ft_echo(t_command *cmd)
 {
-	char	**cmd;
 	int		i;
 	bool	newline;
 
-	cmd = g_data.command_list->cmd;
 	i = 1;
 	newline = 1;
-	while (cmd[i] && valid_option(cmd[i++]))
+	while (cmd->cmd[i] && valid_option(cmd->cmd[i++]))
 		newline = 0;
-	print_input(cmd, i - 1);
+	print_input(cmd->cmd, i - 1);
 	if (newline)
 		ft_printf(1, "\n");
 	g_data.ret_value = 0;
