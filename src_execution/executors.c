@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/16 06:40:55 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 05:37:22 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	}
 }
 
-pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
+pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env, int save)
 {
 	pid_t	pid;
 	char	*cmd_path;
@@ -49,6 +49,11 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		ft_close(&exec->pipefd[0]);
 		if (is_builtin(*cmd->cmd))
 		{
+			ft_close(&exec->in);
+			ft_close(&save);
+			exec->in = STDIN_FILENO;
+			printf("exec->in: %d\n", exec->in);
+			printf("exec->out: %d\n", exec->out);
 			execute_builtin(exec, cmd, 0);
 			exit(g_data.ret_value);
 		}
@@ -62,7 +67,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		else
 			child_proc(cmd, cmd_path, exec, env);
 	}
-	ft_close(&exec->tmp_fd);
+	// ft_close(&exec->tmp_fd);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
 	free(cmd_path);

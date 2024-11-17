@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+         #
+#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/11/14 15:39:32 by olaaroub         ###   ########.fr        #
+#    Updated: 2024/11/17 02:00:10 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-# CFLAGS += -fsanitize=address -g3
+CFLAGS += -fsanitize=address -g3
 MAKEFLAGS := -j
 
 # SRC = src_parsing/main.c src_parsing/get_env.c src_parsing/trash.c src_parsing/split_mgem7a.c

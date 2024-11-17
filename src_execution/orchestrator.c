@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/16 07:19:19 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 05:37:11 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 			cmd = cmd->next;
 			continue ;
 		}
-		exec->pid[i++] = execute_cmd(cmd, exec, env);
+		exec->pid[i++] = execute_cmd(cmd, exec, env, save);
 		if (!cmd->next)
 		{
 			ft_close(&exec->in);

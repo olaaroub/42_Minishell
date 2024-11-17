@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/16 07:05:49 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 01:48:59 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void	ft_echo(void)
 	print_input(cmd, i - 1);
 	if (newline)
 		ft_printf(1, "\n");
+	g_data.ret_value = 0;
 }

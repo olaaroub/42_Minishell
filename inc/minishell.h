@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/16 06:51:08 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 05:37:35 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ char					*get_cmd_path(t_command *cmd, char **paths);
 
 /*				executors.c		*/
 void					execute_builtin(t_exec *exec, t_command *cmd, int flag);
-pid_t					execute_cmd(t_command *cmd, t_exec *exec, char **env);
+pid_t					execute_cmd(t_command *cmd, t_exec *exec, char **env, int save);
 void					piped_builtin(t_command *cmd, t_exec *exec);
 // pid_t					piped_builtin(t_command *cmd, t_exec *exec);
 

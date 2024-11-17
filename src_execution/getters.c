@@ -6,11 +6,25 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:18:30 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 01:44:56 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/17 02:19:26 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+t_env	*get_env_node(char *to_find)
+{
+	t_env	*iter;
+
+	iter = g_data.env_list;
+	while (iter && to_find)
+	{
+		if (!ft_strcmp(iter->name, to_find))
+			return (iter);
+		iter = iter->next;
+	}
+	return (NULL);
+}
 
 char	*get_cmd_path(t_command *cmd, char	**paths)
 {
@@ -39,7 +53,7 @@ char	*get_cmd_path(t_command *cmd, char	**paths)
 
 char	**get_paths(void)
 {
-	if (!entry_found("PATH") || !get_env_node("PATH"))
+	if (!entry_found("PATH"))
 		return (NULL);
 	return (ft_split(get_env_node("PATH")->value, ':'));
 }
