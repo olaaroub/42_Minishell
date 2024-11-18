@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_v2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/18 00:37:50 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:39:02 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,41 @@ static void	process_tokens(t_tokens *tmp, int fd)
 	}
 }
 
+char *get_filename(void)
+{
+	char *filename;
+	char rand[6];
+	int tmp_fd;
+
+	tmp_fd = open("/dev/urandom", O_RDONLY);
+	read(tmp_fd, rand, 5);
+	rand[5] = '\0';
+	close(tmp_fd);
+	filename = ft_strjoin("/tmp/", rand);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
+	return (filename);
+}
+
 void	expand(void)
 {
 	t_tokens	*tmp;
 	int			fd;
+	char *filename;
 
 	tmp = g_data.token_list;
+	filename = get_filename();
 	while (tmp)
 	{
-		fd = open("file.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
+		fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		process_tokens(tmp, fd);
 		close(fd);
-		fd = open("file.txt", O_RDONLY);
+		fd = open(filename, O_RDONLY);
 		tmp->word = get_next_line(fd);
 		check_ambiguous(tmp);
 		if (tmp->word)
 			g_data.trash_list = ft_add_trash(&g_data.trash_list, tmp->word);
 		close(fd);
-		unlink("file.txt");
+		unlink(filename);
 		tmp = tmp->next;
 	}
 }

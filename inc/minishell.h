@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/18 03:35:13 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:55:04 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <sys/types.h>
 # include <wait.h>
 
+#define RED "\033[31m"
+#define ITALIC "\033[3m"
 # define RESET "\033[0m"
 # define YELLOW "\033[33m"
 
