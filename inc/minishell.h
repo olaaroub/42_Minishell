@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/17 23:40:24 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:35:13 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,8 @@ int						handle_special_chars2(char *word, int *i, int fd);
 /*				io_ops.c		*/
 void					update(t_command *cmd, t_exec *exec);
 void					restore_io(int *saved);
+int	exit_stat(int stat)
+;
 
 /*				cleaning.c		*/
 void					free_arr(char **arr);
@@ -224,12 +226,12 @@ void					free_alloc(void);
 void					assist(void);
 
 /*				BUILTINS		*/
-void					ft_cd(void);
+void					ft_cd(t_command *cmd);
 void					ft_pwd(void);
 void					ft_env(void);
-void					ft_unset(void);
+void					ft_unset(t_command *cmd);
 void					ft_echo(t_command *cmd);
-void					ft_exit(void);
+void					ft_exit(t_command *cmd);
 int						ft_export(char **cmd);
 
 extern t_program		g_data;

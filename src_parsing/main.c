@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/17 23:38:02 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:54:16 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,7 @@ void	sig_handler(int signo)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_data.ret_value = 130;
-	}
-	else if (signo == SIGQUIT)
-	{
-		signal(SIGQUIT, SIG_IGN);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		g_data.ret_value = 1;
 	}
 }
 
@@ -101,13 +94,15 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	line = NULL;
 	get_env(&g_data.env_list, env);
-	signal(SIGQUIT, sig_handler);
-	signal(SIGINT, sig_handler);
+	
 	g_data.ret_value = 0;
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, sig_handler);
 		init_data();
-		line = readline(YELLOW "<>Minihell<>=>>$ " RESET);
+		line = readline("Minishell~> ");
+		signal(SIGINT, SIG_IGN);
 		if (!line)
 			return (free_env_list(), printf("exit\n"), 0);
 		if (line && *line)
@@ -115,7 +110,7 @@ int	main(int ac, char **av, char **env)
 		if (tokenize(&line) == -77)
 			continue ;
 		fill_command_list();
-		// print_tokens();
+		print_tokens();
 		free(line);
 		executor(env);
 		free_trash(&g_data.trash_list);

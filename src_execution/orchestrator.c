@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 23:40:53 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 01:30:44 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,40 @@ int	cmd_count(void)
 	}
 	return (i);
 }
-
-void	final_curtain(t_exec *exec)
+int	exit_stat(int stat)
 {
-	int	i;
-	int	count;
+	if (WIFEXITED(stat))
+		return (WEXITSTATUS(stat));
+	else if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGINT)
+		return (1);
+	else if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGQUIT)
+		return (131);
+	return (1);
+}
 
-	i = 0;
-	count = cmd_count();
-	while (i < count)
-		waitpid(exec->pid[i++], &g_data.ret_value, 0);
-	if (WIFEXITED(g_data.ret_value))
-		g_data.ret_value = WEXITSTATUS(g_data.ret_value);
-	else if (WIFSIGNALED(g_data.ret_value))
-		g_data.ret_value = WTERMSIG(g_data.ret_value) + 128;
+static void	final(int pid)
+{
+	// int	i;
+	// int	count;
+	int	status;
+
+	// i = 0;
+	// count = cmd_count();
+	waitpid(pid, &status, 0);
+	while (wait(NULL) != -1)
+			;
+	g_data.ret_value = exit_stat(status);
 }
 
 void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 {
 	int	save_fds[2];
-	int	i;
+	// int	i;
 	int save;
+	int pid;
 
 	save = 0;
-	i = 0;
+	// i = 0;
 	save_fds[0] = dup(0);
 	save_fds[1] = dup(1);
 	while (cmd)
@@ -65,7 +75,7 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 			cmd = cmd->next;
 			continue ;
 		}
-		exec->pid[i++] = execute_cmd(cmd, exec, env);
+		pid = execute_cmd(cmd, exec, env);
 		if (!cmd->next)
 		{
 			ft_close(&exec->in);
@@ -83,7 +93,8 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		dup2(save_fds[1], 1);
 		cmd = cmd->next;
 	}
-	final_curtain(exec);
+	
+	final(pid); // wit 
 	close(save_fds[0]);
 	close(save_fds[1]);
 }
@@ -122,7 +133,7 @@ void	executor(char **env)
 
 	exec = init_exec();
 	cmd = g_data.command_list;
-	if (cmd && !*cmd->cmd && cmd->red->type == HEREDOC)
+	if (cmd && !cmd->cmd && !*cmd->cmd && cmd->red->type == HEREDOC)
 	{
 		handle_heredoc(cmd);
 		g_data.ret_value = 0;

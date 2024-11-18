@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:12:04 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/16 07:01:39 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:34:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,24 @@ int	is_integer(long nb)
 	return (nb >= INT_MIN && nb <= INT_MAX);
 }
 
-void	ft_exit(void)
+void	ft_exit(t_command *cmd)
 {
 	unsigned char	status;
 	long			arg;
-	char			**cmd;
 
-	cmd = g_data.command_list->cmd;
 	status = 0;
-	if (!cmd[1])
+	if (!cmd->cmd[1])
 		return (free_alloc(), exit(status));
-	if (cmd[2])
+	if (cmd->cmd[2])
 	{
 		g_data.ret_value = 1;
 		return (ft_putstr_fd(" too many arguments\n", 2));
 	}
-	if (all_digits(cmd[1]))
-		arg = ft_atoi(cmd[1]);
+	if (all_digits(cmd->cmd[1]))
+		arg = ft_atoi(cmd->cmd[1]);
 	else
 		return (free_alloc(), ft_printf(2, \
-		"exit: %s: numeric argument required\n", cmd[1]), exit(2));
+		"exit: %s: numeric argument required\n", cmd->cmd[1]), exit(2));
 	if (is_integer(arg))
 		status = arg;
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_v2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 22:53:45 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/18 00:37:50 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	handle_special_chars(t_tokens *tmp, int *i, int fd)
 				&& g_data.single_flag == false)
 			|| (g_data.double_flag == true)))
 	{
-		ft_putstr_fd(ft_itoa(g_data.ret_value), fd);
+		ft_putnbr_fd(g_data.ret_value, fd);
 		*i += 2;
 	}
 	else

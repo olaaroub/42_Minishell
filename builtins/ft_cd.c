@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:45 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 02:18:43 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:27:45 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,11 @@ char	*to_go(t_command *cmd, char *path)
 	return (path);
 }
 
-void	ft_cd(void)
+void	ft_cd(t_command *cmd)
 {
 	char		*path;
-	t_command	*cmd;
 
 	path = 0;
-	cmd = g_data.command_list;
 	path = to_go(cmd, path);
 	if (!path)
 		return ;

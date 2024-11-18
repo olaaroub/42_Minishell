@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 23:51:19 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:29:50 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		ft_close(&exec->pipefd[0]);
 		if (is_builtin(*cmd->cmd))
 		{
@@ -81,17 +83,17 @@ void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 	}
 	dup_redirections(exec);
 	if (!ft_strcmp(*cmd->cmd, "cd"))
-		ft_cd();
+		ft_cd(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "pwd"))
 		ft_pwd();
 	else if (!ft_strcmp(*cmd->cmd, "env"))
 		ft_env();
 	else if (!ft_strcmp(*cmd->cmd, "unset"))
-		ft_unset();
+		ft_unset(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "echo"))
 		ft_echo(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "exit"))
-		ft_exit();
+		ft_exit(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "export"))
 		g_data.ret_value = ft_export(cmd->cmd);
 }
