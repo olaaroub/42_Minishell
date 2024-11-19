@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:12:04 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/18 03:34:27 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 06:22:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void	ft_exit(t_command *cmd)
 	if (all_digits(cmd->cmd[1]))
 		arg = ft_atoi(cmd->cmd[1]);
 	else
-		return (free_alloc(), ft_printf(2, \
-		"exit: %s: numeric argument required\n", cmd->cmd[1]), exit(2));
+		return (ft_printf(2, \
+		"exit: %s: numeric argument required\n", cmd->cmd[1]), \
+		free_alloc(), exit(2));
 	if (is_integer(arg))
 		status = arg;
 	else

@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 04:20:38 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 06:38:15 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	sig_handler(int signo)
 	if (signo == SIGINT)
 	{
 		printf("\n");
-		ft_printf(1, RED BOLD" %d "RESET, g_data.ret_value);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
