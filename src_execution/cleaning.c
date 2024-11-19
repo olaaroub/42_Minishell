@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:35:17 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/16 06:51:04 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 01:24:03 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	free_exec(t_exec *exec)
 	if (!exec)
 		return ;
 	free_arr (exec->paths);
-	free (exec->pid);
 	free (exec);
 }
 

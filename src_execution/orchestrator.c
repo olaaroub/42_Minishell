@@ -6,26 +6,30 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/18 01:30:44 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 05:54:37 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-int	cmd_count(void)
+void	pipeline(t_command *cmd, t_exec *exec)
 {
-	t_command	*cmd;
-	int			i;
-
-	i = 0;
-	cmd = g_data.command_list;
-	while (cmd)
-	{
-		i++;
-		cmd = cmd->next;
-	}
-	return (i);
+	if (!cmd->next)
+		return ;
+	ft_close(&exec->in);
+	exec->save = dup(exec->pipefd[0]);
+	ft_close(&exec->pipefd[0]);
 }
+
+void	last_cmd(t_command *cmd, t_exec *exec)
+{
+	if (cmd->next)
+		return ;
+	ft_close(&exec->in);
+	ft_close(&exec->save);
+	ft_close(&exec->pipefd[0]);
+	ft_close(&exec->pipefd[1]);	
+}
+
 int	exit_stat(int stat)
 {
 	if (WIFEXITED(stat))
@@ -37,87 +41,62 @@ int	exit_stat(int stat)
 	return (1);
 }
 
-static void	final(int pid)
+static void	final(int *save_fds, int pid)
 {
-	// int	i;
-	// int	count;
 	int	status;
 
-	// i = 0;
-	// count = cmd_count();
 	waitpid(pid, &status, 0);
 	while (wait(NULL) != -1)
-			;
+		;
+	close(save_fds[0]);
+	close(save_fds[1]);
 	g_data.ret_value = exit_stat(status);
 }
 
 void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 {
 	int	save_fds[2];
-	// int	i;
-	int save;
-	int pid;
 
-	save = 0;
-	// i = 0;
 	save_fds[0] = dup(0);
 	save_fds[1] = dup(1);
 	while (cmd)
 	{
-		exec->in = save;
+		exec->in = exec->save;
 		exec->out = STDOUT_FILENO;
 		set_pipes(cmd, exec);
 		if (set_redirections(exec, cmd) == -1)
 		{
-			ft_close(&save);
+			ft_close(&exec->save);
 			ft_close(&exec->pipefd[0]);
 			ft_close(&exec->pipefd[1]);
 			cmd = cmd->next;
 			continue ;
 		}
-		pid = execute_cmd(cmd, exec, env);
-		if (!cmd->next)
-		{
-			ft_close(&exec->in);
-			ft_close(&save);
-			ft_close(&exec->pipefd[0]);
-			ft_close(&exec->pipefd[1]);
-		}
-		else
-		{
-			ft_close(&exec->in);
-			save = dup(exec->pipefd[0]);
-			ft_close(&exec->pipefd[0]);
-		}
+		exec->pid = execute_cmd(cmd, exec, env);
+		last_cmd(cmd, exec);
+		pipeline(cmd, exec);
 		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
 		cmd = cmd->next;
 	}
-	
-	final(pid); // wit 
-	close(save_fds[0]);
-	close(save_fds[1]);
+	final(save_fds, exec->pid);
 }
 
 t_exec	*init_exec(void)
 {
 	t_exec	*exec;
-	int		count;
 	int		i;
 
 	i = 0;
-	count = cmd_count();
 	exec = malloc(sizeof(t_exec));
 	if (!exec)
 		exit(EXIT_FAILURE);
+	ft_memset(exec, 0, sizeof(t_exec));
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec);
 	exec->paths = get_paths();
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths);
 	while (exec->paths && exec->paths[i])
 		g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->paths[i++]);
-	exec->pid = malloc(sizeof(pid_t) * count);
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, exec->pid);
-	exec->in = 0;
 	exec->out = 1;
 	exec->tmp_fd = -1;
 	exec->pipefd[0] = -1;
@@ -133,11 +112,13 @@ void	executor(char **env)
 
 	exec = init_exec();
 	cmd = g_data.command_list;
-	if (cmd && !cmd->cmd && !*cmd->cmd && cmd->red->type == HEREDOC)
-	{
-		handle_heredoc(cmd);
-		g_data.ret_value = 0;
+	if (!cmd)
 		return ;
+	if ((!cmd->cmd || !*cmd->cmd || !**cmd->cmd) && (cmd->red && cmd->red->type == HEREDOC))
+	{
+		exec->in = handle_heredoc(cmd);
+		close(exec->in);
+		return (unlink(cmd->red->heredoc), (void) NULL);
 	}
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
 	{

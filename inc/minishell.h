@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/18 19:55:04 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 03:29:19 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 #define RED "\033[31m"
 #define ITALIC "\033[3m"
+#define BOLD "\033[1m"
 # define RESET "\033[0m"
 # define YELLOW "\033[33m"
 
@@ -167,8 +168,8 @@ typedef struct s_exec
 	int					in;
 	int					out;
 	int					tmp_fd;
-	int					keeper;
-	pid_t				*pid;
+	int					save;
+	pid_t				pid;
 }						t_exec;
 
 /*				EXECUTION_FUNCS	*/

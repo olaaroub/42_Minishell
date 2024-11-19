@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 22:43:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/18 01:06:59 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 03:16:21 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	offset_reposition(int fd, char *name)
 	return (fd);
 }
 
-char	from_unkonw_to_hex(int x)
+char	from_unkown_to_hex(int x)
 {
 	char	*hexa;
 
@@ -44,7 +44,7 @@ char	*create_tmp_file(void)
 	buffer[9] = '\0';
 	close(fd);
 	while (++index < 9)
-		result[index] = from_unkonw_to_hex(buffer[index]);
+		result[index] = from_unkown_to_hex(buffer[index]);
 	result[index] = '\0';
 	return (ft_strdup(result));
 }

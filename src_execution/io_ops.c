@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 02:40:49 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/14 07:14:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 01:24:16 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	restore_io(int *saved)
 void	update(t_command *cmd, t_exec *exec)
 {
 	if (exec->pipefd[0] > 2)
-		dup2(exec->pipefd[0], exec->keeper);
+		dup2(exec->pipefd[0], exec->save);
 	ft_close(&exec->pipefd[0]);
 	ft_close(&exec->pipefd[1]);
 	if (entry_found("_"))

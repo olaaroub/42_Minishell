@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/18 00:49:49 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 03:12:16 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ int	handle_heredoc(t_command *cmd)
 	if (!pid)
 		fill_heredoc(fd, cmd->red->file_name);
 	wait(&status);
+	g_data.ret_value = WEXITSTATUS(status);
 	return (offset_reposition(fd, cmd->red->heredoc));
 }

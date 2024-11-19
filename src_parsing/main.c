@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/18 20:03:31 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 04:20:38 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	sig_handler(int signo)
 	if (signo == SIGINT)
 	{
 		printf("\n");
-		printf(RED ITALIC"%s "RESET, ft_itoa(g_data.ret_value));
+		ft_printf(1, RED BOLD" %d "RESET, g_data.ret_value);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -97,12 +97,12 @@ int	main(int ac, char **av, char **env)
 	get_env(&g_data.env_list, env);
 	g_data.ret_value = 0;
 	signal(SIGQUIT, SIG_IGN);
-	while (1)
+	while (ac | *(int *)av)
 	{
 		signal(SIGINT, sig_handler);
 		init_data();
-		printf(RED ITALIC" %s "RESET, ft_itoa(g_data.ret_value));
-		line = readline(ITALIC"Minishell~> ");
+		// ft_printf(1, RED BOLD " %d "RESET, g_data.ret_value);
+		line = readline("minishell$ ");
 		signal(SIGINT, SIG_IGN);
 		if (!line)
 			return (free_env_list(), printf("exit\n"), 0);

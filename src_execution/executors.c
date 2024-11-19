@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/18 03:29:50 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 03:01:04 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,16 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		}
 		else if (cmd_path == NULL)
 		{
-			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			if (*cmd->cmd)
+			{
+				ft_printf(2, "%s: command not found\n", *cmd->cmd);
+				g_data.ret_value = 127;
+			}
 			free_trash(&g_data.trash_list);
 			free_env_list();
-			exit (127);
+			exit(g_data.ret_value);
 		}
-		else
-			child_proc(cmd, cmd_path, exec, env);
+		child_proc(cmd, cmd_path, exec, env);
 	}
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
@@ -75,12 +78,9 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 
 void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 {
-	if (flag == 1)
-	{
-		if (cmd->red)
-			if (set_redirections(exec, cmd) == -1)
-				return ;
-	}
+	if (flag == 1 && cmd->red)
+		if (set_redirections(exec, cmd) == -1)
+			return ;
 	dup_redirections(exec);
 	if (!ft_strcmp(*cmd->cmd, "cd"))
 		ft_cd(cmd);
@@ -97,21 +97,3 @@ void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 	else if (!ft_strcmp(*cmd->cmd, "export"))
 		g_data.ret_value = ft_export(cmd->cmd);
 }
-
-// void	piped_builtin(t_command *cmd, t_exec *exec)
-// {
-	// pid_t	pid;
-
-	// pid = fork();
-	// if (pid == -1)
-	// 	ft_printf(2, "fork: %s\n", strerror(errno));
-	// else if (!pid)
-	// {
-		
-	// }
-	// ft_close(&exec->in);
-	// ft_close(&exec->tmp_fd);
-	// ft_close(&exec->out);
-	// ft_close(&exec->pipefd[1]);
-	// return (pid);
-// }
