@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/19 03:01:04 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 10:41:59 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,32 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	}
 }
 
+void	child(t_command *cmd, t_exec *exec, char **env, char *cmd_path)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	ft_close(&exec->pipefd[0]);
+	if (is_builtin(*cmd->cmd))
+	{
+		ft_close(&exec->in);
+		exec->in = 0;
+		execute_builtin(exec, cmd, 0);
+		exit(g_data.ret_value);
+	}
+	else if (cmd_path == NULL)
+	{
+		if (*cmd->cmd)
+		{
+			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			g_data.ret_value = 127;
+		}
+		free_trash(&g_data.trash_list);
+		free_env_list();
+		exit(g_data.ret_value);
+	}
+	child_proc(cmd, cmd_path, exec, env);
+}
+
 pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 {
 	pid_t	pid;
@@ -45,32 +71,15 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		ft_close(&exec->pipefd[0]);
-		if (is_builtin(*cmd->cmd))
-		{
-			ft_close(&exec->in);
-			exec->in = 0;
-			execute_builtin(exec, cmd, 0);
-			exit(g_data.ret_value);
-		}
-		else if (cmd_path == NULL)
-		{
-			if (*cmd->cmd)
-			{
-				ft_printf(2, "%s: command not found\n", *cmd->cmd);
-				g_data.ret_value = 127;
-			}
-			free_trash(&g_data.trash_list);
-			free_env_list();
-			exit(g_data.ret_value);
-		}
-		child_proc(cmd, cmd_path, exec, env);
-	}
+		child(cmd, exec, env, cmd_path);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
+	if (cmd->red && cmd->red->heredoc)
+	{
+		unlink(cmd->red->heredoc);
+		free(cmd->red->heredoc);
+		cmd->red->heredoc = 0;
+	}
 	free(cmd_path);
 	cmd_path = 0;
 	return (pid);

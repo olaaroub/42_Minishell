@@ -6,32 +6,15 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/19 05:54:37 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 10:52:38 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-void	pipeline(t_command *cmd, t_exec *exec)
-{
-	if (!cmd->next)
-		return ;
-	ft_close(&exec->in);
-	exec->save = dup(exec->pipefd[0]);
-	ft_close(&exec->pipefd[0]);
-}
-
-void	last_cmd(t_command *cmd, t_exec *exec)
-{
-	if (cmd->next)
-		return ;
-	ft_close(&exec->in);
-	ft_close(&exec->save);
-	ft_close(&exec->pipefd[0]);
-	ft_close(&exec->pipefd[1]);	
-}
 
 int	exit_stat(int stat)
 {
+	printf("-------------->\n");
 	if (WIFEXITED(stat))
 		return (WEXITSTATUS(stat));
 	else if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGINT)
@@ -74,7 +57,7 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		}
 		exec->pid = execute_cmd(cmd, exec, env);
 		last_cmd(cmd, exec);
-		pipeline(cmd, exec);
+		saving_pipe(cmd, exec);
 		dup2(save_fds[0], 0);
 		dup2(save_fds[1], 1);
 		cmd = cmd->next;
@@ -114,11 +97,11 @@ void	executor(char **env)
 	cmd = g_data.command_list;
 	if (!cmd)
 		return ;
-	if ((!cmd->cmd || !*cmd->cmd || !**cmd->cmd) && (cmd->red && cmd->red->type == HEREDOC))
+	if ((!cmd->cmd || !*cmd->cmd || !**cmd->cmd) \
+	&& (cmd->red && cmd->red->type == HEREDOC))
 	{
 		exec->in = handle_heredoc(cmd);
-		close(exec->in);
-		return (unlink(cmd->red->heredoc), (void) NULL);
+		return (close(exec->in), unlink(cmd->red->heredoc), (void) NULL);
 	}
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
 	{
@@ -131,4 +114,5 @@ void	executor(char **env)
 	}
 	else
 		prepare_input(cmd, exec, env);
+	printf("status == %d\n", g_data.ret_value);
 }

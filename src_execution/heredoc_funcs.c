@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/19 03:12:16 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 10:45:18 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*expand_heredoc(char *word, char *delimiter)
 	char	*expanded_word;
 
 	i = 0;
-	if(!ft_strcmp(word, delimiter))
+	if (!ft_strcmp(word, delimiter))
 		return (word);
 	fd = open("file2.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (word && word[i])
@@ -62,13 +62,19 @@ static char	*expand_heredoc(char *word, char *delimiter)
 	return (expanded_word);
 }
 
+void	sigheredoc(int sig)
+{
+	(void)sig;
+	ft_putendl_fd("^C", 1);
+	exit(130);
+}
+
 void	fill_heredoc(int fd, char *delimiter)
 {
 	char	*line;
 
 	line = 0;
-	signal(SIGINT, SIG_DFL);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sigheredoc);
 	while (true)
 	{
 		line = readline("> ");
@@ -76,7 +82,8 @@ void	fill_heredoc(int fd, char *delimiter)
 			exit(0);
 		line = expand_heredoc(line, delimiter);
 		if (line && !ft_strcmp(line, delimiter))
-			return (free_env_list(), free(line), free_trash(&g_data.trash_list), exit(0));
+			return (free_env_list(), free(line), \
+			free_trash(&g_data.trash_list), exit(0));
 		ft_putendl_fd(line, fd);
 		free(line);
 	}
@@ -92,14 +99,14 @@ int	handle_heredoc(t_command *cmd)
 	tmp = create_tmp_file();
 	cmd->red->heredoc = ft_strjoin("/tmp/", tmp);
 	free(tmp);
-	// cmd->red->heredoc = ft_strdup("/tmp/heredoc_");
-	ft_printf(2, "%s\n", cmd->red->heredoc);
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, cmd->red->heredoc);
 	fd = open(cmd->red->heredoc, O_CREAT | O_RDWR | O_APPEND, 0644);
 	pid = fork();
 	if (!pid)
 		fill_heredoc(fd, cmd->red->file_name);
 	wait(&status);
-	g_data.ret_value = WEXITSTATUS(status);
+	g_data.ret_value = exit_stat(status);
+	if (g_data.ret_value == 130)
+		return (unlink(cmd->red->heredoc), -1);
 	return (offset_reposition(fd, cmd->red->heredoc));
 }

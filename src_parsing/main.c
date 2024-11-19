@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 06:38:15 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 09:20:28 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,33 @@
 
 t_program	g_data;
 
-void	print_tokens(void)
-{
-	t_command	*token;
-	t_redir		*redirection;
-	int			i;
+// void	print_tokens(void)
+// {
+// 	t_command	*token;
+// 	t_redir		*redirection;
+// 	int			i;
 
-	token = g_data.command_list;
-	while (token)
-	{
-		i = 0;
-		redirection = token->red;
-		while (token->cmd && token->cmd[i])
-		{
-			printf("*cmd->cmd == %p\n", *token->cmd);
-			printf(" command %i is '%s'\n", i, token->cmd[i]);
-			i++;
-		}
-		while (redirection)
-		{
-			printf(" type is %d file name is %s\n", token->red->type,
-				token->red->file_name);
-			redirection = redirection->next;
-		}
-		token = token->next;
-		printf("========================================================\n");
-	}
-}
+// 	token = g_data.command_list;
+// 	while (token)
+// 	{
+// 		i = 0;
+// 		redirection = token->red;
+// 		while (token->cmd && token->cmd[i])
+// 		{
+// 			printf("*cmd->cmd == %p\n", *token->cmd);
+// 			printf(" command %i is '%s'\n", i, token->cmd[i]);
+// 			i++;
+// 		}
+// 		while (redirection)
+// 		{
+// 			printf(" type is %d file name is %s\n", token->red->type,
+// 				token->red->file_name);
+// 			redirection = redirection->next;
+// 		}
+// 		token = token->next;
+// 		printf("========================================================\n");
+// 	}
+// }
 
 static void	init_data(void)
 {
@@ -90,17 +90,14 @@ int	main(int ac, char **av, char **env)
 {
 	char	*line;
 
-	(void)ac;
-	(void)av;
 	line = NULL;
 	get_env(&g_data.env_list, env);
 	g_data.ret_value = 0;
-	signal(SIGQUIT, SIG_IGN);
-	while (ac | *(int *)av)
+	while (ac | **av)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_handler);
 		init_data();
-		// ft_printf(1, RED BOLD " %d "RESET, g_data.ret_value);
 		line = readline("minishell$ ");
 		signal(SIGINT, SIG_IGN);
 		if (!line)
@@ -110,7 +107,6 @@ int	main(int ac, char **av, char **env)
 		if (tokenize(&line) == -77)
 			continue ;
 		fill_command_list();
-		// print_tokens();
 		free(line);
 		executor(env);
 		free_trash(&g_data.trash_list);

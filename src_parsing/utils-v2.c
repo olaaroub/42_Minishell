@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils-v2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 00:08:03 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 15:38:52 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:50:46 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	split_tokens(void)
 	tmp = g_data.token_list;
 	while (tmp)
 	{
-		tmp->word_after_exp = split_mgem7a(tmp->word);
+		tmp->word_after_exp = customized_split(tmp->word);
 		tmp = tmp->next;
 	}
 }

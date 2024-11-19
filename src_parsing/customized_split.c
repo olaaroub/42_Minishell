@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_mgem7a.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:44:35 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 11:59:20 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:51:30 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static char	**fill_strings(char *line, char **result, int count)
 	return (result);
 }
 
-char	**split_mgem7a(char *line)
+char	**customized_split(char *line)
 {
 	char	**result;
 	char	*buff;

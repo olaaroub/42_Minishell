@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_tools-v2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 22:28:10 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/12 22:30:52 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 09:00:45 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	sort_env(t_env **env)
 	}
 }
 
-t_env *env_newnode(char *line)
+t_env	*env_newnode(char *line)
 {
 	t_env	*new_node;
 	char	*temp;
@@ -43,7 +43,7 @@ t_env *env_newnode(char *line)
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return (ft_printf(2,"ERROR: ENV Node malloc failed!\n"), NULL);
+		return (ft_printf(2, "ERROR: ENV Node malloc failed!\n"), NULL);
 	len = ft_strlen(line);
 	new_node->name = ft_substr(line, 0, ft_strlen_eq(line, '='));
 	new_node->value = ft_substr(line, ft_strlen_eq(line, '=') + 1, len);

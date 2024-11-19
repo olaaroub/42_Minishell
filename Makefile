@@ -6,7 +6,7 @@
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 03:42:07 by hatalhao          #+#    #+#              #
-#    Updated: 2024/11/19 04:02:08 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/11/19 08:51:45 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,6 @@ MAKEFLAGS := -j --no-print-directory
 
 # ITALICBOLD
 GREEN = \033[0;32m
-# SRC = src_parsing/main.c src_parsing/get_env.c src_parsing/trash.c src_parsing/split_mgem7a.c
-# SRC += src_parsing/tokenizing.c src_parsing/tokens_list.c src_parsing/check_line.c src_parsing/utils-v1.c
-# SRC += src_parsing/syntax_error.c src_parsing/expand_v2.c src_parsing/split_after_expand.c
-# SRC += src_parsing/fill_command_list.c src_parsing/command_list.c
 SRC += $(wildcard builtins/*.c)
 SRC += $(wildcard src_parsing/*.c)
 SRC += $(wildcard src_execution/*.c)

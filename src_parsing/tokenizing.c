@@ -71,7 +71,7 @@ void	tokenizing(char *line)
 	int		i;
 	int		type;
 
-	res = split_mgem7a(line);
+	res = customized_split(line);
 	if (!res || !*res)
 		return ;
 	i = 0;

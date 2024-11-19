@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:57 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 01:46:32 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:56:32 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_pwd(void)
 {
-	char 	*path;
+	char	*path;
 
 	path = 0;
 	path = getcwd(path, 0);

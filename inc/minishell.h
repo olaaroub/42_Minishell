@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 03:29:19 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 10:19:17 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 # include <sys/types.h>
 # include <wait.h>
 
-#define RED "\033[31m"
-#define ITALIC "\033[3m"
-#define BOLD "\033[1m"
+# define RED "\033[31m"
+# define ITALIC "\033[3m"
+# define BOLD "\033[1m"
 # define RESET "\033[0m"
 # define YELLOW "\033[33m"
 
@@ -138,7 +138,7 @@ void					skip_d_quotes(char *line, int *i);
 void					skip_s_quotes(char *line, int *i);
 void					free_env_list(void);
 int						len_until_pipe(t_tokens *temp);
-char					**split_mgem7a(char *line);
+char					**customized_split(char *line);
 void					tokenizing(char *line);
 void					ft_white_spaces(char *line);
 int						valid_quotes(char *line);
@@ -176,7 +176,6 @@ typedef struct s_exec
 /*				executor.c		*/
 
 int						entry_found(char *to_find);
-char					*get_pwd(void);
 void					update_var(char *to_find, char *new_value);
 t_env					*get_env_node(char *to_find);
 
@@ -194,8 +193,6 @@ char					*get_cmd_path(t_command *cmd, char **paths);
 /*				executors.c		*/
 void					execute_builtin(t_exec *exec, t_command *cmd, int flag);
 pid_t					execute_cmd(t_command *cmd, t_exec *exec, char **env);
-void					piped_builtin(t_command *cmd, t_exec *exec);
-// pid_t					piped_builtin(t_command *cmd, t_exec *exec);
 
 /*				orchestrator.c	*/
 void					executor(char **env);
@@ -207,26 +204,25 @@ int						is_builtin(char *cmd);
 
 /*				heredoc_func.c	*/
 int						handle_heredoc(t_command *cmd);
-void					heredoc_signals(void);
 int						offset_reposition(int fd, char *name);
-char					from_unkonw_to_hex(int x);
 char					*create_tmp_file(void);
 int						handle_special_chars2(char *word, int *i, int fd);
 
 /*				io_ops.c		*/
 void					update(t_command *cmd, t_exec *exec);
 void					restore_io(int *saved);
-int	exit_stat(int stat)
-;
+int						exit_stat(int stat);
 
 /*				cleaning.c		*/
 void					free_arr(char **arr);
 void					free_exec(t_exec *exec);
 void					free_alloc(void);
 
+/*				utils.c			*/
+int						check_fd(t_command *cmd, t_exec *exec);
+void					last_cmd(t_command *cmd, t_exec *exec);
+void					saving_pipe(t_command *cmd, t_exec *exec);
 
-/*				DEBUGGER		*/
-void					assist(void);
 
 /*				BUILTINS		*/
 void					ft_cd(t_command *cmd);

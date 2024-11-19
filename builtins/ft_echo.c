@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 08:35:06 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/17 23:30:40 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:56:46 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	valid_option(char *s)
 	i = 0;
 	if (s && s[i] != '-')
 		return (0);
-	if	(!s[++i])
+	if (!s[++i])
 		return (0);
 	while (s[i])
 	{
@@ -41,6 +41,7 @@ void	print_input(char **cmd, int j)
 			ft_printf(1, " ");
 	}
 }
+
 void	ft_echo(t_command *cmd)
 {
 	int		i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_v2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/18 19:39:02 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:50:46 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	check_ambiguous(t_tokens *tmp)
 		tmp->ambiguous = true;
 	else
 	{
-		check = split_mgem7a(tmp->word);
+		check = customized_split(tmp->word);
 		if (check[1] != NULL)
 			tmp->ambiguous = true;
 	}
@@ -88,11 +88,11 @@ static void	process_tokens(t_tokens *tmp, int fd)
 	}
 }
 
-char *get_filename(void)
+char	*get_filename(void)
 {
-	char *filename;
-	char rand[6];
-	int tmp_fd;
+	char	*filename;
+	char	rand[6];
+	int		tmp_fd;
 
 	tmp_fd = open("/dev/urandom", O_RDONLY);
 	read(tmp_fd, rand, 5);
@@ -107,7 +107,7 @@ void	expand(void)
 {
 	t_tokens	*tmp;
 	int			fd;
-	char *filename;
+	char		*filename;
 
 	tmp = g_data.token_list;
 	filename = get_filename();

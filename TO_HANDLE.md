@@ -1,5 +1,6 @@
 # TO HANDLE
-```||```
+
+```||``` heap-buffer overflow in the case of 2 consecutive pipes
 
 ```$EMPTY echo hi``` No Command list is passed
 
