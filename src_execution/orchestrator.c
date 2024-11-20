@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/19 10:52:38 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:35:34 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	exit_stat(int stat)
 {
-	printf("-------------->\n");
 	if (WIFEXITED(stat))
 		return (WEXITSTATUS(stat));
 	else if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGINT)
@@ -28,11 +27,13 @@ static void	final(int *save_fds, int pid)
 {
 	int	status;
 
+	status = 0;
 	waitpid(pid, &status, 0);
 	while (wait(NULL) != -1)
 		;
 	close(save_fds[0]);
 	close(save_fds[1]);
+	printf("status == %d\n", status);
 	g_data.ret_value = exit_stat(status);
 }
 
@@ -114,5 +115,4 @@ void	executor(char **env)
 	}
 	else
 		prepare_input(cmd, exec, env);
-	printf("status == %d\n", g_data.ret_value);
 }

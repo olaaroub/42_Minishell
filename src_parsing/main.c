@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 09:20:28 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:45:06 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	tokenize(char **line)
 	ft_white_spaces(*line);
 	if (!valid_quotes(*line))
 	{
-		printf("Error: Unclosed quotes detected.\n");
+		ft_printf(2, "Error: Unclosed quotes detected.\n");
 		g_data.ret_value = 2;
 		ft_free_exit(*line, false);
 		return (-77);
@@ -112,4 +112,5 @@ int	main(int ac, char **av, char **env)
 		free_trash(&g_data.trash_list);
 	}
 	free_env_list();
+	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 03:42:07 by hatalhao          #+#    #+#              #
-#    Updated: 2024/11/19 08:51:45 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/11/20 11:49:18 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ MAKEFLAGS := -j --no-print-directory
 
 # ITALICBOLD
 GREEN = \033[0;32m
+RESET = \033[0m
 SRC += $(wildcard builtins/*.c)
 SRC += $(wildcard src_parsing/*.c)
 SRC += $(wildcard src_execution/*.c)
@@ -34,13 +35,12 @@ all: $(NAME)
 $(NAME): $(OBJ) $(LIB)
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
 	make clean
-# add check emoji
-	@echo "✅ $(GREEN)$(NAME)"
+	@echo "✅ $(GREEN)$(NAME)$(RESET)"
 	
 
 $(LIB):
 	@make -C libft
-	@echo "✅ $(GREEN)libft"
+	@echo "✅ $(GREEN)libft$(RESET)"
 	
 clean:
 	@rm -rf $(OBJ)
