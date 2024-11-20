@@ -1,9 +1,3 @@
 # TO HANDLE
 
-```||``` heap-buffer overflow in the case of 2 consecutive pipes
-
-```$EMPTY echo hi``` No Command list is passed
-
-```cat < "Makefile"``` omit quotes
-
-``` echo "aspas ->'" ``` The error is spaces added around redirections when inside quotes; Must check if in quotes first
+``` ls > $AMBIG ``` i set the exit status to 1, but after executor it becomes 0.
