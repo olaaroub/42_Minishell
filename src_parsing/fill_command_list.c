@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_command_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:24:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 06:39:41 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:10:29 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static int	handle_redirs(t_tokens **temp, t_redir **redir, char **commands,
 		int *i)
 {
 	if ((*temp)->next && (*temp)->next->ambiguous == false)
-		*redir = ft_add_redir(redir, (*temp)->next->word, (*temp)->type);
+		*redir = ft_add_redir(redir, trim_quotes((*temp)->next->word),
+				(*temp)->type);
 	else if ((*temp)->next)
 	{
 		printf("minishell: %s: AMBIGUOUS REDIRECT\n", (*temp)->next->dollar);
@@ -73,7 +74,7 @@ static void	handle_command(t_tokens **temp, char **commands, int *i)
 			(*i)++;
 		}
 	}
-	else
+	else if ((*temp)->word)
 	{
 		(*temp)->word = trim_quotes((*temp)->word);
 		commands[*i] = ft_strdup((*temp)->word);

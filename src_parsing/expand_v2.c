@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_v2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 08:50:46 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:08:32 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,6 @@ static void	process_tokens(t_tokens *tmp, int fd)
 		else
 			write(fd, &tmp->word[i++], 1);
 	}
-}
-
-char	*get_filename(void)
-{
-	char	*filename;
-	char	rand[6];
-	int		tmp_fd;
-
-	tmp_fd = open("/dev/urandom", O_RDONLY);
-	read(tmp_fd, rand, 5);
-	rand[5] = '\0';
-	close(tmp_fd);
-	filename = ft_strjoin("/tmp/", rand);
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
-	return (filename);
 }
 
 void	expand(void)

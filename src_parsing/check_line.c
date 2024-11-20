@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 01:18:01 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 06:33:31 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:07:19 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,51 +87,48 @@ int	valid_quotes(char *line)
 	return (2);
 }
 
-static void	write_spaces(char *line, char *buff, int *i, int *j)
+static void	write_spaces(char *line, char *buff, t_vars *vars)
 {
-	char	quote;
-
-	quote = '\0';
-	if ((line[*i] == '\'' || line[*i] == '"') && quote == '\0')
+	if ((line[vars->i] == '\'' || line[vars->i] == '"') && vars->quote == '\0')
 	{
-		quote = line[*i];
-		buff[(*j)++] = line[(*i)++];
+		vars->quote = line[vars->i];
+		buff[(vars->j)++] = line[(vars->i)++];
 	}
-	else if (line[(*i)] == quote)
+	else if (line[(vars->i)] == vars->quote)
 	{
-		quote = '\0';
-		buff[(*j)++] = line[(*i)++];
+		vars->quote = '\0';
+		buff[(vars->j)++] = line[(vars->i)++];
 	}
-	else if ((line[(*i)] == '>' || line[(*i)] == '<' || line[(*i)] == '|')
-		&& quote == '\0')
+	else if ((line[(vars->i)] == '>' || line[(vars->i)] == '<'
+			|| (line[(vars->i)] == '|' && line[(vars->i) + 1] != '|'))
+		&& vars->quote == '\0')
 	{
-		buff[(*j)++] = ' ';
-		buff[(*j)++] = line[(*i)++];
-		if (line[(*i)] == buff[(*j) - 1] && (buff[(*j) - 1] == '>' || buff[(*j)
-					- 1] == '<'))
-			buff[(*j)++] = line[(*i)++];
-		buff[(*j)++] = ' ';
+		buff[(vars->j)++] = ' ';
+		buff[(vars->j)++] = line[(vars->i)++];
+		if (line[(vars->i)] == buff[(vars->j) - 1]
+			&& (buff[(vars->j) - 1] == '>' || buff[(vars->j) - 1] == '<'))
+			buff[(vars->j)++] = line[(vars->i)++];
+		buff[(vars->j)++] = ' ';
 	}
 	else
-		buff[(*j)++] = line[(*i)++];
+		buff[(vars->j)++] = line[(vars->i)++];
 }
 
 char	*add_space(char *line)
 {
-	int		i;
-	int		j;
+	t_vars	vars;
 	char	*buff;
-	int		len;
 
-	i = 0;
-	j = 0;
+	vars.i = 0;
+	vars.j = 0;
+	vars.quote = '\0';
 	if (!line)
 		return (NULL);
-	len = ft_strlen(line) + line_len(line);
-	buff = malloc(sizeof(char) * len + 1);
-	while (line[i])
-		write_spaces(line, buff, &i, &j);
-	buff[j] = '\0';
+	vars.len = ft_strlen(line) + line_len(line);
+	buff = malloc(sizeof(char) * vars.len + 1);
+	while (line[vars.i])
+		write_spaces(line, buff, &vars);
+	buff[vars.j] = '\0';
 	free(line);
 	return (buff);
 }
