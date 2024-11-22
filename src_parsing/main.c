@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/20 19:30:35 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/22 04:48:49 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ t_program	g_data;
 // 		redirection = token->red;
 // 		while (token->cmd && token->cmd[i])
 // 		{
-// 			printf("*cmd->cmd == %p\n", *token->cmd);
+// 			// printf("*cmd->cmd == %p\n", *token->cmd);
 // 			printf(" command %i is '%s'\n", i, token->cmd[i]);
 // 			i++;
 // 		}
 // 		while (redirection)
 // 		{
-// 			printf(" type is %d file name is %s\n", token->red->type,
-// 				token->red->file_name);
+// 			printf(" type is %d file name is %s\n", redirection->type,
+// 				redirection->file_name);
 // 			redirection = redirection->next;
 // 		}
 // 		token = token->next;
@@ -108,6 +108,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		fill_command_list();
 		free(line);
+		// print_tokens();
 		executor(env);
 		free_trash(&g_data.trash_list);
 	}

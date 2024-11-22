@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 08:28:47 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/19 10:43:55 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/22 01:37:06 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	check_fd(t_command *cmd, t_exec *exec)
 	{
 		if (cmd->red->type == HEREDOC)
 		{
-			dprintf(2, "g_data.ret_value = %d\n", g_data.ret_value);
 			g_data.ret_value = 130;
 			return (-1);
 		}
@@ -47,4 +46,5 @@ void	last_cmd(t_command *cmd, t_exec *exec)
 	ft_close(&exec->save);
 	ft_close(&exec->pipefd[0]);
 	ft_close(&exec->pipefd[1]);
+	g_data.ret_value = 0;
 }

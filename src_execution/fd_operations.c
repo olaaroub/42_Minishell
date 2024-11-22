@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/19 10:16:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:56:21 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 		else if (cmd->red->type == HEREDOC)
 			exec->tmp_fd = handle_heredoc(cmd);
 		if (check_fd(cmd, exec) == -1)
+		{
+			g_data.ret_value = -69;
 			return (-1);
+		}
 		update_fd(cmd, exec);
 		cmd->red = cmd->red->next;
 	}
@@ -65,6 +68,8 @@ void	dup_redirections(t_exec *exec)
 		ft_printf(2, "%s\n", strerror(errno));
 	if (dup2(exec->out, 1) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
+	ft_close(&exec->in);
+	ft_close(&exec->out);
 }
 
 void	set_pipes(t_command *cmd, t_exec *exec)
