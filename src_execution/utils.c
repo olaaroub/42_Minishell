@@ -46,7 +46,6 @@ int	heredoc_present(t_command *cmd)
 	return (0);
 }
 
-
 int	check_fd(t_command *cmd, t_exec *exec)
 {
 	if (exec->tmp_fd == -1)

@@ -214,7 +214,7 @@ char					*create_tmp_file(void);
 int						handle_special_chars2(char *word, int *i, int fd);
 
 /*				io_ops.c		*/
-void					update(t_command *cmd, t_exec *exec);
+void					mod_fds(t_exec *exec);
 void					restore_io(int *saved);
 int						exit_stat(int stat);
 

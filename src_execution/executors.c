@@ -69,17 +69,10 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 	pid = fork();
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
-	
 	if (pid == 0)
 		child(cmd, exec, env, cmd_path);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
-	// if (cmd->red && cmd->red->heredoc)
-	// {
-	// 	unlink(cmd->red->heredoc);
-	// 	free(cmd->red->heredoc);
-	// 	cmd->red->heredoc = 0;
-	// }
 	free(cmd_path);
 	cmd_path = 0;
 	return (pid);

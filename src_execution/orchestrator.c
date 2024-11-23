@@ -14,7 +14,6 @@
 
 int	exit_stat(int stat)
 {
-	// printf("stat == %d\n", stat);
 	if (WIFEXITED(stat))
 		return (WEXITSTATUS(stat));
 	else if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGINT)
@@ -24,27 +23,17 @@ int	exit_stat(int stat)
 	return (1);
 }
 
-void	mod_fds(t_exec *exec)
-{
-	ft_close(&exec->save);
-	ft_close(&exec->in);
-	exec->save = dup(exec->pipefd[0]);
-	ft_close(&exec->out);
-	ft_close(&exec->pipefd[0]);
-	ft_close(&exec->pipefd[1]);
-}
-
 static void	final(int *save_fds, int pid)
 {
 	int	status;
-	int n_pid;
-	int final_status;
+	int	n_pid;
+	int	final_status;
 
 	status = 0;
 	final_status = 0;
 	while (1)
 	{
-		n_pid = wait(&status) ;
+		n_pid = wait(&status);
 		if (n_pid == pid)
 			final_status = status;
 		if (n_pid == -1)

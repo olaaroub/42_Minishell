@@ -20,12 +20,12 @@ void	restore_io(int *saved)
 	close(saved[1]);
 }
 
-void	update(t_command *cmd, t_exec *exec)
+void	mod_fds(t_exec *exec)
 {
-	if (exec->pipefd[0] > 2)
-		dup2(exec->pipefd[0], exec->save);
+	ft_close(&exec->save);
+	ft_close(&exec->in);
+	exec->save = dup(exec->pipefd[0]);
+	ft_close(&exec->out);
 	ft_close(&exec->pipefd[0]);
 	ft_close(&exec->pipefd[1]);
-	if (entry_found("_"))
-		update_var("_", *cmd->cmd);
 }

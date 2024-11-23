@@ -108,7 +108,6 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		fill_command_list();
 		free(line);
-		// print_tokens();
 		executor(env);
 		free_trash(&g_data.trash_list);
 	}
