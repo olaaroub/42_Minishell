@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/22 06:26:14 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:48:42 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,15 @@ int	exit_stat(int stat)
 	return (1);
 }
 
-// static void	final(int *save_fds, int pid)
-// {
-// 	int	status;
-
-// 	status = 0;
-// 	waitpid(pid, &status, 0);
-// 	while (wait(NULL) != -1)
-// 		;
-// 	close(save_fds[0]);
-// 	close(save_fds[1]);
-// 	printf("status == %d\n", status);
-// 	if (g_data.ret_value == -69)
-// 		return ((void)(g_data.ret_value = 1));
-// 	g_data.ret_value = exit_stat(status);
-// }
+void	mod_fds(t_exec *exec)
+{
+	ft_close(&exec->save);
+	ft_close(&exec->in);
+	exec->save = dup(exec->pipefd[0]);
+	ft_close(&exec->out);
+	ft_close(&exec->pipefd[0]);
+	ft_close(&exec->pipefd[1]);
+}
 
 static void	final(int *save_fds, int pid)
 {
@@ -61,7 +55,6 @@ static void	final(int *save_fds, int pid)
 	if (g_data.ret_value == -69)
 		return ((void)(g_data.ret_value = 1));
 	g_data.ret_value = exit_stat(final_status);
-	// printf("status == %d\n", status);
 }
 
 void	prepare_input(t_command *cmd, t_exec *exec, char **env)
@@ -77,12 +70,7 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		set_pipes(cmd, exec);
 		if (set_redirections(exec, cmd) == -1)
 		{
-			ft_close(&exec->save);
-			ft_close(&exec->in);
-			exec->save = dup(exec->pipefd[0]);
-			ft_close(&exec->out);
-			ft_close(&exec->pipefd[0]);
-			ft_close(&exec->pipefd[1]);
+			mod_fds(exec);
 			cmd = cmd->next;
 			continue ;
 		}
@@ -128,12 +116,8 @@ void	executor(char **env)
 	cmd = g_data.command_list;
 	if (!cmd)
 		return ;
-	if ((!cmd->cmd || !*cmd->cmd || !**cmd->cmd) && \
-	!cmd->next && (cmd->red && cmd->red->type == HEREDOC))
-	{
-		exec->in = handle_heredoc(cmd);
-		return (close(exec->in), unlink(cmd->red->heredoc), (void) NULL);
-	}
+	if (heredoc_present(cmd) == -1)
+		return ;
 	if (cmd && is_builtin(*cmd->cmd) && !cmd->next)
 	{
 		save_fds[0] = dup(0);

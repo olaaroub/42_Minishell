@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/22 05:56:22 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/23 04:57:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		child(cmd, exec, env, cmd_path);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
-	if (cmd->red && cmd->red->heredoc)
-	{
-		unlink(cmd->red->heredoc);
-		free(cmd->red->heredoc);
-		cmd->red->heredoc = 0;
-	}
+	// if (cmd->red && cmd->red->heredoc)
+	// {
+	// 	unlink(cmd->red->heredoc);
+	// 	free(cmd->red->heredoc);
+	// 	cmd->red->heredoc = 0;
+	// }
 	free(cmd_path);
 	cmd_path = 0;
 	return (pid);

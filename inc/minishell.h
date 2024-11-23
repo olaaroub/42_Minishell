@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/20 19:13:16 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/23 04:15:40 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_redir
 typedef struct s_command
 {
 	char				**cmd;
+	int					heredoc;
 	t_redir				*red;
 	struct s_command	*next;
 }						t_command;
@@ -207,7 +208,7 @@ int						is_command(t_command *cmd, char **paths);
 int						is_builtin(char *cmd);
 
 /*				heredoc_func.c	*/
-int						handle_heredoc(t_command *cmd);
+int						handle_heredoc(t_redir *red);
 int						offset_reposition(int fd, char *name);
 char					*create_tmp_file(void);
 int						handle_special_chars2(char *word, int *i, int fd);
@@ -224,8 +225,10 @@ void					free_alloc(void);
 
 /*				utils.c			*/
 int						check_fd(t_command *cmd, t_exec *exec);
+int						get_heredoc(t_redir *red);
 void					last_cmd(t_command *cmd, t_exec *exec);
 void					saving_pipe(t_command *cmd, t_exec *exec);
+int						heredoc_present(t_command *cmd);
 
 /*				BUILTINS		*/
 void					ft_cd(t_command *cmd);

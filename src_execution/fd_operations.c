@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/22 00:56:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/23 09:24:28 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 			exec->tmp_fd = open(cmd->red->file_name, \
 			O_CREAT | O_WRONLY | O_APPEND, 0644);
 		else if (cmd->red->type == HEREDOC)
-			exec->tmp_fd = handle_heredoc(cmd);
+			exec->tmp_fd = get_heredoc(cmd->red);
 		if (check_fd(cmd, exec) == -1)
 		{
 			g_data.ret_value = -69;

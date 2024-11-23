@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/19 10:45:18 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/23 09:21:33 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	fill_heredoc(int fd, char *delimiter)
 	}
 }
 
-int	handle_heredoc(t_command *cmd)
+int	handle_heredoc(t_redir *red)
 {
 	int		status;
 	int		fd;
@@ -97,16 +97,16 @@ int	handle_heredoc(t_command *cmd)
 	char	*tmp;
 
 	tmp = create_tmp_file();
-	cmd->red->heredoc = ft_strjoin("/tmp/", tmp);
+	red->heredoc = ft_strjoin("/tmp/heredoc/", tmp);
 	free(tmp);
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, cmd->red->heredoc);
-	fd = open(cmd->red->heredoc, O_CREAT | O_RDWR | O_APPEND, 0644);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, red->heredoc);
+	fd = open(red->heredoc, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	pid = fork();
 	if (!pid)
-		fill_heredoc(fd, cmd->red->file_name);
+		fill_heredoc(fd, red->file_name);
 	wait(&status);
 	g_data.ret_value = exit_stat(status);
 	if (g_data.ret_value == 130)
-		return (unlink(cmd->red->heredoc), -1);
-	return (offset_reposition(fd, cmd->red->heredoc));
+		return (close(fd), unlink(red->heredoc), -1);
+	return (offset_reposition(fd, red->heredoc));
 }
