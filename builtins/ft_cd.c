@@ -6,25 +6,11 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:45 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/11 21:21:22 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:27:45 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-char	*get_pwd(void)
-{
-	t_env	*iter;
-
-	iter = g_data.env_list;
-	while (iter)
-	{
-		if (!ft_strcmp(iter->name, "PWD"))
-			return (iter->value);
-		iter = iter->next;
-	}
-	return (NULL);
-}
 
 int	entry_found(char *to_find)
 {
@@ -40,21 +26,6 @@ int	entry_found(char *to_find)
 	return (0);
 }
 
-t_env	*get_env_node(char *to_find)
-{
-	t_env	*iter;
-
-	iter = g_data.env_list;
-	while (iter && to_find)
-	{
-		if (!ft_strcmp(iter->name, to_find))
-			return (iter);
-		iter = iter->next;
-	}
-	return (NULL);
-}
-
-// /*		This Function Can work with export*/
 void	update_var(char *to_find, char *new_value)
 {
 	t_env	*iter;
@@ -72,24 +43,43 @@ void	update_var(char *to_find, char *new_value)
 	}
 }
 
-void	ft_cd(void)
+char	*to_go(t_command *cmd, char *path)
 {
-	char		*path;
-	t_command	*cmd;
+	t_env	*home;
 
-	cmd = g_data.command_list;
 	if (!cmd->cmd[1])
-		return ;
-	if (cmd->cmd[2])
+	{
+		home = get_env_node("HOME");
+		if (!home)
+		{
+			ft_putendl_fd("minishell: cd: HOME not set", 2);
+			g_data.ret_value = 1;
+			return (NULL);
+		}
+		return (home->value);
+	}
+	else if (cmd->cmd[2])
 	{
 		ft_putendl_fd("cd: too many arguments", 2);
 		g_data.ret_value = 1;
-		return ;
+		return (NULL);
 	}
 	path = cmd->cmd[1];
+	return (path);
+}
+
+void	ft_cd(t_command *cmd)
+{
+	char		*path;
+
+	path = 0;
+	path = to_go(cmd, path);
+	if (!path)
+		return ;
 	if (chdir(path) == -1)
 	{
 		g_data.ret_value = 1;
-		return (ft_printf(2, " %s", strerror(errno)), (void)NULL);
+		return (ft_printf(2, "minishell: cd: %s\n", \
+		strerror(errno)), (void) NULL);
 	}
 }

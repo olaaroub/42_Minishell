@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   executors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 04:16:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/24 09:42:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// will need to add a cleaning_func();
 void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 {
 	dup2(exec->in, 0);
@@ -24,17 +23,42 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	{
 		if (0x2 == errno)
 		{
-			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			// ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			perror("execve");
 			exit(127);
 		}
-		else if (0xd == errno)
-			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
 		else
 			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
-		printf("cmd_path: %s\n", cmd_path);
+			// perror("execve");
 		free_exec(exec);
-		exit(1);
+		exit(126);
 	}
+}
+
+void	child(t_command *cmd, t_exec *exec, char **env, char *cmd_path)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	ft_close(&exec->pipefd[0]);
+	if (is_builtin(*cmd->cmd))
+	{
+		ft_close(&exec->in);
+		exec->in = 0;
+		execute_builtin(exec, cmd, 0);
+		exit(g_data.ret_value);
+	}
+	else if (cmd_path == NULL)
+	{
+		if (*cmd->cmd)
+		{
+			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			g_data.ret_value = 127;
+		}
+		free_trash(&g_data.trash_list);
+		free_env_list();
+		exit(g_data.ret_value);
+	}
+	child_proc(cmd, cmd_path, exec, env);
 }
 
 pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
@@ -48,15 +72,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
 	if (pid == 0)
-	{
-		if (cmd_path == NULL)
-		{
-			ft_printf(2, "%s: command not found\n", *cmd->cmd);
-			exit (127);
-		}
-		child_proc(cmd, cmd_path, exec, env);
-	}
-	ft_close(&exec->tmp_fd);
+		child(cmd, exec, env, cmd_path);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
 	free(cmd_path);
@@ -66,44 +82,22 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 
 void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 {
-	if (flag == 1)
-	{
-		if (cmd->red)
-			if (set_redirections(exec, cmd) == -1)
-				return ;
-		dup_redirections(exec);
-	}
+	if (flag == 1 && cmd->red)
+		if (set_redirections(exec, cmd) == -1)
+			return ;
+	dup_redirections(exec);
 	if (!ft_strcmp(*cmd->cmd, "cd"))
-		ft_cd();
+		ft_cd(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "pwd"))
 		ft_pwd();
 	else if (!ft_strcmp(*cmd->cmd, "env"))
 		ft_env();
 	else if (!ft_strcmp(*cmd->cmd, "unset"))
-		ft_unset();
+		ft_unset(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "echo"))
-		ft_echo();
+		ft_echo(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "exit"))
-		ft_exit();
+		ft_exit(cmd);
 	else if (!ft_strcmp(*cmd->cmd, "export"))
 		g_data.ret_value = ft_export(cmd->cmd);
-}
-
-pid_t	piped_builtin(t_command *cmd, t_exec *exec)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		ft_printf(2, "fork: %s\n", strerror(errno));
-	else if (!pid)
-	{
-		execute_builtin(exec, cmd, 1);
-		exit(g_data.ret_value);
-	}
-	ft_close(&exec->in);
-	ft_close(&exec->tmp_fd);
-	ft_close(&exec->out);
-	ft_close(&exec->pipefd[1]);
-	return (pid);
 }

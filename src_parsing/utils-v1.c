@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:58:37 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 00:10:50 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:00:00 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,13 @@ int	line_len(char *line)
 		return (0);
 	while (line[i])
 	{
-		if (line[i] == '<')
-		{
-			if (line[i + 1] == '<')
-			{
-				j += 2;
-				i += 2;
-			}
-			else
-			{
-				j += 2;
-				i++;
-			}
-		}
-		else if (line[i] == '>')
-		{
-			if (line[i + 1] == '>')
-			{
-				j += 2;
-				i += 2;
-			}
-			else
-			{
-				j += 2;
-				i++;
-			}
-		}
-		else if (line[i] == '|')
+		if (line[i] == '<' || line[i] == '>' || line[i] == '|')
 		{
 			j += 2;
-			i++;
+			if (line[i + 1] == line[i])
+				i += 2;
+			else
+				i++;
 		}
 		else
 			i++;
@@ -72,12 +49,56 @@ int	line_len(char *line)
 	return (j);
 }
 
+int	count_single_quotes(char *line, size_t *i)
+{
+	int	s_quotes;
 
+	s_quotes = 0;
+	if (line[*i] == 39)
+	{
+		s_quotes++;
+		(*i)++;
+		while (line[*i])
+		{
+			if (line[*i] == 39)
+			{
+				s_quotes++;
+				(*i)++;
+				break ;
+			}
+			(*i)++;
+		}
+	}
+	return (s_quotes);
+}
+
+int	count_double_quotes(char *line, size_t *i)
+{
+	int	d_quotes;
+
+	d_quotes = 0;
+	if (line[*i] == 34)
+	{
+		d_quotes++;
+		(*i)++;
+		while (line[*i])
+		{
+			if (line[*i] == 34)
+			{
+				d_quotes++;
+				(*i)++;
+				break ;
+			}
+			(*i)++;
+		}
+	}
+	return (d_quotes);
+}
 
 size_t	list_size(void *lst, int s)
 {
-	size_t	x;
-	t_env	*lst1;
+	size_t		x;
+	t_env		*lst1;
 	t_command	*lst2;
 
 	x = 0;

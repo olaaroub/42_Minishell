@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:26:50 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/10/23 06:52:44 by kali             ###   ########.fr       */
+/*   Updated: 2024/11/17 01:47:47 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,5 @@ void	ft_env(void)
 		printf("%s=%s\n", iter->name, iter->value);
 		iter = iter->next;
 	}
+	g_data.ret_value = 0;
 }

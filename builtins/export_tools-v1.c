@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_tools-v1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 22:26:39 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/12 22:51:00 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 09:01:40 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ char	*get_var_name(char *line, int sign)
 	return (name);
 }
 
-void print_exported_vars(void)
+void	print_exported_vars(void)
 {
-	int index;
-	int y;
-	t_env *to_print;
-	t_env *tmp;
+	int		index;
+	int		y;
+	t_env	*to_print;
+	t_env	*tmp;
 
 	y = list_size(g_data.env_list, 1);
 	tmp = g_data.env_list;
@@ -88,7 +88,8 @@ void print_exported_vars(void)
 		sort_env(&g_data.env_list);
 		to_print = get_to_print(tmp, index);
 		if (to_print && to_print->value)
-			ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", to_print->name, to_print->value);
+			ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", \
+			to_print->name, to_print->value);
 		else if (to_print)
 			ft_printf(STDOUT_FILENO, "declare -x %s\n", to_print->name);
 		tmp = tmp->next;

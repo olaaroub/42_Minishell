@@ -6,11 +6,34 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 01:18:01 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/12 23:24:51 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:07:19 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static int	handle_quotes(char *line, int *i, int *j, char *quote_char)
+{
+	if ((line[(*i)] == '"' || line[(*i)] == '\'') && *quote_char == '\0')
+	{
+		*quote_char = line[(*i)];
+		line[(*j)++] = line[(*i)++];
+	}
+	else if (line[(*i)] == *quote_char)
+	{
+		*quote_char = '\0';
+		line[(*j)++] = line[(*i)++];
+	}
+	else if (*quote_char == '\0' && is_whitespace(line[(*i)]))
+	{
+		line[(*j)++] = ' ';
+		while (line[(*i)] && is_whitespace(line[(*i)]))
+			(*i)++;
+	}
+	else
+		return (0);
+	return (1);
+}
 
 void	ft_white_spaces(char *line)
 {
@@ -29,26 +52,10 @@ void	ft_white_spaces(char *line)
 		i++;
 	while (i < len)
 	{
-		if ((line[i] == '"' || line[i] == '\'') && quote_char == '\0')
-		{
-			quote_char = line[i];
-			line[j++] = line[i++];
-		}
-		else if (line[i] == quote_char)
-		{
-			quote_char = '\0';
-			line[j++] = line[i++];
-		}
-		else if (quote_char == '\0' && is_whitespace(line[i]))
-		{
-			line[j++] = ' ';
-			while (i < len && is_whitespace(line[i]))
-				i++;
-		}
+		if (handle_quotes(line, &i, &j, &quote_char) == 1)
+			continue ;
 		else
-		{
 			line[j++] = line[i++];
-		}
 	}
 	if (j > 0 && is_whitespace(line[j - 1]) && quote_char == '\0')
 		j--;
@@ -57,52 +64,22 @@ void	ft_white_spaces(char *line)
 
 int	valid_quotes(char *line)
 {
-	int	i;
-	int	len;
-	int	d_quotes;
-	int	s_quotes;
+	size_t	i;
+	int		d_quotes;
+	int		s_quotes;
 
 	d_quotes = 0;
 	s_quotes = 0;
 	if (!line)
 		return (2);
-	len = ft_strlen(line);
 	i = 0;
 	while (is_whitespace(line[i]))
 		i++;
-	while (i < len)
+	while (i < ft_strlen(line))
 	{
-		if (line[i] == 39)
-		{
-			s_quotes++;
-			i++;
-			while (line[i])
-			{
-				if (line[i] == 39)
-				{
-					s_quotes++;
-					i++;
-					break ;
-				}
-				i++;
-			}
-		}
-		else if (line[i] == 34)
-		{
-			d_quotes++;
-			i++;
-			while (line[i])
-			{
-				if (line[i] == 34)
-				{
-					d_quotes++;
-					i++;
-					break ;
-				}
-				i++;
-			}
-		}
-		else
+		s_quotes += count_single_quotes(line, &i);
+		d_quotes += count_double_quotes(line, &i);
+		if (line[i] != 39 && line[i] != 34)
 			i++;
 	}
 	if ((s_quotes % 2 != 0) || (d_quotes % 2 != 0))
@@ -110,59 +87,48 @@ int	valid_quotes(char *line)
 	return (2);
 }
 
+static void	write_spaces(char *line, char *buff, t_vars *vars)
+{
+	if ((line[vars->i] == '\'' || line[vars->i] == '"') && vars->quote == '\0')
+	{
+		vars->quote = line[vars->i];
+		buff[(vars->j)++] = line[(vars->i)++];
+	}
+	else if (line[(vars->i)] == vars->quote)
+	{
+		vars->quote = '\0';
+		buff[(vars->j)++] = line[(vars->i)++];
+	}
+	else if ((line[(vars->i)] == '>' || line[(vars->i)] == '<'
+			|| (line[(vars->i)] == '|' && line[(vars->i) + 1] != '|'))
+		&& vars->quote == '\0')
+	{
+		buff[(vars->j)++] = ' ';
+		buff[(vars->j)++] = line[(vars->i)++];
+		if (line[(vars->i)] == buff[(vars->j) - 1]
+			&& (buff[(vars->j) - 1] == '>' || buff[(vars->j) - 1] == '<'))
+			buff[(vars->j)++] = line[(vars->i)++];
+		buff[(vars->j)++] = ' ';
+	}
+	else
+		buff[(vars->j)++] = line[(vars->i)++];
+}
+
 char	*add_space(char *line)
 {
-	int		i;
-	int		j;
+	t_vars	vars;
 	char	*buff;
-	char	quote;
-	int		len;
 
-	i = 0;
-	j = 0;
-	quote = '\0';
-	if(!line)
-		return NULL;
-	len = ft_strlen(line) + line_len(line);
-	buff = malloc(sizeof(char) * len + 1);
-	while (line[i])
-	{
-		if ((line[i] == '\'' || line[i] == '"') && quote == '\0')
-		{
-			quote = line[i];
-			buff[j++] = line[i++];
-		}
-		else if (line[i] == quote)
-		{
-			quote = '\0';
-			buff[j++] = line[i++];
-		}
-		else if (line[i] == '>' && quote == '\0')
-		{
-			buff[j++] = ' ';
-			buff[j++] = line[i++];
-			if (line[i] == '>')
-				buff[j++] = line[i++];
-			buff[j++] = ' ';
-		}
-		else if (line[i] == '<' && quote == '\0')
-		{
-			buff[j++] = ' ';
-			buff[j++] = line[i++];
-			if (line[i] == '<')
-				buff[j++] = line[i++];
-			buff[j++] = ' ';
-		}
-		else if (line[i] == '|' && quote == '\0')
-		{
-			buff[j++] = ' ';
-			buff[j++] = line[i++];
-			buff[j++] = ' ';
-		}
-		else
-			buff[j++] = line[i++];
-	}
-	buff[j] = '\0';
+	vars.i = 0;
+	vars.j = 0;
+	vars.quote = '\0';
+	if (!line)
+		return (NULL);
+	vars.len = ft_strlen(line) + line_len(line);
+	buff = malloc(sizeof(char) * vars.len + 1);
+	while (line[vars.i])
+		write_spaces(line, buff, &vars);
+	buff[vars.j] = '\0';
 	free(line);
 	return (buff);
 }

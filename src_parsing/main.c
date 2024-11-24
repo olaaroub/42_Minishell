@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/13 06:50:58 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:01:42 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_program g_data;
+t_program	g_data;
 
-void print_tokens()
+void	print_tokens(void)
 {
 	t_command	*token;
 	t_redir		*redirection;
 	int			i;
 
 	token = g_data.command_list;
+	if (token && *token->cmd == NULL)
+		printf("cmd is NULL\n");
 	while (token)
 	{
 		i = 0;
@@ -33,7 +35,8 @@ void print_tokens()
 		}
 		while (redirection)
 		{
-			printf(" type is %d file name is %s\n", token->red->type, token->red->file_name);
+			printf(" type is %d file name is %s\n", redirection->type,
+				redirection->file_name);
 			redirection = redirection->next;
 		}
 		token = token->next;
@@ -41,7 +44,7 @@ void print_tokens()
 	}
 }
 
-void init_data(void)
+static void	init_data(void)
 {
 	g_data.trash_list = NULL;
 	g_data.command_list = NULL;
@@ -52,24 +55,7 @@ void init_data(void)
 	g_data.j = 0;
 }
 
-static void free_env_list(void)
-{
-	t_env	*tmp;
-
-	tmp = g_data.env_list;
-	while(tmp)
-	{
-		free(tmp->line);
-		free(tmp->name);
-		free(tmp->value);
-		tmp = tmp->next;
-		free(g_data.env_list);
-		g_data.env_list = tmp;
-	}
-
-}
-
-void sig_handler(int signo)
+void	sig_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
@@ -79,23 +65,14 @@ void sig_handler(int signo)
 		rl_redisplay();
 		g_data.ret_value = 130;
 	}
-	else if (signo == SIGQUIT)
-	{
-		// free_exec(g_data.exec); will need to add this to the global struct
-		signal(SIGQUIT, SIG_IGN);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-
 }
 
-int tokenize(char **line)
+static int	tokenize(char **line)
 {
 	ft_white_spaces(*line);
 	if (!valid_quotes(*line))
 	{
-		printf("Error: Unclosed quotes detected.\n");
+		ft_printf(2, "Error: Unclosed quotes detected.\n");
 		g_data.ret_value = 2;
 		ft_free_exit(*line, false);
 		return (-77);
@@ -111,31 +88,32 @@ int tokenize(char **line)
 	return (0);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-	char *line;
+	char	*line;
 
-	(void)ac;
-	(void)av;
 	line = NULL;
 	get_env(&g_data.env_list, env);
-	signal(SIGQUIT, sig_handler);
-	signal(SIGINT, sig_handler);
 	g_data.ret_value = 0;
-	while (1)
+	while (ac | **av)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, sig_handler);
 		init_data();
-		line = readline("Minihell==>>$ ");
-		if(!line)
-			return(printf("exit\n"), 0);
+		line = readline("minishell$ ");
+		signal(SIGINT, SIG_IGN);
+		if (!line)
+			return (free_env_list(), printf("exit\n"), 0);
 		if (line && *line)
 			add_history(line);
-		if(tokenize(&line) == -77)
-			continue;
+		if (tokenize(&line) == -77)
+			continue ;
 		fill_command_list();
-		// print_tokens();
+		free(line);
+		print_tokens();
 		executor(env);
-		ft_free_exit(line, false);
+		free_trash(&g_data.trash_list);
 	}
 	free_env_list();
+	return (0);
 }

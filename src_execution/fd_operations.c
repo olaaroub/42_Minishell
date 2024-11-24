@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/13 04:06:45 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/23 09:24:28 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,23 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 {
 	if (!cmd->red)
 		return (-2);
-	exec->tmp_fd = -1;
 	while (cmd->red)
 	{
-		if (access("/tmp/heredoc_", F_OK) == 0)
-			unlink("/tmp/heredoc_");
 		if (cmd->red->type == INPUT)
 			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)
 			exec->tmp_fd = open(cmd->red->file_name, \
-			O_CREAT | O_RDWR | O_TRUNC, 0644);
+			O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		else if (cmd->red->type == APPEND)
 			exec->tmp_fd = open(cmd->red->file_name, \
-			O_CREAT | O_RDWR | O_APPEND, 0644);
+			O_CREAT | O_WRONLY | O_APPEND, 0644);
 		else if (cmd->red->type == HEREDOC)
-			exec->tmp_fd = handle_heredoc(cmd);
-		if (exec->tmp_fd == -1)
-			return (ft_printf(2, " %s\n", strerror(errno)), \
-			ft_close(&exec->in), ft_close(&exec->out), -1);
+			exec->tmp_fd = get_heredoc(cmd->red);
+		if (check_fd(cmd, exec) == -1)
+		{
+			g_data.ret_value = -69;
+			return (-1);
+		}
 		update_fd(cmd, exec);
 		cmd->red = cmd->red->next;
 	}
@@ -69,9 +68,8 @@ void	dup_redirections(t_exec *exec)
 		ft_printf(2, "%s\n", strerror(errno));
 	if (dup2(exec->out, 1) == -1)
 		ft_printf(2, "%s\n", strerror(errno));
-	// ft_close(&exec->tmp_fd);
-	// ft_close(&exec->in);
-	// ft_close(&exec->out);
+	ft_close(&exec->in);
+	ft_close(&exec->out);
 }
 
 void	set_pipes(t_command *cmd, t_exec *exec)
@@ -80,8 +78,5 @@ void	set_pipes(t_command *cmd, t_exec *exec)
 		return ;
 	if (pipe(exec->pipefd) == -1)
 		return (ft_putendl_fd(strerror(errno), 2));
-	if (exec->keeper > 2)
-		exec->in = dup(exec->keeper);
-	ft_close(&exec->keeper);
 	exec->out = exec->pipefd[1];
 }

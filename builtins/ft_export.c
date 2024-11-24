@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 19:02:51 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/12 23:03:31 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:59:57 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 static void	env_modify(t_env **env, char *name, char *value)
 {
 	t_env	*temp;
+	char	*tmp;
 
 	temp = *env;
-	char *tmp;
-
-	while(temp)
+	while (temp)
 	{
 		if (!ft_strcmp(name, temp->name))
 		{
@@ -111,29 +110,29 @@ static int	check_export(char *str)
 	return (1);
 }
 
-int ft_export(char **cmd)
+int	ft_export(char **cmd)
 {
 	int	status;
-    int y;
+	int	y;
 
 	status = 0;
-    y = 0;
-    while(cmd[++y])
-    {
-        if (!check_export(cmd[y]))
+	y = 0;
+	while (cmd[++y])
+	{
+		if (!check_export(cmd[y]))
 		{
 			ft_printf(2, "export: `%s': not a valid identifier\n", cmd[y]);
 			status = 1;
 		}
-        else
-        {
+		else
+		{
 			if (status == 1)
 				export_to_env(cmd[y], check_export(cmd[y]));
 			else
 				status = export_to_env(cmd[y], check_export(cmd[y]));
 		}
-    }
+	}
 	if (!cmd[1])
 		print_exported_vars();
-	return status;
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:35:17 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/08 11:03:39 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:32:32 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	free_exec(t_exec *exec)
 	if (!exec)
 		return ;
 	free_arr (exec->paths);
-	free (exec->pid);
 	free (exec);
+}
+
+void	free_alloc(void)
+{
+	free_trash(&g_data.trash_list);
+	free_env_list();
 }
