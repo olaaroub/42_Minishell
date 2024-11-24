@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/22 11:23:43 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:01:42 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,35 @@
 
 t_program	g_data;
 
-// void	print_tokens(void)
-// {
-// 	t_command	*token;
-// 	t_redir		*redirection;
-// 	int			i;
+void	print_tokens(void)
+{
+	t_command	*token;
+	t_redir		*redirection;
+	int			i;
 
-// 	token = g_data.command_list;
-// 	while (token)
-// 	{
-// 		i = 0;
-// 		redirection = token->red;
-// 		while (token->cmd && token->cmd[i])
-// 		{
-// 			// printf("*cmd->cmd == %p\n", *token->cmd);
-// 			printf(" command %i is '%s'\n", i, token->cmd[i]);
-// 			i++;
-// 		}
-// 		while (redirection)
-// 		{
-// 			printf(" type is %d file name is %s\n", redirection->type,
-// 				redirection->file_name);
-// 			redirection = redirection->next;
-// 		}
-// 		token = token->next;
-// 		printf("========================================================\n");
-// 	}
-// }
+	token = g_data.command_list;
+	if (token && *token->cmd == NULL)
+		printf("cmd is NULL\n");
+	while (token)
+	{
+		i = 0;
+		redirection = token->red;
+		while (token->cmd && token->cmd[i])
+		{
+			printf("*cmd->cmd == %p\n", *token->cmd);
+			printf(" command %i is '%s'\n", i, token->cmd[i]);
+			i++;
+		}
+		while (redirection)
+		{
+			printf(" type is %d file name is %s\n", redirection->type,
+				redirection->file_name);
+			redirection = redirection->next;
+		}
+		token = token->next;
+		printf("========================================================\n");
+	}
+}
 
 static void	init_data(void)
 {
@@ -108,6 +110,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		fill_command_list();
 		free(line);
+		print_tokens();
 		executor(env);
 		free_trash(&g_data.trash_list);
 	}

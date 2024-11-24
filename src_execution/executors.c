@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/23 04:57:54 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/24 09:42:27 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	{
 		if (0x2 == errno)
 		{
-			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			// ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			perror("execve");
 			exit(127);
 		}
 		else
 			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
+			// perror("execve");
 		free_exec(exec);
 		exit(126);
 	}

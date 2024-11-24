@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:18:30 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/22 08:32:18 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:01:22 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_cmd_path(t_command *cmd, char	**paths)
 	cmd_path = 0;
 	if (!*cmd->cmd || **cmd->cmd == '\0')
 		return (NULL);
-	if (ft_strchr(*cmd->cmd, '/') || ft_strchr(*cmd->cmd, '.'))
+	if (ft_strchr(*cmd->cmd, '/'))
 		return (ft_strdup(*cmd->cmd));
 	tmp = ft_strjoin("/", *cmd->cmd);
 	while (paths && paths[++i])
@@ -48,7 +48,7 @@ char	*get_cmd_path(t_command *cmd, char	**paths)
 		free (cmd_path);
 	}
 	free (tmp);
-	return (NULL);
+	return (ft_strdup(*cmd->cmd));
 }
 
 char	**get_paths(void)
