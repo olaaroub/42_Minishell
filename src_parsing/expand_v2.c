@@ -95,7 +95,8 @@ void	expand(void)
 	char		*filename;
 
 	tmp = g_data.token_list;
-	filename = get_filename();
+	filename = create_tmp_file();
+	ft_add_trash(&g_data.trash_list, filename);
 	while (tmp)
 	{
 		fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
