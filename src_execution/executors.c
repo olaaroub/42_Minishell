@@ -23,14 +23,13 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	{
 		if (0x2 == errno)
 		{
-			// ft_printf(2, "%s: command not found\n", *cmd->cmd);
+			free_alloc();
 			perror("execve");
 			exit(127);
 		}
 		else
 			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
-			// perror("execve");
-		free_exec(exec);
+		free_alloc();
 		exit(126);
 	}
 }
