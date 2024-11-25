@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/24 09:42:27 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:06:56 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 
 	pid = 0;
 	cmd_path = get_cmd_path(cmd, exec->paths);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, cmd_path);
 	pid = fork();
 	if (pid == -1)
 		ft_printf(2, "fork: %s\n", strerror(errno));
@@ -74,7 +75,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		child(cmd, exec, env, cmd_path);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
-	free(cmd_path);
+	// free(cmd_path); it does not get freed if the child proc exited
 	cmd_path = 0;
 	return (pid);
 }

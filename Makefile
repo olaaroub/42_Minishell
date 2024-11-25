@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
+#    By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 03:42:07 by hatalhao          #+#    #+#              #
-#    Updated: 2024/11/22 04:33:15 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/11/25 17:57:47 by olaaroub         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -fsanitize=address -g3
+# CFLAGS += -fsanitize=address -g3
 MAKEFLAGS := -j --no-print-directory
 
 # ITALICBOLD
@@ -36,12 +36,12 @@ $(NAME): $(OBJ) $(LIB)
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
 	make clean
 	@echo "✅ $(GREEN)$(NAME)$(RESET)"
-	
+
 
 $(LIB):
 	@make -C libft
 	@echo "✅ $(GREEN)libft$(RESET)"
-	
+
 clean:
 	@rm -rf $(OBJ)
 	@make clean -C libft

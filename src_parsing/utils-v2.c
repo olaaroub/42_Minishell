@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils-v2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 00:08:03 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 08:50:46 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:04:08 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,12 @@ void	free_env_list(void)
 	tmp = g_data.env_list;
 	while (tmp)
 	{
-		free(tmp->line);
-		free(tmp->name);
-		free(tmp->value);
+		if(tmp->line)
+			free(tmp->line);
+		if(tmp->name)
+			free(tmp->name);
+		if(tmp->value)
+			free(tmp->value);
 		tmp = tmp->next;
 		free(g_data.env_list);
 		g_data.env_list = tmp;
