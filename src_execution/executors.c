@@ -23,14 +23,13 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	{
 		if (0x2 == errno)
 		{
-			free_env_list();
+			free_alloc();
 			perror("execve");
 			exit(127);
 		}
 		else
 			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
-			// perror("execve");
-		free_exec(exec);
+		free_alloc();
 		exit(126);
 	}
 }
