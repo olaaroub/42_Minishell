@@ -97,7 +97,7 @@ int	handle_heredoc(t_redir *red)
 	char	*tmp;
 
 	tmp = create_tmp_file();
-	red->heredoc = ft_strjoin("/tmp/heredoc/", tmp);
+	red->heredoc = ft_strjoin("/tmp/", tmp);
 	free(tmp);
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, red->heredoc);
 	fd = open(red->heredoc, O_CREAT | O_WRONLY | O_APPEND, 0644);
