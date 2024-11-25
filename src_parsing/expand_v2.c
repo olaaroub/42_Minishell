@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/20 19:08:32 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:11:06 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ void	expand(void)
 
 	tmp = g_data.token_list;
 	filename = create_tmp_file();
-	ft_add_trash(&g_data.trash_list, filename);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
+	filename = ft_strjoin("/tmp/", filename);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
 	while (tmp)
 	{
 		fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/23 04:15:40 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:59:26 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ void					check_master_quotes(bool *double_flag,
 int						check_env_name(char *buff);
 int						get_expanded(char *buff, int fd);
 void					start_expand(char *buff, int fd);
-char					*get_filename(void);
 
 /*						PARSING_FUNCS	*/
 int						count_double_quotes(char *line, size_t *i);

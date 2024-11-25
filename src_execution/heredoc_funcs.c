@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/24 09:34:23 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:10:47 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	dollar_expansion(char *word, int *i, int fd)
 	}
 }
 
-static char	*expand_heredoc(char *word, char *delimiter)
+static char	*expand_heredoc(char *word, char *delimiter, char *tmpfile)
 {
 	int		i;
 	int		fd;
@@ -43,7 +43,7 @@ static char	*expand_heredoc(char *word, char *delimiter)
 	i = 0;
 	if (!ft_strcmp(word, delimiter))
 		return (word);
-	fd = open("file2.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fd = open(tmpfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (word && word[i])
 	{
 		check_master_quotes(&g_data.double_flag, &g_data.single_flag, word[i]);
@@ -54,10 +54,10 @@ static char	*expand_heredoc(char *word, char *delimiter)
 			write(fd, &word[i++], 1);
 	}
 	close(fd);
-	fd = open("file2.txt", O_RDONLY);
+	fd = open(tmpfile, O_RDONLY);
 	expanded_word = get_next_line(fd);
 	close(fd);
-	unlink("file2.txt");
+	unlink(tmpfile);
 	free(word);
 	return (expanded_word);
 }
@@ -72,15 +72,20 @@ void	sigheredoc(int sig)
 void	fill_heredoc(int fd, char *delimiter)
 {
 	char	*line;
+	char	*tmpfile;
 
 	line = 0;
+	tmpfile = create_tmp_file();
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, tmpfile);
+	tmpfile = ft_strjoin("/tmp/", tmpfile);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, tmpfile);
 	signal(SIGINT, sigheredoc);
 	while (true)
 	{
 		line = readline("> ");
 		if (!line)
 			exit(0);
-		line = expand_heredoc(line, delimiter);
+		line = expand_heredoc(line, delimiter, tmpfile);
 		if (line && !ft_strcmp(line, delimiter))
 			return (free_env_list(), free(line), \
 			free_trash(&g_data.trash_list), exit(0));
