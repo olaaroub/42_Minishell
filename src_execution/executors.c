@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/26 07:56:13 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 08:06:45 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ void	child(t_command *cmd, t_exec *exec, char **env, char *cmd_path)
 		ft_close(&exec->in);
 		exec->in = 0;
 		execute_builtin(exec, cmd, 0);
+		free_alloc();
 		exit(g_data.ret_value);
 	}
 	else if (cmd_path == NULL)
 	{
-		free_trash(&g_data.trash_list);
-		free_env_list();
+		free_alloc();
 		exit(0);
 	}
 	child_proc(cmd, cmd_path, exec, env);
@@ -87,7 +87,6 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 		child(cmd, exec, env, cmd_path);
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[1]);
-	// free(cmd_path); it does not get freed if the child proc exited
 	cmd_path = 0;
 	return (pid);
 }
