@@ -6,13 +6,13 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:24:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/25 16:58:41 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 01:08:11 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*trim_quotes(char *word)
+char	*trim_quotes(char *word)
 {
 	char	*ret;
 	char	quote;
@@ -43,7 +43,9 @@ static char	*trim_quotes(char *word)
 static int	handle_redirs(t_tokens **temp, t_redir **redir, char **commands,
 		int *i)
 {
-	if ((*temp)->next && (*temp)->next->ambiguous == false)
+	if ((*temp)->type == HEREDOC)
+		*redir = ft_add_redir(redir, (*temp)->next->word, HEREDOC);
+	else if ((*temp)->next && (*temp)->next->ambiguous == false)
 		*redir = ft_add_redir(redir, trim_quotes((*temp)->next->word),
 				(*temp)->type);
 	else if ((*temp)->next)

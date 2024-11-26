@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/25 16:10:47 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 01:02:31 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ static char	*expand_heredoc(char *word, char *delimiter, char *tmpfile)
 	fd = open(tmpfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (word && word[i])
 	{
-		check_master_quotes(&g_data.double_flag, &g_data.single_flag, word[i]);
 		if (word[i] == '$' && (word[i + 1] != '\0' && !is_whitespace(word[i
-						+ 1])))
+						+ 1])) && !g_data.delim_flag)
 			dollar_expansion(word, &i, fd);
 		else
 			write(fd, &word[i++], 1);
@@ -80,12 +79,16 @@ void	fill_heredoc(int fd, char *delimiter)
 	tmpfile = ft_strjoin("/tmp/", tmpfile);
 	g_data.trash_list = ft_add_trash(&g_data.trash_list, tmpfile);
 	signal(SIGINT, sigheredoc);
+	check_delimiter(delimiter);
+	delimiter = trim_quotes(delimiter);
 	while (true)
 	{
 		line = readline("> ");
 		if (!line)
 			exit(0);
 		line = expand_heredoc(line, delimiter, tmpfile);
+		if (!line)
+			line = ft_strdup("");
 		if (line && !ft_strcmp(line, delimiter))
 			return (free_env_list(), free(line), \
 			free_trash(&g_data.trash_list), exit(0));

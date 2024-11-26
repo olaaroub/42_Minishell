@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/25 16:59:26 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 01:08:50 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_program
 	t_command			*command_list;
 	bool				double_flag;
 	bool				single_flag;
+	bool				delim_flag;
 	int					ret_value;
 	int					i;
 	int					j;
@@ -137,6 +138,7 @@ int						get_expanded(char *buff, int fd);
 void					start_expand(char *buff, int fd);
 
 /*						PARSING_FUNCS	*/
+char					*trim_quotes(char *word);
 int						count_double_quotes(char *line, size_t *i);
 int						count_single_quotes(char *line, size_t *i);
 void					skip_d_quotes(char *line, int *i);
@@ -211,6 +213,7 @@ int						handle_heredoc(t_redir *red);
 int						offset_reposition(int fd, char *name);
 char					*create_tmp_file(void);
 int						handle_special_chars2(char *word, int *i, int fd);
+void					check_delimiter(char *delim);
 
 /*				io_ops.c		*/
 void					mod_fds(t_exec *exec);

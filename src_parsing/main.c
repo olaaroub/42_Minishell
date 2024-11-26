@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/25 16:11:40 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 00:51:53 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	init_data(void)
 	g_data.token_list = NULL;
 	g_data.double_flag = false;
 	g_data.single_flag = false;
+	g_data.delim_flag = false;
 	g_data.i = 0;
 	g_data.j = 0;
 }
