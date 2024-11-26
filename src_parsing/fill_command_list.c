@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:24:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 16:53:21 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:55:03 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ static int	handle_command(t_tokens **temp, char **commands, int *i)
 	{
 		(*temp)->word = trim_quotes((*temp)->word);
 		commands[*i] = ft_strdup((*temp)->word);
+		if(!commands[*i])
+			return MALLOC_ERROR;
 		g_data.trash_list = ft_add_trash(&g_data.trash_list, commands[*i]);
 		(*i)++;
 	}
@@ -109,8 +111,6 @@ static int	fill_commands_redirs(t_tokens **temp, t_redir **redir,
 		{
 			if (handle_redirs(temp, redir, commands, &i) == MALLOC_ERROR)
 				return MALLOC_ERROR;
-			else
-				return 0;
 		}
 		else
 		{

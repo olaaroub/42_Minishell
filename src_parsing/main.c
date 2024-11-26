@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 17:06:21 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:56:11 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ int	main(int ac, char **av, char **env)
 		if (tokenize(&line) == -77)
 			continue ;
 		if (fill_command_list() == MALLOC_ERROR)
-			continue ;
+			continue;
+		// print_tokens();
 		free(line);
 		executor(env);
 		free_trash(&g_data.trash_list);
