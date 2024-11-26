@@ -40,29 +40,27 @@ char	*trim_quotes(char *word)
 	return (ret);
 }
 
-
-
 static int	handle_redirs(t_tokens **temp, t_redir **redir, char **commands,
 		int *i)
 {
 	if ((*temp)->type == HEREDOC)
 	{
 		*redir = ft_add_redir(redir, (*temp)->next->word, HEREDOC);
-		if(!*redir)
-			return MALLOC_ERROR;
+		if (!*redir)
+			return (MALLOC_ERROR);
 	}
 	else if ((*temp)->next && (*temp)->next->ambiguous == false)
 	{
 		*redir = ft_add_redir(redir, trim_quotes((*temp)->next->word),
-			(*temp)->type);
-		if(!*redir)
-			return MALLOC_ERROR;
+				(*temp)->type);
+		if (!*redir)
+			return (MALLOC_ERROR);
 	}
 	else if ((*temp)->next)
 	{
 		if (handle_ambiguous(temp, redir, commands, i) == MALLOC_ERROR)
-			return MALLOC_ERROR;
-		return -1;
+			return (MALLOC_ERROR);
+		return (-1);
 	}
 	(*temp) = (*temp)->next->next;
 	return (0);
@@ -78,8 +76,8 @@ static int	handle_command(t_tokens **temp, char **commands, int *i)
 		while ((*temp)->word_after_exp[j])
 		{
 			commands[*i] = ft_strdup(trim_quotes((*temp)->word_after_exp[j++]));
-			if(!commands[*i])
-				return MALLOC_ERROR;
+			if (!commands[*i])
+				return (MALLOC_ERROR);
 			g_data.trash_list = ft_add_trash(&g_data.trash_list, commands[*i]);
 			(*i)++;
 		}
@@ -88,13 +86,13 @@ static int	handle_command(t_tokens **temp, char **commands, int *i)
 	{
 		(*temp)->word = trim_quotes((*temp)->word);
 		commands[*i] = ft_strdup((*temp)->word);
-		if(!commands[*i])
-			return MALLOC_ERROR;
+		if (!commands[*i])
+			return (MALLOC_ERROR);
 		g_data.trash_list = ft_add_trash(&g_data.trash_list, commands[*i]);
 		(*i)++;
 	}
 	(*temp) = (*temp)->next;
-	return 0;
+	return (0);
 }
 
 static int	fill_commands_redirs(t_tokens **temp, t_redir **redir,
@@ -110,16 +108,16 @@ static int	fill_commands_redirs(t_tokens **temp, t_redir **redir,
 			|| (*temp)->type == APPEND || (*temp)->type == HEREDOC)
 		{
 			if (handle_redirs(temp, redir, commands, &i) == MALLOC_ERROR)
-				return MALLOC_ERROR;
+				return (MALLOC_ERROR);
 		}
 		else
 		{
 			if (handle_command(temp, commands, &i) == MALLOC_ERROR)
-				return MALLOC_ERROR;
+				return (MALLOC_ERROR);
 		}
 	}
 	commands[i] = 0;
-	return 0;
+	return (0);
 }
 
 int	fill_command_list(void)
@@ -143,7 +141,7 @@ int	fill_command_list(void)
 			return (free_trash(&g_data.trash_list), MALLOC_ERROR);
 		g_data.command_list = ft_add_command(&g_data.command_list, commands,
 				redir);
-		if(!g_data.command_list)
+		if (!g_data.command_list)
 			return (free_trash(&g_data.trash_list), MALLOC_ERROR);
 		if (temp)
 			temp = temp->next;

@@ -46,11 +46,11 @@ int	split_tokens(void)
 	while (tmp)
 	{
 		tmp->word_after_exp = customized_split(tmp->word);
-		if(!tmp->word_after_exp && tmp->word)
-			return MALLOC_ERROR;
+		if (!tmp->word_after_exp && tmp->word)
+			return (MALLOC_ERROR);
 		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }
 
 void	free_env_list(void)

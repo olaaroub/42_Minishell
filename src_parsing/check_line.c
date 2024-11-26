@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 01:18:01 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 15:30:02 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 19:05:04 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ static void	write_spaces(char *line, char *buff, t_vars *vars)
 	{
 		buff[(vars->j)++] = ' ';
 		buff[(vars->j)++] = line[(vars->i)++];
-		if (line[(vars->i)] == buff[(vars->j) - 1]
-			&& (buff[(vars->j) - 1] == '>' || buff[(vars->j) - 1] == '<'))
+		if (line[(vars->i)] == buff[(vars->j) - 1] && (buff[(vars->j)
+					- 1] == '>' || buff[(vars->j) - 1] == '<'))
 			buff[(vars->j)++] = line[(vars->i)++];
 		buff[(vars->j)++] = ' ';
 	}
@@ -126,7 +126,7 @@ char	*add_space(char *line)
 		return (NULL);
 	vars.len = ft_strlen(line) + line_len(line);
 	buff = malloc(sizeof(char) * vars.len + 1);
-	if(!buff)
+	if (!buff)
 		return (NULL);
 	while (line[vars.i])
 		write_spaces(line, buff, &vars);

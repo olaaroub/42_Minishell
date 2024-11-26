@@ -76,14 +76,13 @@ t_redir	*ft_add_redir(t_redir **head, char *file_name, int type)
 	return (*head);
 }
 
-int handle_ambiguous(t_tokens **temp, t_redir **redir, char **commands, int *i)
+int	handle_ambiguous(t_tokens **temp, t_redir **redir, char **commands, int *i)
 {
-	ft_printf(2, "minishell: %s: AMBIGUOUS REDIRECT\n",
-		(*temp)->next->dollar);
+	ft_printf(2, "minishell: %s: AMBIGUOUS REDIRECT\n", (*temp)->next->dollar);
 	g_data.ret_value = 1;
 	*redir = ft_add_redir(redir, NULL, AMBIG);
-	if(!*redir)
-		return MALLOC_ERROR;
+	if (!*redir)
+		return (MALLOC_ERROR);
 	commands[*i] = NULL;
 	while ((*temp) && (*temp)->type != PIPE)
 		(*temp) = (*temp)->next;
