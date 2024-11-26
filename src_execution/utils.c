@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 08:28:47 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/23 09:24:16 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 07:24:46 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	get_heredoc(t_redir *red)
 {
 	int		fd;
 
-	fd = -1;
 	fd = open(red->heredoc, O_RDONLY);
 	unlink(red->heredoc);
 	return (fd);

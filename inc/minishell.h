@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 01:08:50 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 07:57:08 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
+# include <sys/stat.h>
 # include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -33,10 +34,10 @@
 
 # define WORD 0
 # define PIPE 1
-# define INPUT 2  // cat < Makefile cat Makefile
-# define OUTPUT 3 // ls > out ==== ls than 7titiha f out
+# define INPUT 2
+# define OUTPUT 3
 # define APPEND 4
-# define HEREDOC 5 // << delimiter
+# define HEREDOC 5
 # define AMBIG 6
 
 typedef struct s_trash

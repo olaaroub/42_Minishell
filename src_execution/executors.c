@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   executors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/25 18:06:56 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 07:56:13 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	error_exit(t_command *cmd, char *cmd_path)
+{
+	struct stat	unknown;
+
+	stat(cmd_path, &unknown);
+	if (!ft_strchr(*cmd->cmd, '/'))
+	{
+		ft_printf(2, "%s: command not found\n", *cmd->cmd);
+		free_alloc();
+		exit(127);
+	}
+	else if (0x2 == errno)
+	{
+		if (!ft_strchr(*cmd->cmd, '/'))
+			ft_printf(2, "%s: command not found\n", *cmd->cmd);
+		else
+			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
+		free_alloc();
+		exit(127);
+	}
+	else if (errno == 13 && (unknown.st_mode & __S_IFDIR))
+		ft_printf(2, "%s: Is a directory\n", *cmd->cmd);
+	else
+		ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
+	free_alloc();
+	exit(126);
+}
 
 void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 {
@@ -20,18 +48,7 @@ void	child_proc(t_command *cmd, char *cmd_path, t_exec *exec, char **env)
 	ft_close(&exec->out);
 	ft_close(&exec->pipefd[0]);
 	if (execve(cmd_path, cmd->cmd, env) == -1)
-	{
-		if (0x2 == errno)
-		{
-			free_alloc();
-			perror("execve");
-			exit(127);
-		}
-		else
-			ft_printf(2, "%s: %s\n", *cmd->cmd, strerror(errno));
-		free_alloc();
-		exit(126);
-	}
+		error_exit(cmd, cmd_path);
 }
 
 void	child(t_command *cmd, t_exec *exec, char **env, char *cmd_path)
@@ -48,14 +65,9 @@ void	child(t_command *cmd, t_exec *exec, char **env, char *cmd_path)
 	}
 	else if (cmd_path == NULL)
 	{
-		if (*cmd->cmd)
-		{
-			ft_printf(2, "%s: command not found\n", *cmd->cmd);
-			g_data.ret_value = 127;
-		}
 		free_trash(&g_data.trash_list);
 		free_env_list();
-		exit(g_data.ret_value);
+		exit(0);
 	}
 	child_proc(cmd, cmd_path, exec, env);
 }

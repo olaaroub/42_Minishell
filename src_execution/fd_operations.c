@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/23 09:24:28 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 07:43:55 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 		return (-2);
 	while (cmd->red)
 	{
+		if (!ft_strcmp(cmd->red->file_name, "/dev/stdout"))
+		{
+			cmd->red = cmd->red->next;
+			continue ;
+		}
 		if (cmd->red->type == INPUT)
 			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
 		else if (cmd->red->type == OUTPUT)
@@ -52,10 +57,7 @@ int	set_redirections(t_exec *exec, t_command *cmd)
 		else if (cmd->red->type == HEREDOC)
 			exec->tmp_fd = get_heredoc(cmd->red);
 		if (check_fd(cmd, exec) == -1)
-		{
-			g_data.ret_value = -69;
-			return (-1);
-		}
+			return ((g_data.ret_value = -69), -1);
 		update_fd(cmd, exec);
 		cmd->red = cmd->red->next;
 	}
