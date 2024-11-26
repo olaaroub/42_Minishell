@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 13:05:32 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:35:27 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define APPEND 4
 # define HEREDOC 5
 # define AMBIG 6
+# define MALLOC_ERROR -69
 
 typedef struct s_trash
 {
@@ -131,12 +132,13 @@ t_env					*get_to_print(t_env *env, int index);
 void					print_exported_vars(void);
 
 /*						EXPAND			*/
-void					expand(void);
+int						expand(void);
 void					check_master_quotes(bool *double_flag,
 							bool *single_flag, char c);
 int						check_env_name(char *buff);
 int						get_expanded(char *buff, int fd);
 void					start_expand(char *buff, int fd);
+char					*get_filename(void);
 
 /*						PARSING_FUNCS	*/
 char					*trim_quotes(char *word);
@@ -154,7 +156,9 @@ void					ft_free_exit(char *line, bool exit);
 int						line_len(char *line);
 char					*add_space(char *line);
 int						syntax_error(void);
-void					split_tokens(void);
+int						split_tokens(void);
+int 					handle_ambiguous(t_tokens **temp, t_redir **redir,
+							char **commands, int *i);
 
 /*				command_list.c			*/
 t_redir					*redir_node(char *file_name, int type);
@@ -163,7 +167,7 @@ t_redir					*ft_add_redir(t_redir **head, char *file_name,
 							int type);
 t_command				*ft_add_command(t_command **head, char **commands,
 							t_redir *redir);
-void					fill_command_list(void);
+int					fill_command_list(void);
 void					sig_handler(int signo);
 
 /*				EXECUTION		*/

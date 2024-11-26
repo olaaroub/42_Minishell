@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 12:53:19 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 12:07:29 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:36:33 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_trash	*ft_add_trash(t_trash **head, void *addr)
 
 	new = trash_node(addr);
 	if (!new)
-		return (NULL);
+		return (free_trash(&g_data.trash_list), NULL);
 	if (!*head)
 		return (new);
 	temp = *head;
