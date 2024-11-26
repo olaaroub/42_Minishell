@@ -6,7 +6,7 @@
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 03:42:07 by hatalhao          #+#    #+#              #
-#    Updated: 2024/11/22 04:33:15 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/11/26 13:05:50 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,15 +33,16 @@ LIB = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB)
+	@stty -echoctl
 	$(CC) $(CFLAGS) $(OBJ) $(LIB)  -lreadline -o $(NAME)
 	make clean
 	@echo "✅ $(GREEN)$(NAME)$(RESET)"
-	
+
 
 $(LIB):
 	@make -C libft
 	@echo "✅ $(GREEN)libft$(RESET)"
-	
+
 clean:
 	@rm -rf $(OBJ)
 	@make clean -C libft

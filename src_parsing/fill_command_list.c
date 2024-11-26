@@ -6,13 +6,13 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:24:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/24 11:21:12 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:06:39 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*trim_quotes(char *word)
+char	*trim_quotes(char *word)
 {
 	char	*ret;
 	char	quote;
@@ -43,12 +43,15 @@ static char	*trim_quotes(char *word)
 static int	handle_redirs(t_tokens **temp, t_redir **redir, char **commands,
 		int *i)
 {
-	if ((*temp)->next && (*temp)->next->ambiguous == false)
+	if ((*temp)->type == HEREDOC)
+		*redir = ft_add_redir(redir, (*temp)->next->word, HEREDOC);
+	else if ((*temp)->next && (*temp)->next->ambiguous == false)
 		*redir = ft_add_redir(redir, trim_quotes((*temp)->next->word),
 				(*temp)->type);
 	else if ((*temp)->next)
 	{
-		ft_printf(2,"minishell: %s: AMBIGUOUS REDIRECT\n", (*temp)->next->dollar);
+		ft_printf(2, "minishell: %s: AMBIGUOUS REDIRECT\n",
+			(*temp)->next->dollar);
 		g_data.ret_value = 1;
 		*redir = ft_add_redir(redir, NULL, AMBIG);
 		commands[*i] = NULL;

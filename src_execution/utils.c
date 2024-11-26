@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 08:28:47 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/23 09:24:16 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:06:22 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	get_heredoc(t_redir *red)
 {
 	int		fd;
 
-	fd = -1;
 	fd = open(red->heredoc, O_RDONLY);
 	unlink(red->heredoc);
 	return (fd);
@@ -46,17 +45,17 @@ int	heredoc_present(t_command *cmd)
 	return (0);
 }
 
-int	check_fd(t_command *cmd, t_exec *exec)
+int	check_fd(t_redir *red, t_exec *exec)
 {
 	if (exec->tmp_fd == -1)
 	{
-		if (cmd->red->type == HEREDOC)
+		if (red->type == HEREDOC)
 		{
 			g_data.ret_value = 130;
 			return (-1);
 		}
-		if (cmd->red->type != AMBIG)
-			perror(cmd->red->file_name);
+		if (red->type != AMBIG)
+			perror(red->file_name);
 		g_data.ret_value = 1;
 		return (-1);
 	}

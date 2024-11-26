@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 22:43:13 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/23 05:43:21 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:06:10 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,11 @@ char	*create_tmp_file(void)
 
 int	handle_special_chars2(char *word, int *i, int fd)
 {
-	if (word[*i + 1] == '"' && g_data.double_flag == true)
+	if (word[*i + 1] == '"' || word[*i + 1] == '\'')
 		write(fd, &word[(*i)++], 1);
-	else if (is_special_char(word[*i + 1]) && ((g_data.double_flag == false
-				&& g_data.single_flag == false)
-			|| (g_data.double_flag == true)))
+	else if (is_special_char(word[*i + 1]))
 		*i += 2;
-	else if (word[*i + 1] == '?' && ((g_data.double_flag == false
-				&& g_data.single_flag == false)
-			|| (g_data.double_flag == true)))
+	else if (word[*i + 1] == '?')
 	{
 		ft_putnbr_fd(g_data.ret_value, fd);
 		*i += 2;
@@ -67,4 +63,17 @@ int	handle_special_chars2(char *word, int *i, int fd)
 	else
 		return (1);
 	return (0);
+}
+
+void	check_delimiter(char *delim)
+{
+	while (*delim)
+	{
+		if (*delim == '\'' || *delim == '"')
+		{
+			g_data.delim_flag = true;
+			break ;
+		}
+		delim++;
+	}
 }

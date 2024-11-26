@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:26:52 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/23 09:24:28 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:05:58 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_close(int *fd)
 	}
 }
 
-void	update_fd(t_command *cmd, t_exec *exec)
+void	update_fd(t_redir *red, t_exec *exec)
 {
-	if (cmd->red->type == INPUT || cmd->red->type == HEREDOC)
+	if (red->type == INPUT || red->type == HEREDOC)
 	{
 		ft_close(&exec->in);
 		exec->in = exec->tmp_fd;
@@ -35,29 +35,31 @@ void	update_fd(t_command *cmd, t_exec *exec)
 	}
 }
 
-int	set_redirections(t_exec *exec, t_command *cmd)
+int	set_redirections(t_exec *exec, t_redir *red)
 {
-	if (!cmd->red)
+	if (!red)
 		return (-2);
-	while (cmd->red)
+	while (red)
 	{
-		if (cmd->red->type == INPUT)
-			exec->tmp_fd = open(cmd->red->file_name, O_RDONLY);
-		else if (cmd->red->type == OUTPUT)
-			exec->tmp_fd = open(cmd->red->file_name, \
-			O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else if (cmd->red->type == APPEND)
-			exec->tmp_fd = open(cmd->red->file_name, \
-			O_CREAT | O_WRONLY | O_APPEND, 0644);
-		else if (cmd->red->type == HEREDOC)
-			exec->tmp_fd = get_heredoc(cmd->red);
-		if (check_fd(cmd, exec) == -1)
+		if (red->file_name && !ft_strcmp(red->file_name, "/dev/stdout"))
 		{
-			g_data.ret_value = -69;
-			return (-1);
+			red = red->next;
+			continue ;
 		}
-		update_fd(cmd, exec);
-		cmd->red = cmd->red->next;
+		if (red->type == INPUT)
+			exec->tmp_fd = open(red->file_name, O_RDONLY);
+		else if (red->type == OUTPUT)
+			exec->tmp_fd = open(red->file_name, \
+			O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		else if (red->type == APPEND)
+			exec->tmp_fd = open(red->file_name, \
+			O_CREAT | O_WRONLY | O_APPEND, 0644);
+		else if (red->type == HEREDOC)
+			exec->tmp_fd = get_heredoc(red);
+		if (check_fd(red, exec) == -1)
+			return ((g_data.ret_value = -69), -1);
+		update_fd(red, exec);
+		red = red->next;
 	}
 	return (exec->tmp_fd);
 }

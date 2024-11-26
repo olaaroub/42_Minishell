@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 22:38:07 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/20 19:08:03 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:06:28 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,4 @@ void	start_expand(char *buff, int fd)
 		write(fd, "$", 1);
 		write(fd, buff, ft_strlen(buff));
 	}
-}
-
-char	*get_filename(void)
-{
-	char	*filename;
-	char	rand[6];
-	int		tmp_fd;
-
-	tmp_fd = open("/dev/urandom", O_RDONLY);
-	read(tmp_fd, rand, 5);
-	rand[5] = '\0';
-	close(tmp_fd);
-	filename = ft_strjoin("/tmp/", rand);
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
-	return (filename);
 }

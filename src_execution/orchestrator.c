@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/24 09:48:08 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:06:16 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	prepare_input(t_command *cmd, t_exec *exec, char **env)
 		exec->in = exec->save;
 		exec->out = STDOUT_FILENO;
 		set_pipes(cmd, exec);
-		if (set_redirections(exec, cmd) == -1)
+		if (set_redirections(exec, cmd->red) == -1)
 		{
 			mod_fds(exec);
 			cmd = cmd->next;

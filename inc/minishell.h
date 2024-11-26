@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/23 04:15:40 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:05:32 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
+# include <sys/stat.h>
 # include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -33,10 +34,10 @@
 
 # define WORD 0
 # define PIPE 1
-# define INPUT 2  // cat < Makefile cat Makefile
-# define OUTPUT 3 // ls > out ==== ls than 7titiha f out
+# define INPUT 2
+# define OUTPUT 3
 # define APPEND 4
-# define HEREDOC 5 // << delimiter
+# define HEREDOC 5
 # define AMBIG 6
 
 typedef struct s_trash
@@ -98,6 +99,7 @@ typedef struct s_program
 	t_command			*command_list;
 	bool				double_flag;
 	bool				single_flag;
+	bool				delim_flag;
 	int					ret_value;
 	int					i;
 	int					j;
@@ -135,9 +137,9 @@ void					check_master_quotes(bool *double_flag,
 int						check_env_name(char *buff);
 int						get_expanded(char *buff, int fd);
 void					start_expand(char *buff, int fd);
-char					*get_filename(void);
 
 /*						PARSING_FUNCS	*/
+char					*trim_quotes(char *word);
 int						count_double_quotes(char *line, size_t *i);
 int						count_single_quotes(char *line, size_t *i);
 void					skip_d_quotes(char *line, int *i);
@@ -188,8 +190,8 @@ t_env					*get_env_node(char *to_find);
 void					ft_close(int *fd);
 void					dup_redirections(t_exec *exec);
 void					set_pipes(t_command *cmd, t_exec *exec);
-int						set_redirections(t_exec *exec, t_command *cmd);
-void					update_fd(t_command *cmd, t_exec *exec);
+int						set_redirections(t_exec *exec, t_redir *red);
+void					update_fd(t_redir *red, t_exec *exec);
 
 /*				getters.c		*/
 char					**get_paths(void);
@@ -212,6 +214,7 @@ int						handle_heredoc(t_redir *red);
 int						offset_reposition(int fd, char *name);
 char					*create_tmp_file(void);
 int						handle_special_chars2(char *word, int *i, int fd);
+void					check_delimiter(char *delim);
 
 /*				io_ops.c		*/
 void					mod_fds(t_exec *exec);
@@ -224,7 +227,7 @@ void					free_exec(t_exec *exec);
 void					free_alloc(void);
 
 /*				utils.c			*/
-int						check_fd(t_command *cmd, t_exec *exec);
+int						check_fd(t_redir *red, t_exec *exec);
 int						get_heredoc(t_redir *red);
 void					last_cmd(t_command *cmd, t_exec *exec);
 void					saving_pipe(t_command *cmd, t_exec *exec);
