@@ -1,0 +1,15 @@
+a
+as
+builtins
+inc
+libft
+Makefile
+minishell
+minishell_tester
+out
+src_execution
+src_parsing
+tests.md
+v
+valgrind_flags
+valgrind.supp

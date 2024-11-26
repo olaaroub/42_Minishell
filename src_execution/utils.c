@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 08:28:47 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/26 07:24:46 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:44:06 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ int	heredoc_present(t_command *cmd)
 	return (0);
 }
 
-int	check_fd(t_command *cmd, t_exec *exec)
+int	check_fd(t_redir *red, t_exec *exec)
 {
 	if (exec->tmp_fd == -1)
 	{
-		if (cmd->red->type == HEREDOC)
+		if (red->type == HEREDOC)
 		{
 			g_data.ret_value = 130;
 			return (-1);
 		}
-		if (cmd->red->type != AMBIG)
-			perror(cmd->red->file_name);
+		if (red->type != AMBIG)
+			perror(red->file_name);
 		g_data.ret_value = 1;
 		return (-1);
 	}

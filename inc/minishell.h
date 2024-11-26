@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 07:57:08 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:43:47 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,8 @@ t_env					*get_env_node(char *to_find);
 void					ft_close(int *fd);
 void					dup_redirections(t_exec *exec);
 void					set_pipes(t_command *cmd, t_exec *exec);
-int						set_redirections(t_exec *exec, t_command *cmd);
-void					update_fd(t_command *cmd, t_exec *exec);
+int						set_redirections(t_exec *exec, t_redir *red);
+void					update_fd(t_redir *red, t_exec *exec);
 
 /*				getters.c		*/
 char					**get_paths(void);
@@ -227,7 +227,7 @@ void					free_exec(t_exec *exec);
 void					free_alloc(void);
 
 /*				utils.c			*/
-int						check_fd(t_command *cmd, t_exec *exec);
+int						check_fd(t_redir *red, t_exec *exec);
 int						get_heredoc(t_redir *red);
 void					last_cmd(t_command *cmd, t_exec *exec);
 void					saving_pipe(t_command *cmd, t_exec *exec);

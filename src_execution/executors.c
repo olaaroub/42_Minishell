@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 19:56:13 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/26 08:06:45 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:37:25 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ pid_t	execute_cmd(t_command *cmd, t_exec *exec, char **env)
 void	execute_builtin(t_exec *exec, t_command *cmd, int flag)
 {
 	if (flag == 1 && cmd->red)
-		if (set_redirections(exec, cmd) == -1)
+		if (set_redirections(exec, cmd->red) == -1)
 			return ;
 	dup_redirections(exec);
 	if (!ft_strcmp(*cmd->cmd, "cd"))
