@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:11:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/09/27 13:48:59 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:33:10 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,18 @@ t_redir	*ft_add_redir(t_redir **head, char *file_name, int type)
 	temp->next = new;
 	new->next = NULL;
 	return (*head);
+}
+
+int handle_ambiguous(t_tokens **temp, t_redir **redir, char **commands, int *i)
+{
+	ft_printf(2, "minishell: %s: AMBIGUOUS REDIRECT\n",
+		(*temp)->next->dollar);
+	g_data.ret_value = 1;
+	*redir = ft_add_redir(redir, NULL, AMBIG);
+	if(!*redir)
+		return MALLOC_ERROR;
+	commands[*i] = NULL;
+	while ((*temp) && (*temp)->type != PIPE)
+		(*temp) = (*temp)->next;
+	return (-1);
 }

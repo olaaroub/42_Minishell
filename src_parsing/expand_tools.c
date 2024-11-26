@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 22:38:07 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 13:06:28 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:39:12 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ void	start_expand(char *buff, int fd)
 		write(fd, "$", 1);
 		write(fd, buff, ft_strlen(buff));
 	}
+}
+
+char	*get_filename(void)
+{
+	char	*filename;
+
+	filename = create_tmp_file();
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
+	filename = ft_strjoin("/tmp/", filename);
+	if (!filename)
+		return (NULL);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, filename);
+	return (filename);
 }

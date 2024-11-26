@@ -17,9 +17,9 @@ static t_tokens	*token_node(char *word, int type, bool ambg, char *dollar)
 	t_tokens	*new;
 
 	new = (t_tokens *)malloc(sizeof(t_tokens));
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	if (!new)
 		return (NULL);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	new->word = word;
 	new->type = type;
 	new->word_after_exp = NULL;

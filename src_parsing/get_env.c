@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:10:08 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/14 12:05:02 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:27:36 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ t_env	*env_node(char *env)
 	if (!new)
 		return (NULL);
 	new->line = ft_strdup(env);
+	if(!new->line)
+		return (NULL);
 	new->name = ft_costume_strchr(env, '=');
+	if(!new->name)
+		return (free(new->line), NULL);
 	new->value = ft_strdup(ft_strchr(env, '='));
+	if(!new->value)
+		return (free(new->line), free(new->name), NULL);
 	new->index = 0;
 	new->next = NULL;
 	new->prev = NULL;
@@ -40,7 +46,7 @@ t_env	*ft_add_env(t_env **head, char *env)
 
 	new = env_node(env);
 	if (!new)
-		return (NULL);
+		return (free_env_list(), NULL);
 	if (!*head)
 		return (new);
 	temp = *head;

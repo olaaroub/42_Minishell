@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_mgem7a.c                                     :+:      :+:    :+:   */
+/*   customized_split.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:44:35 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 08:51:30 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:33:10 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ static char	**fill_strings(char *line, char **result, int count)
 			line++;
 		l = word_lenght(line);
 		result[k] = (char *)malloc((l + 1) * sizeof(char));
-		g_data.trash_list = ft_add_trash(&g_data.trash_list, result[k]);
 		if (!result[k])
 			return (NULL);
+		g_data.trash_list = ft_add_trash(&g_data.trash_list, result[k]);
 		ft_strlcpy(result[k], line, l + 1);
 		line += l;
 		k++;
@@ -113,9 +113,9 @@ char	**customized_split(char *line)
 	buff = line;
 	count = count_words(buff);
 	result = (char **)malloc(sizeof(char *) * (count + 1));
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, result);
 	if (!result)
 		return (NULL);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, result);
 	result = fill_strings(line, result, count);
 	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils-v2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 00:08:03 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 13:06:50 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:56:38 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	len_until_pipe(t_tokens *temp)
 	return (i);
 }
 
-void	split_tokens(void)
+int	split_tokens(void)
 {
 	t_tokens	*tmp;
 
@@ -46,8 +46,11 @@ void	split_tokens(void)
 	while (tmp)
 	{
 		tmp->word_after_exp = customized_split(tmp->word);
+		if(!tmp->word_after_exp && tmp->word)
+			return MALLOC_ERROR;
 		tmp = tmp->next;
 	}
+	return 0;
 }
 
 void	free_env_list(void)
