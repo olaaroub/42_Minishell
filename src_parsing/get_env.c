@@ -25,13 +25,13 @@ t_env	*env_node(char *env)
 	if (!new)
 		return (NULL);
 	new->line = ft_strdup(env);
-	if(!new->line)
+	if (!new->line)
 		return (NULL);
 	new->name = ft_costume_strchr(env, '=');
-	if(!new->name)
+	if (!new->name)
 		return (free(new->line), NULL);
 	new->value = ft_strdup(ft_strchr(env, '='));
-	if(!new->value)
+	if (!new->value)
 		return (free(new->line), free(new->name), NULL);
 	new->index = 0;
 	new->next = NULL;

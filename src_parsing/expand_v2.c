@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:46:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 16:54:12 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 19:06:18 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	prepare_expand(t_tokens *tmp, int *i, int fd)
 	char	*buff;
 
 	if (handle_special_chars(tmp, i, fd) == 0)
-		return 0;
+		return (0);
 	else
 	{
 		start = ++*i;
@@ -87,10 +87,10 @@ static int	process_tokens(t_tokens *tmp, int fd)
 		if (tmp->word[i] == '$' && ((tmp->prev && tmp->prev->type != HEREDOC)
 				|| !tmp->prev) && (tmp->word[i + 1] != '\0'
 				&& !is_whitespace(tmp->word[i + 1])))
-				{
-					if (prepare_expand(tmp, &i, fd) == MALLOC_ERROR)
-						return MALLOC_ERROR;
-				}
+		{
+			if (prepare_expand(tmp, &i, fd) == MALLOC_ERROR)
+				return (MALLOC_ERROR);
+		}
 		else
 			write(fd, &tmp->word[i++], 1);
 	}

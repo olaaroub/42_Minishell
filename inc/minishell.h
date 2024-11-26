@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 16:35:27 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 19:03:47 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 // INCLUDES //
 
 # include "../libft/libft.h"
-# include <sys/stat.h>
 # include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <wait.h>
 
@@ -49,10 +49,10 @@ typedef struct s_trash
 
 typedef struct s_vars
 {
-	int		i;
-	int		j;
-	int		len;
-	char	quote;
+	int					i;
+	int					j;
+	int					len;
+	char				quote;
 }						t_vars;
 
 typedef struct s_env
@@ -118,7 +118,7 @@ t_trash					*ft_add_trash(t_trash **head, void *addr);
 void					free_trash(t_trash **head);
 t_trash					*trash_node(void *addr);
 
-/*              export_tools			 */
+/*              export_tools				*/
 int						ft_strlen_eq(char *line, char c);
 size_t					list_size(void *lst, int s);
 int						compare(char *min_str, char *str);
@@ -134,7 +134,8 @@ void					print_exported_vars(void);
 /*						EXPAND			*/
 int						expand(void);
 void					check_master_quotes(bool *double_flag,
-							bool *single_flag, char c);
+							bool *single_flag,
+							char c);
 int						check_env_name(char *buff);
 int						get_expanded(char *buff, int fd);
 void					start_expand(char *buff, int fd);
@@ -157,7 +158,7 @@ int						line_len(char *line);
 char					*add_space(char *line);
 int						syntax_error(void);
 int						split_tokens(void);
-int 					handle_ambiguous(t_tokens **temp, t_redir **redir,
+int						handle_ambiguous(t_tokens **temp, t_redir **redir,
 							char **commands, int *i);
 
 /*				command_list.c			*/
@@ -167,7 +168,7 @@ t_redir					*ft_add_redir(t_redir **head, char *file_name,
 							int type);
 t_command				*ft_add_command(t_command **head, char **commands,
 							t_redir *redir);
-int					fill_command_list(void);
+int						fill_command_list(void);
 void					sig_handler(int signo);
 
 /*				EXECUTION		*/
