@@ -6,7 +6,7 @@
 /*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:11:31 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 16:33:10 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:44:58 by olaaroub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_command	*command_node(char **commands, t_redir *redir)
 	t_command	*new;
 
 	new = (t_command *)malloc(sizeof(t_command));
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	if (!new)
 		return (NULL);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	new->next = NULL;
 	new->cmd = commands;
 	new->red = redir;
@@ -49,9 +49,9 @@ t_redir	*redir_node(char *file_name, int type)
 	t_redir	*new;
 
 	new = (t_redir *)malloc(sizeof(t_redir));
-	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	if (!new)
 		return (NULL);
+	g_data.trash_list = ft_add_trash(&g_data.trash_list, new);
 	new->next = NULL;
 	new->file_name = file_name;
 	new->type = type;
