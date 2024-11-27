@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:09 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/27 11:16:13 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:16:42 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ void	executor(char **env)
 		save_fds[0] = dup(0);
 		save_fds[1] = dup(1);
 		execute_builtin(exec, cmd, 1);
-		if (entry_found("_"))
-			update_var("_", *cmd->cmd);
 		restore_io(save_fds);
 		if (g_data.ret_value == -69)
 			g_data.ret_value = 1;
