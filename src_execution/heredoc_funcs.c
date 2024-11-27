@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/26 17:29:16 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/27 06:44:54 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	fill_heredoc(int fd, char *delimiter)
 	{
 		line = readline("> ");
 		if (!line)
-			return(free(delimiter), exit(0));
+			return (free(delimiter), exit(0));
 		line = expand_heredoc(line, delimiter, tmpfile);
 		if (!line)
 			line = ft_strdup("");

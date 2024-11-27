@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:45:40 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 19:03:47 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/27 06:47:17 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,6 @@ void					free_alloc(void);
 
 int						open_file(t_redir *red, int type);
 void					heredoc_counter(t_command *cmd);
-
 
 /*				utils.c			*/
 int						check_fd(t_redir *red, t_exec *exec);
