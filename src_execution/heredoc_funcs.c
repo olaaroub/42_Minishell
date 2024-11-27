@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:35:10 by kali              #+#    #+#             */
-/*   Updated: 2024/11/27 06:44:54 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/27 09:34:51 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	sigheredoc(int sig)
 {
 	(void)sig;
 	ft_putendl_fd("^C", 1);
+	free_alloc();
 	exit(130);
 }
 
