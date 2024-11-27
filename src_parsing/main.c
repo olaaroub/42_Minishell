@@ -3,46 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olaaroub <olaaroub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:44:05 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/26 19:08:33 by olaaroub         ###   ########.fr       */
+/*   Updated: 2024/11/27 06:46:57 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 t_program	g_data;
-
-// void	print_tokens(void)
-// {
-// 	t_command	*token;
-// 	t_redir		*redirection;
-// 	int			i;
-
-// 	token = g_data.command_list;
-// 	if (token && *token->cmd == NULL)
-// 		printf("cmd is NULL\n");
-// 	while (token)
-// 	{
-// 		i = 0;
-// 		redirection = token->red;
-// 		while (token->cmd && token->cmd[i])
-// 		{
-// 			printf("*cmd->cmd == %p\n", *token->cmd);
-// 			printf(" command %i is '%s'\n", i, token->cmd[i]);
-// 			i++;
-// 		}
-// 		while (redirection)
-// 		{
-// 			printf(" type is %d file name is %s\n", redirection->type,
-// 					redirection->file_name);
-// 			redirection = redirection->next;
-// 		}
-// 		token = token->next;
-// 		printf("========================================================\n");
-// 	}
-// }
 
 static void	init_data(void)
 {
@@ -107,9 +77,7 @@ int	main(int ac, char **av, char **env)
 			return (free_env_list(), printf("exit\n"), 0);
 		if (line && *line)
 			add_history(line);
-		if (tokenize(&line) == -77)
-			continue ;
-		if (fill_command_list() == MALLOC_ERROR)
+		if (tokenize(&line) == -77 || fill_command_list() == MALLOC_ERROR)
 			continue ;
 		free(line);
 		executor(env);
