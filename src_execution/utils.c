@@ -25,6 +25,7 @@ int	heredoc_present(t_command *cmd)
 {
 	t_redir	*redir;
 
+	heredoc_counter(cmd);
 	cmd->heredoc = -1;
 	while (cmd)
 	{
