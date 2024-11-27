@@ -41,21 +41,13 @@ int	set_redirections(t_exec *exec, t_redir *red)
 		return (-2);
 	while (red)
 	{
-		if (red->file_name && !ft_strcmp(red->file_name, "/dev/stdout"))
+		if (red->file_name && (!ft_strcmp(red->file_name, "/dev/stdout") \
+		|| !ft_strcmp(red->file_name, "/dev/stdin")))
 		{
 			red = red->next;
 			continue ;
 		}
-		if (red->type == INPUT)
-			exec->tmp_fd = open(red->file_name, O_RDONLY);
-		else if (red->type == OUTPUT)
-			exec->tmp_fd = open(red->file_name, \
-			O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else if (red->type == APPEND)
-			exec->tmp_fd = open(red->file_name, \
-			O_CREAT | O_WRONLY | O_APPEND, 0644);
-		else if (red->type == HEREDOC)
-			exec->tmp_fd = get_heredoc(red);
+		exec->tmp_fd = open_file(red, red->type);
 		if (check_fd(red, exec) == -1)
 			return ((g_data.ret_value = -69), -1);
 		update_fd(red, exec);

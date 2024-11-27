@@ -231,6 +231,10 @@ void					free_arr(char **arr);
 void					free_exec(t_exec *exec);
 void					free_alloc(void);
 
+int						open_file(t_redir *red, int type);
+void					heredoc_counter(t_command *cmd);
+
+
 /*				utils.c			*/
 int						check_fd(t_redir *red, t_exec *exec);
 int						get_heredoc(t_redir *red);
