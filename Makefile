@@ -6,13 +6,13 @@
 #    By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 03:42:07 by hatalhao          #+#    #+#              #
-#    Updated: 2024/11/27 11:23:53 by hatalhao         ###   ########.fr        #
+#    Updated: 2024/11/28 19:14:36 by hatalhao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-# CFLAGS += -fsanitize=address -g3
+CFLAGS += -fsanitize=address -g3
 MAKEFLAGS := -j --no-print-directory
 
 # ITALICBOLD

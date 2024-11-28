@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:27:02 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/11/20 11:08:05 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:42:51 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	link_remove(char *to_unset)
 	t_env	*iter;
 
 	iter = g_data.env_list;
-	while (iter && iter->next)
+	while (iter)
 	{
 		if (!ft_strcmp(iter->name, to_unset))
 		{
@@ -39,9 +39,9 @@ void	link_remove(char *to_unset)
 				g_data.env_list = g_data.env_list->next;
 			else
 			{
-				(iter->next)->prev = (iter)->prev;
+				(iter->prev)->next = (iter)->next;
 				if (iter->next)
-					(iter->prev)->next = (iter)->next;
+					(iter->next)->prev = iter->prev;
 			}
 			free(iter->line);
 			free(iter->name);
