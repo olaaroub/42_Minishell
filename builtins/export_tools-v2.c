@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 22:28:10 by olaaroub          #+#    #+#             */
-/*   Updated: 2024/11/19 09:00:45 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:32:06 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_env	*env_newnode(char *line)
 	free(temp);
 	new_node->index = 0;
 	new_node->next = NULL;
+	new_node->prev = NULL;
 	return (new_node);
 }
 
@@ -68,6 +69,7 @@ void	env_add_back(t_env **head, t_env *new_node)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new_node;
+	new_node->prev = temp;
 }
 
 t_env	*env_new_node(char *line, int flag)
